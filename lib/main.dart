@@ -31,6 +31,15 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
+    const arrowLeft = Icon(
+      Icons.arrow_back_rounded,
+      color: Colors.black,
+    );
+    const arrowRight = Icon(
+      Icons.arrow_forward_rounded,
+      color: Colors.black,
+    );
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
@@ -63,7 +72,11 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                   ),
                   child: Center(
-                    child: Text((index + 1).toString()),
+                    child: index == 0 || index == 30
+                        ? arrowLeft
+                        : index == 5 || index == 35
+                            ? arrowRight
+                            : Container(),
                   ),
                 );
               },
