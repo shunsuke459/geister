@@ -57,144 +57,60 @@ class BattleBoardPresenter extends StateNotifier<BattleBoardState> {
       arrowCount: 0,
     );
 
+    _movePiece(arrow);
+
+    _hideArrow();
+  }
+
+  void _movePiece(SquareState arrow) {
+    late SquareState target;
+    final arrowRow = arrow.row;
+    final arrowColumn = arrow.column;
+
     switch (arrow.arrowType) {
       case ArrowTypeEnum.topArrow:
-        final target =
-            state.boardStateList.battleBoard[arrowRow + 1][arrowColumn];
-
-        state = state.copyWith(
-          boardStateList: state.boardStateList.copyWith(
-            battleBoard: state.boardStateList.battleBoard.map((pieceStateList) {
-              return pieceStateList.map((piece) {
-                if (piece.row == arrowRow && piece.column == arrowColumn) {
-                  return piece.copyWith(
-                    pieceIcon: target.pieceIcon,
-                    pieceType: target.pieceType,
-                    arrowIcon: '',
-                    arrowType: ArrowTypeEnum.none,
-                  );
-                }
-
-                if (piece.row == target.row && piece.column == target.column) {
-                  return piece.copyWith(
-                    pieceIcon: '',
-                    pieceType: PieceTypeEnum.empty,
-                    arrowIcon: '',
-                    arrowType: ArrowTypeEnum.none,
-                  );
-                }
-
-                return piece;
-              }).toList();
-            }).toList(),
-          ),
-        );
-
+        target = state.boardStateList.battleBoard[arrowRow + 1][arrowColumn];
         break;
       case ArrowTypeEnum.bottomArrow:
-        final target =
-            state.boardStateList.battleBoard[arrowRow - 1][arrowColumn];
-
-        state = state.copyWith(
-          boardStateList: state.boardStateList.copyWith(
-            battleBoard: state.boardStateList.battleBoard.map((pieceStateList) {
-              return pieceStateList.map((piece) {
-                if (piece.row == arrowRow && piece.column == arrowColumn) {
-                  return piece.copyWith(
-                    pieceIcon: target.pieceIcon,
-                    pieceType: target.pieceType,
-                    arrowIcon: '',
-                    arrowType: ArrowTypeEnum.none,
-                  );
-                }
-
-                if (piece.row == target.row && piece.column == target.column) {
-                  return piece.copyWith(
-                    pieceIcon: '',
-                    pieceType: PieceTypeEnum.empty,
-                    arrowIcon: '',
-                    arrowType: ArrowTypeEnum.none,
-                  );
-                }
-
-                return piece;
-              }).toList();
-            }).toList(),
-          ),
-        );
-
+        target = state.boardStateList.battleBoard[arrowRow - 1][arrowColumn];
         break;
       case ArrowTypeEnum.leftArrow:
-        final target =
-            state.boardStateList.battleBoard[arrowRow][arrowColumn + 1];
-
-        state = state.copyWith(
-          boardStateList: state.boardStateList.copyWith(
-            battleBoard: state.boardStateList.battleBoard.map((pieceStateList) {
-              return pieceStateList.map((piece) {
-                if (piece.row == arrowRow && piece.column == arrowColumn) {
-                  return piece.copyWith(
-                    pieceIcon: target.pieceIcon,
-                    pieceType: target.pieceType,
-                    arrowIcon: '',
-                    arrowType: ArrowTypeEnum.none,
-                  );
-                }
-
-                if (piece.row == target.row && piece.column == target.column) {
-                  return piece.copyWith(
-                    pieceIcon: '',
-                    pieceType: PieceTypeEnum.empty,
-                    arrowIcon: '',
-                    arrowType: ArrowTypeEnum.none,
-                  );
-                }
-
-                return piece;
-              }).toList();
-            }).toList(),
-          ),
-        );
-
+        target = state.boardStateList.battleBoard[arrowRow][arrowColumn + 1];
         break;
       case ArrowTypeEnum.rightArrow:
-        final target =
-            state.boardStateList.battleBoard[arrowRow][arrowColumn - 1];
-
-        state = state.copyWith(
-          boardStateList: state.boardStateList.copyWith(
-            battleBoard: state.boardStateList.battleBoard.map((pieceStateList) {
-              return pieceStateList.map((piece) {
-                if (piece.row == arrowRow && piece.column == arrowColumn) {
-                  return piece.copyWith(
-                    pieceIcon: target.pieceIcon,
-                    pieceType: target.pieceType,
-                    arrowIcon: '',
-                    arrowType: ArrowTypeEnum.none,
-                  );
-                }
-
-                if (piece.row == target.row && piece.column == target.column) {
-                  return piece.copyWith(
-                    pieceIcon: '',
-                    pieceType: PieceTypeEnum.empty,
-                    arrowIcon: '',
-                    arrowType: ArrowTypeEnum.none,
-                  );
-                }
-
-                return piece;
-              }).toList();
-            }).toList(),
-          ),
-        );
-
+        target = state.boardStateList.battleBoard[arrowRow][arrowColumn - 1];
         break;
       default:
         break;
     }
 
-    _hideArrow();
+    state = state.copyWith(
+      boardStateList: state.boardStateList.copyWith(
+        battleBoard: state.boardStateList.battleBoard.map((pieceStateList) {
+          return pieceStateList.map((piece) {
+            if (piece.row == arrowRow && piece.column == arrowColumn) {
+              return piece.copyWith(
+                pieceIcon: target.pieceIcon,
+                pieceType: target.pieceType,
+                arrowIcon: '',
+                arrowType: ArrowTypeEnum.none,
+              );
+            }
+
+            if (piece.row == target.row && piece.column == target.column) {
+              return piece.copyWith(
+                pieceIcon: '',
+                pieceType: PieceTypeEnum.empty,
+                arrowIcon: '',
+                arrowType: ArrowTypeEnum.none,
+              );
+            }
+
+            return piece;
+          }).toList();
+        }).toList(),
+      ),
+    );
   }
 
   void showArrow(int row, int column) {
