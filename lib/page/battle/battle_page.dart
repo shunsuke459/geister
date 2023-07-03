@@ -68,15 +68,25 @@ class BattlePage extends HookConsumerWidget {
                   child: Container(
                     decoration: BoxDecoration(
                       border: Border(
-                        right:
-                            const BorderSide(color: Colors.black, width: 1.0),
-                        bottom:
-                            const BorderSide(color: Colors.black, width: 1.0),
+                        right: const BorderSide(
+                          color: Colors.black,
+                          width: 1.0,
+                        ),
+                        bottom: const BorderSide(
+                          color: Colors.black,
+                          width: 1.0,
+                        ),
                         top: index >= 0 && index <= 5
-                            ? const BorderSide(color: Colors.black, width: 1.0)
+                            ? const BorderSide(
+                                color: Colors.black,
+                                width: 1.0,
+                              )
                             : BorderSide.none,
                         left: index % 6 == 0
-                            ? const BorderSide(color: Colors.black, width: 1.0)
+                            ? const BorderSide(
+                                color: Colors.black,
+                                width: 1.0,
+                              )
                             : BorderSide.none,
                       ),
                     ),

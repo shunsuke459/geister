@@ -33,7 +33,7 @@ extension SquareStateExtension on SquareState {
     return row == this.row - 1 && column == this.column;
   }
 
-  bool isEmpty() {
-    return pieceType.isEmpty;
+  bool canShowArrow() {
+    return pieceType.isEmpty || pieceType.isEnemyPiece;
   }
 }

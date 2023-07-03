@@ -118,7 +118,9 @@ class BattleBoardPresenter extends StateNotifier<BattleBoardState> {
       boardStateList: state.boardStateList.copyWith(
         battleBoard: state.boardStateList.battleBoard.map((pieceStateList) {
           return pieceStateList.map((pieceState) {
-            if (pieceState.isLeftPiece(row, column) && pieceState.isEmpty()) {
+            if (!pieceState.canShowArrow()) return pieceState;
+
+            if (pieceState.isLeftPiece(row, column)) {
               state = state.copyWith(arrowCount: state.arrowCount + 1);
 
               return pieceState.copyWith(
@@ -127,7 +129,7 @@ class BattleBoardPresenter extends StateNotifier<BattleBoardState> {
               );
             }
 
-            if (pieceState.isRightPiece(row, column) && pieceState.isEmpty()) {
+            if (pieceState.isRightPiece(row, column)) {
               state = state.copyWith(arrowCount: state.arrowCount + 1);
 
               return pieceState.copyWith(
@@ -136,7 +138,7 @@ class BattleBoardPresenter extends StateNotifier<BattleBoardState> {
               );
             }
 
-            if (pieceState.isTopPiece(row, column) && pieceState.isEmpty()) {
+            if (pieceState.isTopPiece(row, column)) {
               state = state.copyWith(arrowCount: state.arrowCount + 1);
 
               return pieceState.copyWith(
@@ -145,12 +147,13 @@ class BattleBoardPresenter extends StateNotifier<BattleBoardState> {
               );
             }
 
-            if (pieceState.isBottomPiece(row, column) && pieceState.isEmpty()) {
+            if (pieceState.isBottomPiece(row, column)) {
               state = state.copyWith(arrowCount: state.arrowCount + 1);
 
               return pieceState.copyWith(
-                  arrowIcon: Assets.icons.arrowBottom,
-                  arrowType: ArrowTypeEnum.bottomArrow);
+                arrowIcon: Assets.icons.arrowBottom,
+                arrowType: ArrowTypeEnum.bottomArrow,
+              );
             }
 
             return pieceState;
