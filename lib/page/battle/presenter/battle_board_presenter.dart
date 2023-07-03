@@ -193,6 +193,8 @@ class BattleBoardPresenter extends StateNotifier<BattleBoardState> {
       default:
         break;
     }
+
+    _hideArrow();
   }
 
   void showArrow(int row, int column) {
@@ -246,7 +248,9 @@ class BattleBoardPresenter extends StateNotifier<BattleBoardState> {
     return;
   }
 
-  void hideArrow() {
+  void hideArrow() => _hideArrow();
+
+  void _hideArrow() {
     state = state.copyWith(
       displayArrow: false,
       arrowCount: 0,
