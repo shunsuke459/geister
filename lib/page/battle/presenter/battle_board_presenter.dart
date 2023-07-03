@@ -114,6 +114,8 @@ class BattleBoardPresenter extends StateNotifier<BattleBoardState> {
   }
 
   void showArrow(int row, int column) {
+    int arrowCount = 0;
+
     state = state.copyWith(
       boardStateList: state.boardStateList.copyWith(
         battleBoard: state.boardStateList.battleBoard.map((pieceStateList) {
@@ -121,7 +123,7 @@ class BattleBoardPresenter extends StateNotifier<BattleBoardState> {
             if (!pieceState.canShowArrow()) return pieceState;
 
             if (pieceState.isLeftPiece(row, column)) {
-              state = state.copyWith(arrowCount: state.arrowCount + 1);
+              arrowCount++;
 
               return pieceState.copyWith(
                 arrowIcon: Assets.icons.arrowLeft,
@@ -130,7 +132,7 @@ class BattleBoardPresenter extends StateNotifier<BattleBoardState> {
             }
 
             if (pieceState.isRightPiece(row, column)) {
-              state = state.copyWith(arrowCount: state.arrowCount + 1);
+              arrowCount++;
 
               return pieceState.copyWith(
                 arrowIcon: Assets.icons.arrowRight,
@@ -139,7 +141,7 @@ class BattleBoardPresenter extends StateNotifier<BattleBoardState> {
             }
 
             if (pieceState.isTopPiece(row, column)) {
-              state = state.copyWith(arrowCount: state.arrowCount + 1);
+              arrowCount++;
 
               return pieceState.copyWith(
                 arrowIcon: Assets.icons.arrowTop,
@@ -148,7 +150,7 @@ class BattleBoardPresenter extends StateNotifier<BattleBoardState> {
             }
 
             if (pieceState.isBottomPiece(row, column)) {
-              state = state.copyWith(arrowCount: state.arrowCount + 1);
+              arrowCount++;
 
               return pieceState.copyWith(
                 arrowIcon: Assets.icons.arrowBottom,
@@ -162,7 +164,11 @@ class BattleBoardPresenter extends StateNotifier<BattleBoardState> {
       ),
     );
 
-    if (state.arrowCount > 0) state = state.copyWith(displayArrow: true);
+    if (arrowCount > 0)
+      state = state.copyWith(
+        displayArrow: true,
+        arrowCount: arrowCount,
+      );
 
     return;
   }
