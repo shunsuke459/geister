@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "1045208501347",
+    "project_id": "geister-9129f",
+    "storage_bucket": "geister-9129f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1045208501347:android:4c9baa225512da03e53c56",
+        "android_client_info": {
+          "package_name": "com.example.geister"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1045208501347-97ojbi3jihirahn8f5sjpdrj5cevv124.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBg3bQSLziyYKmjI7uRCXOvVLrSeipGxvA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1045208501347-97ojbi3jihirahn8f5sjpdrj5cevv124.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1045208501347-ktsqn0a3paq4h77jbm6u5m05ivfgb2f2.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.geister"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
