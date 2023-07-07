@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:geister/page/splash_page.dart';
-import 'package:geister/page/test/test_page.dart';
+import 'package:geister/page/test/home_page.dart';
 import 'package:go_router/go_router.dart';
 
 part 'route.g.dart';
