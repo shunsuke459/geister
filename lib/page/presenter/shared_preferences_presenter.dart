@@ -9,7 +9,7 @@ class SharedPreferencesPresenter {
     return await sharedPreferencesGateway.getString('userName') ?? '';
   }
 
-  Future<bool> needUserRegistration() async {
+  Future<bool> needSignUp() async {
     final userName = await sharedPreferencesGateway.getString('userName');
 
     return userName != null;

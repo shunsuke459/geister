@@ -14,10 +14,9 @@ class SplashPage extends ConsumerWidget {
       // スプラッシュ画面を2秒表示
       await Future.delayed(const Duration(seconds: 2));
 
-      final bool needUserRegistration = await ref
-          .watch(sharedPreferencesPresenterProvider)
-          .needUserRegistration();
-      if (needUserRegistration) {
+      final bool needSignUp =
+          await ref.watch(sharedPreferencesPresenterProvider).needSignUp();
+      if (needSignUp) {
         HomePageRoute().go(context);
       } else {
         if (!context.mounted) return;

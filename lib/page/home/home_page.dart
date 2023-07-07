@@ -8,17 +8,6 @@ class HomePage extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final needUserRegistration = useState(false);
-
-    Future(() async {
-      final prefs = await SharedPreferences.getInstance();
-      print('===');
-      prefs.setString('test', 'shunsuke');
-    });
-
-    print('---');
-    print(needUserRegistration.value);
-
     return Scaffold(
       body: Center(
         child: ElevatedButton(
