@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:geister/page/home/presenter/user_presenter.dart';
 import 'package:geister/page/presenter/shared_preferences_presenter.dart';
 import 'package:geister/router/route.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -70,11 +71,29 @@ class SignUpPage extends HookConsumerWidget {
                     final userName = controller.text;
                     if (!canSend) return;
 
+                    final createdSuccess = await ref
+                        .read(userPresenterProvider.notifier)
+                        .createUser(userName);
+                    if (!createdSuccess) {
+                      // TODO: エラーメッセージ表示
+                      return;
+                    }
+
+                    final userId =
+                        ref.watch(userPresenterProvider).value?.id ?? '';
+                    if (userId.isEmpty) {
+                      // TODO: エラーメッセージを表示
+                      return;
+                    }
+
                     final isSuccess = await ref
                         .read(sharedPreferencesPresenterProvider)
-                        .setUserName(userName);
+                        .setUserId(userId);
 
-                    if (isSuccess) HomePageRoute().go(context);
+                    if (isSuccess) {
+                      HomePageRoute().go(context);
+                      // TODO: ユーザー名を登録しましたメッセージを表示
+                    }
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor:

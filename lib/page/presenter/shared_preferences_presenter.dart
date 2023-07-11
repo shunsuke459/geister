@@ -1,26 +1,30 @@
-import 'package:geister/gateway/shared_preferences_gateway.dart';
+import 'package:geister/gateway/user/shared_preferences_gateway.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class SharedPreferencesPresenter {
   final SharedPreferencesGateway sharedPreferencesGateway;
   SharedPreferencesPresenter({required this.sharedPreferencesGateway});
 
-  Future<bool> setUserName(String userName) async {
-    return await sharedPreferencesGateway.setString('userName', userName);
+  Future<bool> setUserId(String userId) async {
+    return await sharedPreferencesGateway.setString('userId', userId);
   }
 
-  Future<String> getUserName() async {
-    return await sharedPreferencesGateway.getString('userName') ?? '';
+  Future<String> getUserId() async {
+    return await _getUserId();
   }
 
-  Future<bool> deleteUserName() async {
-    return await sharedPreferencesGateway.setString('userName', '');
+  Future<String> _getUserId() async {
+    return await sharedPreferencesGateway.getString('userId') ?? '';
+  }
+
+  Future<bool> deleteUserId() async {
+    return await sharedPreferencesGateway.setString('userId', '');
   }
 
   Future<bool> needSignUp() async {
-    final userName = await sharedPreferencesGateway.getString('userName');
+    final userName = await _getUserId();
 
-    return userName == null || userName.isEmpty;
+    return userName.isEmpty;
   }
 }
 

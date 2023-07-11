@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:geister/page/home/presenter/user_presenter.dart';
 import 'package:geister/page/presenter/shared_preferences_presenter.dart';
 import 'package:geister/router/route.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -9,20 +10,19 @@ class HomePage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final userName = useState('');
+    final userNameState = useState('');
 
     return Scaffold(
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(userName.value),
+            Text(userNameState.value),
             ElevatedButton(
               onPressed: () async {
-                final result = await ref
-                    .read(sharedPreferencesPresenterProvider)
-                    .getUserName();
-                userName.value = result;
+                final userName =
+                    ref.read(userPresenterProvider).value?.userName ?? '';
+                userNameState.value = userName;
               },
               child: const Text('get'),
             ),
@@ -30,7 +30,7 @@ class HomePage extends HookConsumerWidget {
               onPressed: () async {
                 final isSuccess = await ref
                     .read(sharedPreferencesPresenterProvider)
-                    .deleteUserName();
+                    .deleteUserId();
 
                 if (isSuccess) SignUpPageRoute().go(context);
               },

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:geister/gen/assets.gen.dart';
+import 'package:geister/page/home/presenter/user_presenter.dart';
 import 'package:geister/page/presenter/shared_preferences_presenter.dart';
 import 'package:geister/router/route.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -19,7 +20,11 @@ class SplashPage extends ConsumerWidget {
       if (needSignUp) {
         SignUpPageRoute().go(context);
       } else {
-        if (!context.mounted) return;
+        final userId = await ref
+            .watch(sharedPreferencesPresenterProvider)
+            .getUserId();
+        await ref.read(userPresenterProvider.notifier).getUser(userId);
+
         HomePageRoute().go(context);
       }
     });
