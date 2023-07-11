@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:geister/page/game/game_page.dart';
 import 'package:geister/page/home/sign_up_page.dart';
 import 'package:geister/page/splash_page.dart';
 import 'package:geister/page/home/home_page.dart';
@@ -28,4 +29,12 @@ class HomePageRoute extends GoRouteData {
 class SignUpPageRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) => const SignUpPage();
+}
+
+@TypedGoRoute<GamePageRoute>(
+  path: '/game',
+)
+class GamePageRoute extends GoRouteData {
+  @override
+  Widget build(BuildContext context, GoRouterState state) => const GamePage();
 }

@@ -1,4 +1,4 @@
-import 'package:geister/page/battle/presenter/my_side_state.dart';
+import 'package:geister/page/game/presenter/my_side_state.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class MySidePresenter extends StateNotifier<MySideState> {

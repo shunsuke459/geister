@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'battle_board_state.dart';
+part of 'game_board_state.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -15,31 +15,31 @@ final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 /// @nodoc
-mixin _$BattleBoardState {
-  BattleBoard get boardStateList => throw _privateConstructorUsedError;
+mixin _$GameBoardState {
+  GameBoard get boardStateList => throw _privateConstructorUsedError;
   bool get displayArrow => throw _privateConstructorUsedError;
   int get arrowCount => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
-  $BattleBoardStateCopyWith<BattleBoardState> get copyWith =>
+  $GameBoardStateCopyWith<GameBoardState> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $BattleBoardStateCopyWith<$Res> {
-  factory $BattleBoardStateCopyWith(
-          BattleBoardState value, $Res Function(BattleBoardState) then) =
-      _$BattleBoardStateCopyWithImpl<$Res, BattleBoardState>;
+abstract class $GameBoardStateCopyWith<$Res> {
+  factory $GameBoardStateCopyWith(
+          GameBoardState value, $Res Function(GameBoardState) then) =
+      _$GameBoardStateCopyWithImpl<$Res, GameBoardState>;
   @useResult
-  $Res call({BattleBoard boardStateList, bool displayArrow, int arrowCount});
+  $Res call({GameBoard boardStateList, bool displayArrow, int arrowCount});
 
-  $BattleBoardCopyWith<$Res> get boardStateList;
+  $GameBoardCopyWith<$Res> get boardStateList;
 }
 
 /// @nodoc
-class _$BattleBoardStateCopyWithImpl<$Res, $Val extends BattleBoardState>
-    implements $BattleBoardStateCopyWith<$Res> {
-  _$BattleBoardStateCopyWithImpl(this._value, this._then);
+class _$GameBoardStateCopyWithImpl<$Res, $Val extends GameBoardState>
+    implements $GameBoardStateCopyWith<$Res> {
+  _$GameBoardStateCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
@@ -57,7 +57,7 @@ class _$BattleBoardStateCopyWithImpl<$Res, $Val extends BattleBoardState>
       boardStateList: null == boardStateList
           ? _value.boardStateList
           : boardStateList // ignore: cast_nullable_to_non_nullable
-              as BattleBoard,
+              as GameBoard,
       displayArrow: null == displayArrow
           ? _value.displayArrow
           : displayArrow // ignore: cast_nullable_to_non_nullable
@@ -71,33 +71,33 @@ class _$BattleBoardStateCopyWithImpl<$Res, $Val extends BattleBoardState>
 
   @override
   @pragma('vm:prefer-inline')
-  $BattleBoardCopyWith<$Res> get boardStateList {
-    return $BattleBoardCopyWith<$Res>(_value.boardStateList, (value) {
+  $GameBoardCopyWith<$Res> get boardStateList {
+    return $GameBoardCopyWith<$Res>(_value.boardStateList, (value) {
       return _then(_value.copyWith(boardStateList: value) as $Val);
     });
   }
 }
 
 /// @nodoc
-abstract class _$$_BattleBoardStateCopyWith<$Res>
-    implements $BattleBoardStateCopyWith<$Res> {
-  factory _$$_BattleBoardStateCopyWith(
-          _$_BattleBoardState value, $Res Function(_$_BattleBoardState) then) =
-      __$$_BattleBoardStateCopyWithImpl<$Res>;
+abstract class _$$_GameBoardStateCopyWith<$Res>
+    implements $GameBoardStateCopyWith<$Res> {
+  factory _$$_GameBoardStateCopyWith(
+          _$_GameBoardState value, $Res Function(_$_GameBoardState) then) =
+      __$$_GameBoardStateCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({BattleBoard boardStateList, bool displayArrow, int arrowCount});
+  $Res call({GameBoard boardStateList, bool displayArrow, int arrowCount});
 
   @override
-  $BattleBoardCopyWith<$Res> get boardStateList;
+  $GameBoardCopyWith<$Res> get boardStateList;
 }
 
 /// @nodoc
-class __$$_BattleBoardStateCopyWithImpl<$Res>
-    extends _$BattleBoardStateCopyWithImpl<$Res, _$_BattleBoardState>
-    implements _$$_BattleBoardStateCopyWith<$Res> {
-  __$$_BattleBoardStateCopyWithImpl(
-      _$_BattleBoardState _value, $Res Function(_$_BattleBoardState) _then)
+class __$$_GameBoardStateCopyWithImpl<$Res>
+    extends _$GameBoardStateCopyWithImpl<$Res, _$_GameBoardState>
+    implements _$$_GameBoardStateCopyWith<$Res> {
+  __$$_GameBoardStateCopyWithImpl(
+      _$_GameBoardState _value, $Res Function(_$_GameBoardState) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -107,11 +107,11 @@ class __$$_BattleBoardStateCopyWithImpl<$Res>
     Object? displayArrow = null,
     Object? arrowCount = null,
   }) {
-    return _then(_$_BattleBoardState(
+    return _then(_$_GameBoardState(
       boardStateList: null == boardStateList
           ? _value.boardStateList
           : boardStateList // ignore: cast_nullable_to_non_nullable
-              as BattleBoard,
+              as GameBoard,
       displayArrow: null == displayArrow
           ? _value.displayArrow
           : displayArrow // ignore: cast_nullable_to_non_nullable
@@ -126,14 +126,14 @@ class __$$_BattleBoardStateCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_BattleBoardState implements _BattleBoardState {
-  const _$_BattleBoardState(
+class _$_GameBoardState implements _GameBoardState {
+  const _$_GameBoardState(
       {required this.boardStateList,
       this.displayArrow = false,
       this.arrowCount = 0});
 
   @override
-  final BattleBoard boardStateList;
+  final GameBoard boardStateList;
   @override
   @JsonKey()
   final bool displayArrow;
@@ -143,14 +143,14 @@ class _$_BattleBoardState implements _BattleBoardState {
 
   @override
   String toString() {
-    return 'BattleBoardState(boardStateList: $boardStateList, displayArrow: $displayArrow, arrowCount: $arrowCount)';
+    return 'GameBoardState(boardStateList: $boardStateList, displayArrow: $displayArrow, arrowCount: $arrowCount)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_BattleBoardState &&
+            other is _$_GameBoardState &&
             (identical(other.boardStateList, boardStateList) ||
                 other.boardStateList == boardStateList) &&
             (identical(other.displayArrow, displayArrow) ||
@@ -166,24 +166,24 @@ class _$_BattleBoardState implements _BattleBoardState {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_BattleBoardStateCopyWith<_$_BattleBoardState> get copyWith =>
-      __$$_BattleBoardStateCopyWithImpl<_$_BattleBoardState>(this, _$identity);
+  _$$_GameBoardStateCopyWith<_$_GameBoardState> get copyWith =>
+      __$$_GameBoardStateCopyWithImpl<_$_GameBoardState>(this, _$identity);
 }
 
-abstract class _BattleBoardState implements BattleBoardState {
-  const factory _BattleBoardState(
-      {required final BattleBoard boardStateList,
+abstract class _GameBoardState implements GameBoardState {
+  const factory _GameBoardState(
+      {required final GameBoard boardStateList,
       final bool displayArrow,
-      final int arrowCount}) = _$_BattleBoardState;
+      final int arrowCount}) = _$_GameBoardState;
 
   @override
-  BattleBoard get boardStateList;
+  GameBoard get boardStateList;
   @override
   bool get displayArrow;
   @override
   int get arrowCount;
   @override
   @JsonKey(ignore: true)
-  _$$_BattleBoardStateCopyWith<_$_BattleBoardState> get copyWith =>
+  _$$_GameBoardStateCopyWith<_$_GameBoardState> get copyWith =>
       throw _privateConstructorUsedError;
 }

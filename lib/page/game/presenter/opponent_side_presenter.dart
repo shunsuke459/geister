@@ -1,4 +1,4 @@
-import 'package:geister/page/battle/presenter/opponent_side_state.dart';
+import 'package:geister/page/game/presenter/opponent_side_state.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class OpponentSidePresenter extends StateNotifier<OpponentSideState> {

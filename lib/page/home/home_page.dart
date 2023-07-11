@@ -36,6 +36,12 @@ class HomePage extends HookConsumerWidget {
               },
               child: const Text('delete'),
             ),
+            ElevatedButton(
+              onPressed: () async {
+                GamePageRoute().go(context);
+              },
+              child: const Text('move'),
+            ),
           ],
         ),
       ),

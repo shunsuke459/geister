@@ -4,19 +4,18 @@ import 'package:geister/constants.dart';
 import 'package:geister/entity/arrow_type_enum.dart';
 import 'package:geister/entity/piece_type_enum.dart';
 import 'package:geister/gen/assets.gen.dart';
-import 'package:geister/page/battle/presenter/battle_board_presenter.dart';
-import 'package:geister/page/battle/presenter/my_side_presenter.dart';
-import 'package:geister/page/battle/presenter/opponent_side_presenter.dart';
+import 'package:geister/page/game/presenter/game_board_presenter.dart';
+import 'package:geister/page/game/presenter/my_side_presenter.dart';
+import 'package:geister/page/game/presenter/opponent_side_presenter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class BattlePage extends HookConsumerWidget {
-  const BattlePage({super.key});
+class GamePage extends HookConsumerWidget {
+  const GamePage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final battleBoardState = ref.watch(battleBoardPresenterProvider);
-    final battleBoardPresenter =
-        ref.read(battleBoardPresenterProvider.notifier);
+    final gameBoardState = ref.watch(gameBoardPresenterProvider);
+    final gameBoardPresenter = ref.read(gameBoardPresenterProvider.notifier);
     final mySideState = ref.watch(mySidePresenterProvider);
     final mySidePresenter = ref.read(mySidePresenterProvider.notifier);
     final opponentSideState = ref.watch(opponentSidePresenterProvider);
@@ -98,7 +97,7 @@ class BattlePage extends HookConsumerWidget {
                 final column = index % 6;
                 final row = index ~/ 6;
                 final boardState =
-                    battleBoardState.boardStateList.battleBoard[row][column];
+                    gameBoardState.boardStateList.gameBoard[row][column];
                 final isTopCorner = index == 0 || index == 5;
                 final isBottomCorner = index == 30 || index == 35;
                 final piece = boardState.arrowIcon.isNotEmpty
@@ -119,17 +118,17 @@ class BattlePage extends HookConsumerWidget {
 
                 return GestureDetector(
                   onTap: () {
-                    if (!battleBoardState.displayArrow &&
+                    if (!gameBoardState.displayArrow &&
                         boardState.pieceType.isAllyPiece) {
-                      battleBoardPresenter.showArrow(row, column);
+                      gameBoardPresenter.showArrow(row, column);
                     } else if (boardState.arrowType.isArrow) {
                       if (boardState.pieceType.isEnemyPiece)
                         mySidePresenter.getOpponentSidePiece(
                             true); // TODO: 敵のコマが赤であるかどうかの変数を渡す
 
-                      battleBoardPresenter.movePiece(row, column);
+                      gameBoardPresenter.movePiece(row, column);
                     } else {
-                      battleBoardPresenter.hideArrow();
+                      gameBoardPresenter.hideArrow();
                     }
                   },
                   child: Container(
