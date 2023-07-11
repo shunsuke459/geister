@@ -17,7 +17,7 @@ class SplashPage extends ConsumerWidget {
       final bool needSignUp =
           await ref.watch(sharedPreferencesPresenterProvider).needSignUp();
       if (needSignUp) {
-        HomePageRoute().go(context);
+        SignUpPageRoute().go(context);
       } else {
         if (!context.mounted) return;
         HomePageRoute().go(context);

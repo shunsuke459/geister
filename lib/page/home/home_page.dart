@@ -1,27 +1,42 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:geister/page/presenter/shared_preferences_presenter.dart';
+import 'package:geister/router/route.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class HomePage extends HookWidget {
+class HomePage extends HookConsumerWidget {
   const HomePage({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final userName = useState('');
+
     return Scaffold(
       body: Center(
-        child: ElevatedButton(
-          onPressed: () async {
-            final prefs = await SharedPreferences.getInstance();
-            final t = prefs.getString('ddd');
-            print(t);
-            // final document = <String, dynamic>{
-            //   'name': 'test',
-            //   'age': 20,
-            // };
-            // FirebaseFirestore.instance.collection('user').doc().set(document);
-          },
-          child: const Text('Test Page'),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(userName.value),
+            ElevatedButton(
+              onPressed: () async {
+                final result = await ref
+                    .read(sharedPreferencesPresenterProvider)
+                    .getUserName();
+                userName.value = result;
+              },
+              child: const Text('get'),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                final isSuccess = await ref
+                    .read(sharedPreferencesPresenterProvider)
+                    .deleteUserName();
+
+                if (isSuccess) SignUpPageRoute().go(context);
+              },
+              child: const Text('delete'),
+            ),
+          ],
         ),
       ),
     );
