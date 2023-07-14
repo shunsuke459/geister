@@ -11,6 +11,7 @@ List<RouteBase> get $appRoutes => [
       $homePageRoute,
       $signUpPageRoute,
       $gamePageRoute,
+      $searchingPageRoute,
     ];
 
 RouteBase get $splashPageRoute => GoRouteData.$route(
@@ -89,6 +90,29 @@ extension $GamePageRouteExtension on GamePageRoute {
 
   String get location => GoRouteData.$location(
         '/game',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $searchingPageRoute => GoRouteData.$route(
+      path: '/searching',
+      factory: $SearchingPageRouteExtension._fromState,
+    );
+
+extension $SearchingPageRouteExtension on SearchingPageRoute {
+  static SearchingPageRoute _fromState(GoRouterState state) =>
+      SearchingPageRoute();
+
+  String get location => GoRouteData.$location(
+        '/searching',
       );
 
   void go(BuildContext context) => context.go(location);

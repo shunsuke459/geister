@@ -1,11 +1,16 @@
+import 'package:geister/gateway/game/game_gateway.dart';
 import 'package:geister/gateway/user/user_gateway.dart';
-import 'package:geister/page/home/presenter/user.dart';
+import 'package:geister/presenter/user/user.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class UserPresenter extends StateNotifier<AsyncValue<User>> {
   final UserGateway userGateway;
-  UserPresenter({required this.userGateway})
-      : super(const AsyncValue.loading());
+  final GameGateway gameGateway;
+
+  UserPresenter({
+    required this.userGateway,
+    required this.gameGateway,
+  }) : super(const AsyncValue.loading());
 
   Future<bool> createUser(String userName) async {
     state = const AsyncValue.loading();
@@ -32,11 +37,28 @@ class UserPresenter extends StateNotifier<AsyncValue<User>> {
       state = AsyncValue.error(error, stackTrace);
     }
   }
+
+  Future<bool> createKeyWord(String keyWord) async {
+    try {
+      final userId = state.value?.id;
+      if (userId == null) throw Exception('userId is null');
+
+      final isSuccess = await gameGateway.createKeyWord(
+        userId: userId,
+        keyWord: keyWord,
+      );
+
+      return isSuccess;
+    } catch (_, __) {
+      return false;
+    }
+  }
 }
 
 final userPresenterProvider =
     StateNotifierProvider<UserPresenter, AsyncValue<User>>(
   (ref) => UserPresenter(
     userGateway: ref.watch(userGatewayProvider),
+    gameGateway: ref.watch(gameGatewayProvider),
   ),
 );

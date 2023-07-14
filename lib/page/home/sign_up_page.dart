@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:geister/page/home/presenter/user_presenter.dart';
-import 'package:geister/page/presenter/shared_preferences_presenter.dart';
+import 'package:geister/presenter/shared_preferences/shared_preferences_presenter.dart';
+import 'package:geister/page/widget/custom_text_form_field.dart';
+import 'package:geister/presenter/user/user_presenter.dart';
 import 'package:geister/router/route.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -10,7 +11,6 @@ class SignUpPage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final controller = useTextEditingController();
     final inputValue = useState<String?>(null);
     final focusNode = useFocusNode();
     final isEmpty = inputValue.value != null && inputValue.value!.isEmpty;
@@ -30,30 +30,10 @@ class SignUpPage extends HookConsumerWidget {
               children: [
                 SizedBox(
                   width: 200,
-                  child: TextFormField(
-                    controller: controller,
-                    decoration: InputDecoration(
-                      hintText: 'ユーザー名',
-                      contentPadding:
-                          const EdgeInsets.symmetric(horizontal: 10),
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                          color: inputValue.value == null || canSend
-                              ? Colors.blueAccent
-                              : Colors.red,
-                        ),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                          color: inputValue.value == null || canSend
-                              ? Colors.blueAccent
-                              : Colors.red,
-                        ),
-                      ),
-                    ),
-                    onChanged: (value) {
-                      inputValue.value = value;
-                    },
+                  child: CustomTextFormField(
+                    hintText: 'ユーザー名',
+                    inputValue: inputValue,
+                    canSend: canSend,
                   ),
                 ),
                 const SizedBox(height: 16),
@@ -67,8 +47,9 @@ class SignUpPage extends HookConsumerWidget {
                 ),
                 const SizedBox(height: 16),
                 ElevatedButton(
+                  // TODO: ボタン押下後、インジケーターにする
                   onPressed: () async {
-                    final userName = controller.text;
+                    final userName = inputValue.value ?? '';
                     if (!canSend) return;
 
                     final createdSuccess = await ref

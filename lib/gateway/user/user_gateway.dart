@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:geister/gateway/firebase/firebase_firestore.dart';
 import 'package:geister/gateway/firebase/firebase_functions.dart';
-import 'package:geister/page/home/presenter/user.dart';
+import 'package:geister/presenter/user/user.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class UserGateway {

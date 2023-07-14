@@ -3,7 +3,7 @@ import 'package:geister/entity/game_board.dart';
 import 'package:geister/entity/piece_type_enum.dart';
 import 'package:geister/entity/square_state.dart';
 import 'package:geister/gen/assets.gen.dart';
-import 'package:geister/page/game/presenter/game_board_state.dart';
+import 'package:geister/presenter/game/game_board_state.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class GameBoardPresenter extends StateNotifier<GameBoardState> {

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:geister/page/game/game_page.dart';
 import 'package:geister/page/home/sign_up_page.dart';
+import 'package:geister/page/search/searching_page.dart';
 import 'package:geister/page/splash_page.dart';
 import 'package:geister/page/home/home_page.dart';
 import 'package:go_router/go_router.dart';
@@ -37,4 +38,13 @@ class SignUpPageRoute extends GoRouteData {
 class GamePageRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) => const GamePage();
+}
+
+@TypedGoRoute<SearchingPageRoute>(
+  path: '/searching',
+)
+class SearchingPageRoute extends GoRouteData {
+  @override
+  Widget build(BuildContext context, GoRouterState state) =>
+      const SearchingPage();
 }

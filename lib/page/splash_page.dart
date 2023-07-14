@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:geister/gen/assets.gen.dart';
-import 'package:geister/page/home/presenter/user_presenter.dart';
-import 'package:geister/page/presenter/shared_preferences_presenter.dart';
+import 'package:geister/presenter/shared_preferences/shared_preferences_presenter.dart';
+import 'package:geister/presenter/user/user_presenter.dart';
 import 'package:geister/router/route.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 

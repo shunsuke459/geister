@@ -4,9 +4,9 @@ import 'package:geister/constants.dart';
 import 'package:geister/entity/arrow_type_enum.dart';
 import 'package:geister/entity/piece_type_enum.dart';
 import 'package:geister/gen/assets.gen.dart';
-import 'package:geister/page/game/presenter/game_board_presenter.dart';
-import 'package:geister/page/game/presenter/my_side_presenter.dart';
-import 'package:geister/page/game/presenter/opponent_side_presenter.dart';
+import 'package:geister/presenter/game/game_board_presenter.dart';
+import 'package:geister/presenter/game/my_side_presenter.dart';
+import 'package:geister/presenter/game/opponent_side_presenter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class GamePage extends HookConsumerWidget {
