@@ -103,16 +103,18 @@ extension $GamePageRouteExtension on GamePageRoute {
 }
 
 RouteBase get $searchingPageRoute => GoRouteData.$route(
-      path: '/searching',
+      path: '/searching/:keyWord',
       factory: $SearchingPageRouteExtension._fromState,
     );
 
 extension $SearchingPageRouteExtension on SearchingPageRoute {
   static SearchingPageRoute _fromState(GoRouterState state) =>
-      SearchingPageRoute();
+      SearchingPageRoute(
+        state.pathParameters['keyWord']!,
+      );
 
   String get location => GoRouteData.$location(
-        '/searching',
+        '/searching/${Uri.encodeComponent(keyWord)}',
       );
 
   void go(BuildContext context) => context.go(location);

@@ -27,6 +27,17 @@ class GameGateway {
 
     return result.data as bool;
   }
+
+  Stream<List<String>> searchOpponent(String keyWord) {
+    return firebaseFirestore
+        .collection('key_words')
+        .doc(keyWord)
+        .snapshots()
+        .map((event) {
+      final userIdList = event.data()?['users'] as List<dynamic>;
+      return userIdList.map<String>((e) => e.toString()).toList();
+    });
+  }
 }
 
 final gameGatewayProvider = Provider<GameGateway>(

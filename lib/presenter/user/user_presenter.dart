@@ -37,22 +37,6 @@ class UserPresenter extends StateNotifier<AsyncValue<User>> {
       state = AsyncValue.error(error, stackTrace);
     }
   }
-
-  Future<bool> createKeyWord(String keyWord) async {
-    try {
-      final userId = state.value?.id;
-      if (userId == null) throw Exception('userId is null');
-
-      final isSuccess = await gameGateway.createKeyWord(
-        userId: userId,
-        keyWord: keyWord,
-      );
-
-      return isSuccess;
-    } catch (_, __) {
-      return false;
-    }
-  }
 }
 
 final userPresenterProvider =

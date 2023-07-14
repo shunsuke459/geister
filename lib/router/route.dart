@@ -41,10 +41,13 @@ class GamePageRoute extends GoRouteData {
 }
 
 @TypedGoRoute<SearchingPageRoute>(
-  path: '/searching',
+  path: '/searching/:keyWord',
 )
 class SearchingPageRoute extends GoRouteData {
+  final String keyWord;
+  const SearchingPageRoute(this.keyWord);
+
   @override
   Widget build(BuildContext context, GoRouterState state) =>
-      const SearchingPage();
+      SearchingPage(keyWord: keyWord);
 }
