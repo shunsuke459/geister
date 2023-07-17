@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:geister/entity/piece_type_enum.dart';
 import 'package:geister/gen/assets.gen.dart';
 import 'package:geister/presenter/game/game_board_presenter.dart';
+import 'package:geister/presenter/user/user_presenter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -210,11 +211,12 @@ class InitialArrangementDialog extends HookConsumerWidget {
               onPressed: () {
                 if (redPieceNum.value > 0 || bluePieceNum.value > 0) return;
 
+                final userId = ref.watch(userPresenterProvider).value?.id;
+                if (userId == null) return;
+
                 ref
                     .read(gameBoardPresenterProvider.notifier)
-                    .settleInitialBoard();
-
-                // TODO: 初期配置のデータを保存する
+                    .settleInitialBoard(userId);
 
                 context.pop();
               },

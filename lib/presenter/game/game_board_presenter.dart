@@ -2,12 +2,14 @@ import 'package:geister/entity/arrow_type_enum.dart';
 import 'package:geister/entity/game_board.dart';
 import 'package:geister/entity/piece_type_enum.dart';
 import 'package:geister/entity/square_state.dart';
+import 'package:geister/gateway/game/game_gateway.dart';
 import 'package:geister/gen/assets.gen.dart';
 import 'package:geister/presenter/game/game_board_state.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class GameBoardPresenter extends StateNotifier<GameBoardState> {
-  GameBoardPresenter()
+  final GameGateway gameGateway;
+  GameBoardPresenter({required this.gameGateway})
       : super(
           GameBoardState(initialArrangement: _initialArrangement()),
         );
@@ -30,7 +32,7 @@ class GameBoardPresenter extends StateNotifier<GameBoardState> {
     );
   }
 
-  void settleInitialBoard() {
+  Future<void> settleInitialBoard(String userId) async {
     final gameBoard = List.generate(
       6,
       (row) => List.generate(
@@ -71,6 +73,8 @@ class GameBoardPresenter extends StateNotifier<GameBoardState> {
     state = state.copyWith(
       boardStateList: GameBoard(gameBoard: gameBoard),
     );
+
+    await gameGateway.setInitialBoard(userId, state.boardStateList!.gameBoard);
   }
 
   void movePiece(int arrowRow, int arrowColumn) {
@@ -224,5 +228,7 @@ class GameBoardPresenter extends StateNotifier<GameBoardState> {
 
 final gameBoardPresenterProvider =
     StateNotifierProvider<GameBoardPresenter, GameBoardState>((ref) {
-  return GameBoardPresenter();
+  return GameBoardPresenter(
+    gameGateway: ref.watch(gameGatewayProvider),
+  );
 });

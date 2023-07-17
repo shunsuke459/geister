@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloud_functions/cloud_functions.dart';
+import 'package:geister/entity/square_state.dart';
 import 'package:geister/gateway/firebase/firebase_firestore.dart';
 import 'package:geister/gateway/firebase/firebase_functions.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -23,6 +24,21 @@ class GameGateway {
     final result = await callable.call(<String, dynamic>{
       'userId': userId,
       'keyWord': keyWord,
+    });
+
+    return result.data as bool;
+  }
+
+  Future<bool> setInitialBoard(
+    String userId,
+    List<List<SquareState>> gameBoard,
+  ) async {
+    final callable = firebaseFunctions.httpsCallable('setInitialBoard');
+    final result = await callable.call(<String, dynamic>{
+      'userId': userId,
+      'boardState': gameBoard
+          .map((event) => event.map((e) => e.pieceType.name).toList())
+          .toList(),
     });
 
     return result.data as bool;
