@@ -7,8 +7,8 @@ import 'package:geister/presenter/game/game_board_presenter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class InitialPlacementDialog extends HookConsumerWidget {
-  const InitialPlacementDialog({Key? key}) : super(key: key);
+class InitialArrangementDialog extends HookConsumerWidget {
+  const InitialArrangementDialog({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -16,8 +16,8 @@ class InitialPlacementDialog extends HookConsumerWidget {
     final redPieceNum = useState<int>(4);
     final bluePieceNum = useState<int>(4);
     final redSelected = useState<bool>(true);
-    final initialPlacement =
-        ref.watch(gameBoardPresenterProvider).initialPlacement;
+    final initialArrangement =
+        ref.watch(gameBoardPresenterProvider).initialArrangement;
 
     return AlertDialog(
       insetPadding: const EdgeInsets.symmetric(horizontal: 16),
@@ -86,7 +86,7 @@ class InitialPlacementDialog extends HookConsumerWidget {
 
                 return GestureDetector(
                   onTap: () {
-                    if (initialPlacement[row][column] != PieceTypeEnum.empty)
+                    if (initialArrangement[row][column] != PieceTypeEnum.empty)
                       return;
                     if (redSelected.value && redPieceNum.value == 0) return;
                     if (!redSelected.value && bluePieceNum.value == 0) return;
@@ -108,12 +108,12 @@ class InitialPlacementDialog extends HookConsumerWidget {
                     }
                   },
                   onDoubleTap: () {
-                    if (initialPlacement[row][column] == PieceTypeEnum.empty)
+                    if (initialArrangement[row][column] == PieceTypeEnum.empty)
                       return;
 
-                    if (initialPlacement[row][column] ==
+                    if (initialArrangement[row][column] ==
                         PieceTypeEnum.redGeister) redPieceNum.value++;
-                    if (initialPlacement[row][column] ==
+                    if (initialArrangement[row][column] ==
                         PieceTypeEnum.blueGeister) bluePieceNum.value++;
 
                     ref
@@ -146,13 +146,13 @@ class InitialPlacementDialog extends HookConsumerWidget {
                       ),
                     ),
                     child: Center(
-                      child: initialPlacement[row][column] ==
+                      child: initialArrangement[row][column] ==
                               PieceTypeEnum.redGeister
                           ? SvgPicture.asset(
                               Assets.icons.allyRedIcon,
                               width: 30,
                             )
-                          : initialPlacement[row][column] ==
+                          : initialArrangement[row][column] ==
                                   PieceTypeEnum.blueGeister
                               ? SvgPicture.asset(
                                   Assets.icons.allyBlueIcon,
@@ -212,7 +212,9 @@ class InitialPlacementDialog extends HookConsumerWidget {
 
                 ref
                     .read(gameBoardPresenterProvider.notifier)
-                    .settleInitialPlacement();
+                    .settleInitialBoard();
+
+                // TODO: 初期配置のデータを保存する
 
                 context.pop();
               },

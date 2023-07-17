@@ -7,7 +7,7 @@ part 'game_board_state.freezed.dart';
 @freezed
 class GameBoardState with _$GameBoardState {
   const factory GameBoardState({
-    required List<List<PieceTypeEnum>> initialPlacement,
+    required List<List<PieceTypeEnum>> initialArrangement,
     GameBoard? boardStateList,
     @Default(false) bool displayArrow,
     @Default(0) int arrowCount,

@@ -6,7 +6,7 @@ import 'package:geister/entity/arrow_type_enum.dart';
 import 'package:geister/entity/piece_type_enum.dart';
 import 'package:geister/entity/square_state.dart';
 import 'package:geister/gen/assets.gen.dart';
-import 'package:geister/page/game/initial_placement_dialog.dart';
+import 'package:geister/page/game/initial_arrangement_dialog.dart';
 import 'package:geister/presenter/game/game_board_presenter.dart';
 import 'package:geister/presenter/game/my_side_presenter.dart';
 import 'package:geister/presenter/game/opponent_side_presenter.dart';
@@ -30,7 +30,7 @@ class GamePage extends HookConsumerWidget {
         showDialog(
           barrierDismissible: false,
           context: context,
-          builder: (context) => InitialPlacementDialog(),
+          builder: (context) => const InitialArrangementDialog(),
         );
       });
 

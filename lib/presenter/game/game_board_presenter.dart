@@ -9,28 +9,28 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 class GameBoardPresenter extends StateNotifier<GameBoardState> {
   GameBoardPresenter()
       : super(
-          GameBoardState(initialPlacement: _initialPlacement()),
+          GameBoardState(initialArrangement: _initialArrangement()),
         );
 
-  static List<List<PieceTypeEnum>> _initialPlacement() {
+  static List<List<PieceTypeEnum>> _initialArrangement() {
     return List.generate(
         2, (index) => List.generate(4, (i) => PieceTypeEnum.empty));
   }
 
   void setPiece(int row, int column, PieceTypeEnum type) {
     state = state.copyWith(
-      initialPlacement: state.initialPlacement..[row][column] = type,
+      initialArrangement: state.initialArrangement..[row][column] = type,
     );
   }
 
   void removePiece(int row, int column) {
     state = state.copyWith(
-      initialPlacement: state.initialPlacement
+      initialArrangement: state.initialArrangement
         ..[row][column] = PieceTypeEnum.empty,
     );
   }
 
-  void settleInitialPlacement() {
+  void settleInitialBoard() {
     final gameBoard = List.generate(
       6,
       (row) => List.generate(
@@ -51,7 +51,7 @@ class GameBoardPresenter extends StateNotifier<GameBoardState> {
               row: row,
               column: column,
               pieceType:
-                  state.initialPlacement[initialRow][initialColumn].isRedPiece
+                  state.initialArrangement[initialRow][initialColumn].isRedPiece
                       ? PieceTypeEnum.redGeister
                       : PieceTypeEnum.blueGeister,
               arrowType: ArrowTypeEnum.none,
