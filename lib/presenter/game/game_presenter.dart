@@ -19,7 +19,11 @@ class GamePresenter extends StateNotifier<AsyncValue<GameState>> {
       );
 
       state = AsyncValue.data(
-        GameState(isMatched: false, myId: userId),
+        GameState(
+          isMatched: false,
+          myId: userId,
+          isSearching: false,
+        ),
       );
 
       return isSuccess;
@@ -30,6 +34,8 @@ class GamePresenter extends StateNotifier<AsyncValue<GameState>> {
 
   void searchOpponent(String keyWord) {
     if (state.value == null) return;
+
+    state = AsyncValue.data(state.value!.copyWith(isSearching: true));
 
     _subscription = gameGateway.searchOpponent(keyWord).listen((event) {
       if (event.length == 2) {

@@ -33,6 +33,7 @@ class GamePage extends HookConsumerWidget {
           builder: (context) => InitialPlacementDialog(),
         );
       });
+
       return () {};
     }, []);
 
