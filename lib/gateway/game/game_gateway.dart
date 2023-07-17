@@ -31,11 +31,13 @@ class GameGateway {
 
   Future<bool> setInitialBoard(
     String userId,
+    String keyWord,
     List<List<SquareState>> gameBoard,
   ) async {
     final callable = firebaseFunctions.httpsCallable('setInitialBoard');
     final result = await callable.call(<String, dynamic>{
       'userId': userId,
+      'keyWord': keyWord,
       'boardState': gameBoard
           .map((event) => event.map((e) => e.pieceType.name).toList())
           .toList(),
@@ -44,14 +46,17 @@ class GameGateway {
     return result.data as bool;
   }
 
-  Stream<List<String>> searchOpponent(String keyWord) {
+  Stream<(int readyNum, List<String> userIdList)> searchOpponent(
+      String keyWord) {
     return firebaseFirestore
         .collection('key_words')
         .doc(keyWord)
         .snapshots()
         .map((event) {
+      final readyNum = event.data()?['ready_num'] as int;
       final userIdList = event.data()?['users'] as List<dynamic>;
-      return userIdList.map<String>((e) => e.toString()).toList();
+
+      return (readyNum, userIdList.map<String>((e) => e.toString()).toList());
     });
   }
 }

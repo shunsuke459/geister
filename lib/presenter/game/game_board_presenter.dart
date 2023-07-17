@@ -32,7 +32,7 @@ class GameBoardPresenter extends StateNotifier<GameBoardState> {
     );
   }
 
-  Future<void> settleInitialBoard(String userId) async {
+  Future<void> settleInitialBoard(String userId, String keyWord) async {
     final gameBoard = List.generate(
       6,
       (row) => List.generate(
@@ -74,7 +74,8 @@ class GameBoardPresenter extends StateNotifier<GameBoardState> {
       boardStateList: GameBoard(gameBoard: gameBoard),
     );
 
-    await gameGateway.setInitialBoard(userId, state.boardStateList!.gameBoard);
+    await gameGateway.setInitialBoard(
+        userId, keyWord, state.boardStateList!.gameBoard);
   }
 
   void movePiece(int arrowRow, int arrowColumn) {

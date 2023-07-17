@@ -8,6 +8,7 @@ import 'package:geister/entity/square_state.dart';
 import 'package:geister/gen/assets.gen.dart';
 import 'package:geister/page/game/initial_arrangement_dialog.dart';
 import 'package:geister/presenter/game/game_board_presenter.dart';
+import 'package:geister/presenter/game/game_presenter.dart';
 import 'package:geister/presenter/game/my_side_presenter.dart';
 import 'package:geister/presenter/game/opponent_side_presenter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -37,205 +38,229 @@ class GamePage extends HookConsumerWidget {
       return () {};
     }, []);
 
+    final gameState = ref.watch(gamePresenterProvider);
+
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(right: 16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  const Text(
-                    '獲られたガイスター',
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Color(0xFF333333),
-                    ),
-                  ),
-                  const SizedBox(height: 4),
-                  Padding(
-                    padding: const EdgeInsets.only(right: 16),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
+      body: Stack(
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(right: 16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      const Text(
+                        '獲られたガイスター',
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Color(0xFF333333),
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Padding(
+                        padding: const EdgeInsets.only(right: 16),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
-                            SvgPicture.asset(
-                              Assets.icons.allyRedIcon,
-                              width: 30,
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                SvgPicture.asset(
+                                  Assets.icons.allyRedIcon,
+                                  width: 30,
+                                ),
+                                const SizedBox(width: 16),
+                                Text(
+                                  opponentSideState.enemyRedPieceCount
+                                      .toString(),
+                                  style: const TextStyle(
+                                    fontSize: 24,
+                                    color: Color(0xffdf5656),
+                                  ),
+                                ),
+                              ],
                             ),
-                            const SizedBox(width: 16),
-                            Text(
-                              opponentSideState.enemyRedPieceCount.toString(),
-                              style: const TextStyle(
-                                fontSize: 24,
-                                color: Color(0xffdf5656),
-                              ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                SvgPicture.asset(
+                                  Assets.icons.allyBlueIcon,
+                                  width: 30,
+                                ),
+                                const SizedBox(width: 16),
+                                Text(
+                                  opponentSideState.enemyBluePieceCount
+                                      .toString(),
+                                  style: const TextStyle(
+                                    fontSize: 24,
+                                    color: Color(0xff3aabd2),
+                                  ),
+                                ),
+                              ],
                             ),
                           ],
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            SvgPicture.asset(
-                              Assets.icons.allyBlueIcon,
-                              width: 30,
-                            ),
-                            const SizedBox(width: 16),
-                            Text(
-                              opponentSideState.enemyBluePieceCount.toString(),
-                              style: const TextStyle(
-                                fontSize: 24,
-                                color: Color(0xff3aabd2),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
-            ),
-            if (gameBoardState.boardStateList?.gameBoard != null)
-              GridView.builder(
-                shrinkWrap: true,
-                itemCount: 6 * 6,
-                physics: const NeverScrollableScrollPhysics(),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 6,
                 ),
-                itemBuilder: (context, index) {
-                  final column = index % 6;
-                  final row = index ~/ 6;
-                  final boardState =
-                      gameBoardState.boardStateList!.gameBoard[row][column];
-                  final isTopCorner = index == 0 || index == 5;
-                  final isBottomCorner = index == 30 || index == 35;
-                  final piece = boardState.arrowIcon.isNotEmpty
-                      ? SvgPicture.asset(
-                          boardState.arrowIcon,
-                          width: 42,
-                        )
-                      : boardState.pieceIcon.isNotEmpty
+                if (gameBoardState.boardStateList?.gameBoard != null)
+                  GridView.builder(
+                    shrinkWrap: true,
+                    itemCount: 6 * 6,
+                    physics: const NeverScrollableScrollPhysics(),
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 6,
+                    ),
+                    itemBuilder: (context, index) {
+                      final column = index % 6;
+                      final row = index ~/ 6;
+                      final boardState =
+                          gameBoardState.boardStateList!.gameBoard[row][column];
+                      final isTopCorner = index == 0 || index == 5;
+                      final isBottomCorner = index == 30 || index == 35;
+                      final piece = boardState.arrowIcon.isNotEmpty
                           ? SvgPicture.asset(
-                              boardState.pieceIcon,
+                              boardState.arrowIcon,
                               width: 42,
                             )
-                          : isTopCorner
-                              ? Constants.arrowTop
-                              : isBottomCorner
-                                  ? Constants.arrowDown
-                                  : Container();
+                          : boardState.pieceIcon.isNotEmpty
+                              ? SvgPicture.asset(
+                                  boardState.pieceIcon,
+                                  width: 42,
+                                )
+                              : isTopCorner
+                                  ? Constants.arrowTop
+                                  : isBottomCorner
+                                      ? Constants.arrowDown
+                                      : Container();
 
-                  return GestureDetector(
-                    onTap: () {
-                      if (!gameBoardState.displayArrow &&
-                          boardState.pieceType.isAllyPiece) {
-                        gameBoardPresenter.showArrow(row, column);
-                      } else if (boardState.arrowType.isArrow) {
-                        if (boardState.pieceType.isEnemyPiece)
-                          mySidePresenter.getOpponentSidePiece(
-                              true); // TODO: 敵のコマが赤であるかどうかの変数を渡す
+                      return GestureDetector(
+                        onTap: () {
+                          if (!gameBoardState.displayArrow &&
+                              boardState.pieceType.isAllyPiece) {
+                            gameBoardPresenter.showArrow(row, column);
+                          } else if (boardState.arrowType.isArrow) {
+                            if (boardState.pieceType.isEnemyPiece)
+                              mySidePresenter.getOpponentSidePiece(
+                                  true); // TODO: 敵のコマが赤であるかどうかの変数を渡す
 
-                        gameBoardPresenter.movePiece(row, column);
-                      } else {
-                        gameBoardPresenter.hideArrow();
-                      }
+                            gameBoardPresenter.movePiece(row, column);
+                          } else {
+                            gameBoardPresenter.hideArrow();
+                          }
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            border: Border(
+                              right: const BorderSide(
+                                color: Colors.black,
+                                width: 1.0,
+                              ),
+                              bottom: const BorderSide(
+                                color: Colors.black,
+                                width: 1.0,
+                              ),
+                              top: index >= 0 && index <= 5
+                                  ? const BorderSide(
+                                      color: Colors.black,
+                                      width: 1.0,
+                                    )
+                                  : BorderSide.none,
+                              left: index % 6 == 0
+                                  ? const BorderSide(
+                                      color: Colors.black,
+                                      width: 1.0,
+                                    )
+                                  : BorderSide.none,
+                            ),
+                          ),
+                          child: Center(
+                            child: piece,
+                          ),
+                        ),
+                      );
                     },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        border: Border(
-                          right: const BorderSide(
-                            color: Colors.black,
-                            width: 1.0,
-                          ),
-                          bottom: const BorderSide(
-                            color: Colors.black,
-                            width: 1.0,
-                          ),
-                          top: index >= 0 && index <= 5
-                              ? const BorderSide(
-                                  color: Colors.black,
-                                  width: 1.0,
-                                )
-                              : BorderSide.none,
-                          left: index % 6 == 0
-                              ? const BorderSide(
-                                  color: Colors.black,
-                                  width: 1.0,
-                                )
-                              : BorderSide.none,
+                  ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        '獲ったガイスター',
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Color(0xFF333333),
                         ),
                       ),
-                      child: Center(
-                        child: piece,
-                      ),
-                    ),
-                  );
-                },
-              ),
-            Padding(
-              padding: const EdgeInsets.only(left: 16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    '獲ったガイスター',
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Color(0xFF333333),
-                    ),
-                  ),
-                  const SizedBox(height: 4),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 16),
-                    child: Column(
-                      children: [
-                        Row(
+                      const SizedBox(height: 4),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 16),
+                        child: Column(
                           children: [
-                            SvgPicture.asset(
-                              Assets.icons.allyRedIcon,
-                              width: 30,
+                            Row(
+                              children: [
+                                SvgPicture.asset(
+                                  Assets.icons.allyRedIcon,
+                                  width: 30,
+                                ),
+                                const SizedBox(width: 16),
+                                Text(
+                                  mySideState.enemyRedPieceCount.toString(),
+                                  style: const TextStyle(
+                                    fontSize: 24,
+                                    color: Color(0xffdf5656),
+                                  ),
+                                ),
+                              ],
                             ),
-                            const SizedBox(width: 16),
-                            Text(
-                              mySideState.enemyRedPieceCount.toString(),
-                              style: const TextStyle(
-                                fontSize: 24,
-                                color: Color(0xffdf5656),
-                              ),
+                            Row(
+                              children: [
+                                SvgPicture.asset(
+                                  Assets.icons.allyBlueIcon,
+                                  width: 30,
+                                ),
+                                const SizedBox(width: 16),
+                                Text(
+                                  mySideState.enemyBluePieceCount.toString(),
+                                  style: const TextStyle(
+                                    fontSize: 24,
+                                    color: Color(0xff3aabd2),
+                                  ),
+                                ),
+                              ],
                             ),
                           ],
                         ),
-                        Row(
-                          children: [
-                            SvgPicture.asset(
-                              Assets.icons.allyBlueIcon,
-                              width: 30,
-                            ),
-                            const SizedBox(width: 16),
-                            Text(
-                              mySideState.enemyBluePieceCount.toString(),
-                              style: const TextStyle(
-                                fontSize: 24,
-                                color: Color(0xff3aabd2),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                ],
+                ),
+              ],
+            ),
+          ),
+          if ((gameState.value?.readyNum ?? 0) < 2) ...[
+            Container(
+              width: double.infinity,
+              height: double.infinity,
+              color: Colors.black.withOpacity(0.5),
+            ),
+            const Center(
+              child: Text(
+                '対戦相手が初期配置を設定中です',
+                style: TextStyle(
+                  color: Colors.white,
+                ),
               ),
             ),
           ],
-        ),
+        ],
       ),
     );
   }

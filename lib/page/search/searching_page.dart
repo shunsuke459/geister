@@ -18,7 +18,7 @@ class SearchingPage extends HookConsumerWidget {
         if (!(asyncGameState.value?.isMatched ?? false)) return;
 
         await Future.delayed(const Duration(seconds: 3));
-        GamePageRoute().push(context);
+        GamePageRoute().go(context);
       });
 
       return () {};
