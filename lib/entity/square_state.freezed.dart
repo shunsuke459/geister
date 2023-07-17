@@ -18,7 +18,6 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$SquareState {
   int get row => throw _privateConstructorUsedError;
   int get column => throw _privateConstructorUsedError;
-  String get pieceIcon => throw _privateConstructorUsedError;
   PieceTypeEnum get pieceType => throw _privateConstructorUsedError;
   String get arrowIcon => throw _privateConstructorUsedError;
   ArrowTypeEnum get arrowType => throw _privateConstructorUsedError;
@@ -37,7 +36,6 @@ abstract class $SquareStateCopyWith<$Res> {
   $Res call(
       {int row,
       int column,
-      String pieceIcon,
       PieceTypeEnum pieceType,
       String arrowIcon,
       ArrowTypeEnum arrowType});
@@ -58,7 +56,6 @@ class _$SquareStateCopyWithImpl<$Res, $Val extends SquareState>
   $Res call({
     Object? row = null,
     Object? column = null,
-    Object? pieceIcon = null,
     Object? pieceType = null,
     Object? arrowIcon = null,
     Object? arrowType = null,
@@ -72,10 +69,6 @@ class _$SquareStateCopyWithImpl<$Res, $Val extends SquareState>
           ? _value.column
           : column // ignore: cast_nullable_to_non_nullable
               as int,
-      pieceIcon: null == pieceIcon
-          ? _value.pieceIcon
-          : pieceIcon // ignore: cast_nullable_to_non_nullable
-              as String,
       pieceType: null == pieceType
           ? _value.pieceType
           : pieceType // ignore: cast_nullable_to_non_nullable
@@ -103,7 +96,6 @@ abstract class _$$_SquareStateCopyWith<$Res>
   $Res call(
       {int row,
       int column,
-      String pieceIcon,
       PieceTypeEnum pieceType,
       String arrowIcon,
       ArrowTypeEnum arrowType});
@@ -122,7 +114,6 @@ class __$$_SquareStateCopyWithImpl<$Res>
   $Res call({
     Object? row = null,
     Object? column = null,
-    Object? pieceIcon = null,
     Object? pieceType = null,
     Object? arrowIcon = null,
     Object? arrowType = null,
@@ -136,10 +127,6 @@ class __$$_SquareStateCopyWithImpl<$Res>
           ? _value.column
           : column // ignore: cast_nullable_to_non_nullable
               as int,
-      pieceIcon: null == pieceIcon
-          ? _value.pieceIcon
-          : pieceIcon // ignore: cast_nullable_to_non_nullable
-              as String,
       pieceType: null == pieceType
           ? _value.pieceType
           : pieceType // ignore: cast_nullable_to_non_nullable
@@ -162,7 +149,6 @@ class _$_SquareState implements _SquareState {
   const _$_SquareState(
       {required this.row,
       required this.column,
-      required this.pieceIcon,
       required this.pieceType,
       this.arrowIcon = '',
       required this.arrowType});
@@ -171,8 +157,6 @@ class _$_SquareState implements _SquareState {
   final int row;
   @override
   final int column;
-  @override
-  final String pieceIcon;
   @override
   final PieceTypeEnum pieceType;
   @override
@@ -183,7 +167,7 @@ class _$_SquareState implements _SquareState {
 
   @override
   String toString() {
-    return 'SquareState(row: $row, column: $column, pieceIcon: $pieceIcon, pieceType: $pieceType, arrowIcon: $arrowIcon, arrowType: $arrowType)';
+    return 'SquareState(row: $row, column: $column, pieceType: $pieceType, arrowIcon: $arrowIcon, arrowType: $arrowType)';
   }
 
   @override
@@ -193,8 +177,6 @@ class _$_SquareState implements _SquareState {
             other is _$_SquareState &&
             (identical(other.row, row) || other.row == row) &&
             (identical(other.column, column) || other.column == column) &&
-            (identical(other.pieceIcon, pieceIcon) ||
-                other.pieceIcon == pieceIcon) &&
             (identical(other.pieceType, pieceType) ||
                 other.pieceType == pieceType) &&
             (identical(other.arrowIcon, arrowIcon) ||
@@ -204,8 +186,8 @@ class _$_SquareState implements _SquareState {
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType, row, column, pieceIcon, pieceType, arrowIcon, arrowType);
+  int get hashCode =>
+      Object.hash(runtimeType, row, column, pieceType, arrowIcon, arrowType);
 
   @JsonKey(ignore: true)
   @override
@@ -218,7 +200,6 @@ abstract class _SquareState implements SquareState {
   const factory _SquareState(
       {required final int row,
       required final int column,
-      required final String pieceIcon,
       required final PieceTypeEnum pieceType,
       final String arrowIcon,
       required final ArrowTypeEnum arrowType}) = _$_SquareState;
@@ -227,8 +208,6 @@ abstract class _SquareState implements SquareState {
   int get row;
   @override
   int get column;
-  @override
-  String get pieceIcon;
   @override
   PieceTypeEnum get pieceType;
   @override

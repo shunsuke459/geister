@@ -16,7 +16,9 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$GameBoardState {
-  GameBoard get boardStateList => throw _privateConstructorUsedError;
+  List<List<PieceTypeEnum>> get initialPlacement =>
+      throw _privateConstructorUsedError;
+  GameBoard? get boardStateList => throw _privateConstructorUsedError;
   bool get displayArrow => throw _privateConstructorUsedError;
   int get arrowCount => throw _privateConstructorUsedError;
 
@@ -31,9 +33,13 @@ abstract class $GameBoardStateCopyWith<$Res> {
           GameBoardState value, $Res Function(GameBoardState) then) =
       _$GameBoardStateCopyWithImpl<$Res, GameBoardState>;
   @useResult
-  $Res call({GameBoard boardStateList, bool displayArrow, int arrowCount});
+  $Res call(
+      {List<List<PieceTypeEnum>> initialPlacement,
+      GameBoard? boardStateList,
+      bool displayArrow,
+      int arrowCount});
 
-  $GameBoardCopyWith<$Res> get boardStateList;
+  $GameBoardCopyWith<$Res>? get boardStateList;
 }
 
 /// @nodoc
@@ -49,15 +55,20 @@ class _$GameBoardStateCopyWithImpl<$Res, $Val extends GameBoardState>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? boardStateList = null,
+    Object? initialPlacement = null,
+    Object? boardStateList = freezed,
     Object? displayArrow = null,
     Object? arrowCount = null,
   }) {
     return _then(_value.copyWith(
-      boardStateList: null == boardStateList
+      initialPlacement: null == initialPlacement
+          ? _value.initialPlacement
+          : initialPlacement // ignore: cast_nullable_to_non_nullable
+              as List<List<PieceTypeEnum>>,
+      boardStateList: freezed == boardStateList
           ? _value.boardStateList
           : boardStateList // ignore: cast_nullable_to_non_nullable
-              as GameBoard,
+              as GameBoard?,
       displayArrow: null == displayArrow
           ? _value.displayArrow
           : displayArrow // ignore: cast_nullable_to_non_nullable
@@ -71,8 +82,12 @@ class _$GameBoardStateCopyWithImpl<$Res, $Val extends GameBoardState>
 
   @override
   @pragma('vm:prefer-inline')
-  $GameBoardCopyWith<$Res> get boardStateList {
-    return $GameBoardCopyWith<$Res>(_value.boardStateList, (value) {
+  $GameBoardCopyWith<$Res>? get boardStateList {
+    if (_value.boardStateList == null) {
+      return null;
+    }
+
+    return $GameBoardCopyWith<$Res>(_value.boardStateList!, (value) {
       return _then(_value.copyWith(boardStateList: value) as $Val);
     });
   }
@@ -86,10 +101,14 @@ abstract class _$$_GameBoardStateCopyWith<$Res>
       __$$_GameBoardStateCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({GameBoard boardStateList, bool displayArrow, int arrowCount});
+  $Res call(
+      {List<List<PieceTypeEnum>> initialPlacement,
+      GameBoard? boardStateList,
+      bool displayArrow,
+      int arrowCount});
 
   @override
-  $GameBoardCopyWith<$Res> get boardStateList;
+  $GameBoardCopyWith<$Res>? get boardStateList;
 }
 
 /// @nodoc
@@ -103,15 +122,20 @@ class __$$_GameBoardStateCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? boardStateList = null,
+    Object? initialPlacement = null,
+    Object? boardStateList = freezed,
     Object? displayArrow = null,
     Object? arrowCount = null,
   }) {
     return _then(_$_GameBoardState(
-      boardStateList: null == boardStateList
+      initialPlacement: null == initialPlacement
+          ? _value._initialPlacement
+          : initialPlacement // ignore: cast_nullable_to_non_nullable
+              as List<List<PieceTypeEnum>>,
+      boardStateList: freezed == boardStateList
           ? _value.boardStateList
           : boardStateList // ignore: cast_nullable_to_non_nullable
-              as GameBoard,
+              as GameBoard?,
       displayArrow: null == displayArrow
           ? _value.displayArrow
           : displayArrow // ignore: cast_nullable_to_non_nullable
@@ -128,12 +152,23 @@ class __$$_GameBoardStateCopyWithImpl<$Res>
 
 class _$_GameBoardState implements _GameBoardState {
   const _$_GameBoardState(
-      {required this.boardStateList,
+      {required final List<List<PieceTypeEnum>> initialPlacement,
+      this.boardStateList,
       this.displayArrow = false,
-      this.arrowCount = 0});
+      this.arrowCount = 0})
+      : _initialPlacement = initialPlacement;
+
+  final List<List<PieceTypeEnum>> _initialPlacement;
+  @override
+  List<List<PieceTypeEnum>> get initialPlacement {
+    if (_initialPlacement is EqualUnmodifiableListView)
+      return _initialPlacement;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_initialPlacement);
+  }
 
   @override
-  final GameBoard boardStateList;
+  final GameBoard? boardStateList;
   @override
   @JsonKey()
   final bool displayArrow;
@@ -143,7 +178,7 @@ class _$_GameBoardState implements _GameBoardState {
 
   @override
   String toString() {
-    return 'GameBoardState(boardStateList: $boardStateList, displayArrow: $displayArrow, arrowCount: $arrowCount)';
+    return 'GameBoardState(initialPlacement: $initialPlacement, boardStateList: $boardStateList, displayArrow: $displayArrow, arrowCount: $arrowCount)';
   }
 
   @override
@@ -151,6 +186,8 @@ class _$_GameBoardState implements _GameBoardState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_GameBoardState &&
+            const DeepCollectionEquality()
+                .equals(other._initialPlacement, _initialPlacement) &&
             (identical(other.boardStateList, boardStateList) ||
                 other.boardStateList == boardStateList) &&
             (identical(other.displayArrow, displayArrow) ||
@@ -160,8 +197,12 @@ class _$_GameBoardState implements _GameBoardState {
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, boardStateList, displayArrow, arrowCount);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(_initialPlacement),
+      boardStateList,
+      displayArrow,
+      arrowCount);
 
   @JsonKey(ignore: true)
   @override
@@ -172,12 +213,15 @@ class _$_GameBoardState implements _GameBoardState {
 
 abstract class _GameBoardState implements GameBoardState {
   const factory _GameBoardState(
-      {required final GameBoard boardStateList,
+      {required final List<List<PieceTypeEnum>> initialPlacement,
+      final GameBoard? boardStateList,
       final bool displayArrow,
       final int arrowCount}) = _$_GameBoardState;
 
   @override
-  GameBoard get boardStateList;
+  List<List<PieceTypeEnum>> get initialPlacement;
+  @override
+  GameBoard? get boardStateList;
   @override
   bool get displayArrow;
   @override

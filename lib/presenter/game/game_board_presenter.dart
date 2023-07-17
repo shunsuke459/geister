@@ -8,49 +8,76 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class GameBoardPresenter extends StateNotifier<GameBoardState> {
   GameBoardPresenter()
-      : super(GameBoardState(boardStateList: _generateBoard()));
+      : super(
+          GameBoardState(initialPlacement: _initialPlacement()),
+        );
 
-  static GameBoard _generateBoard() {
+  static List<List<PieceTypeEnum>> _initialPlacement() {
+    return List.generate(
+        2, (index) => List.generate(4, (i) => PieceTypeEnum.empty));
+  }
+
+  void setPiece(int row, int column, PieceTypeEnum type) {
+    state = state.copyWith(
+      initialPlacement: state.initialPlacement..[row][column] = type,
+    );
+  }
+
+  void removePiece(int row, int column) {
+    state = state.copyWith(
+      initialPlacement: state.initialPlacement
+        ..[row][column] = PieceTypeEnum.empty,
+    );
+  }
+
+  void settleInitialPlacement() {
     final gameBoard = List.generate(
       6,
       (row) => List.generate(
         6,
         (column) {
-          final hasRedPiece = row == 4 && column >= 1 && column <= 4;
-          final hasBluePiece = row == 5 && column >= 1 && column <= 4;
-          final hasEnemyPiece =
-              row >= 0 && row <= 1 && column >= 1 && column <= 4;
-          final pieceIcon = hasRedPiece
-              ? Assets.icons.allyRedIcon
-              : hasBluePiece
-                  ? Assets.icons.allyBlueIcon
-                  : hasEnemyPiece
-                      ? Assets.icons.enemyIcon
-                      : '';
+          if (row >= 0 && row <= 1 && column >= 1 && column <= 4) {
+            return SquareState(
+              row: row,
+              column: column,
+              pieceType: PieceTypeEnum.enemyGeister,
+              arrowType: ArrowTypeEnum.none,
+            );
+          } else if (row >= 4 && row <= 5 && column >= 1 && column <= 4) {
+            final initialRow = row - 4;
+            final initialColumn = column - 1;
 
-          return SquareState(
-            row: row,
-            column: column,
-            pieceIcon: pieceIcon,
-            pieceType: hasRedPiece
-                ? PieceTypeEnum.redGeister
-                : hasBluePiece
-                    ? PieceTypeEnum.blueGeister
-                    : hasEnemyPiece
-                        ? PieceTypeEnum.enemyGeister
-                        : PieceTypeEnum.empty,
-            arrowType: ArrowTypeEnum.none,
-          );
+            return SquareState(
+              row: row,
+              column: column,
+              pieceType:
+                  state.initialPlacement[initialRow][initialColumn].isRedPiece
+                      ? PieceTypeEnum.redGeister
+                      : PieceTypeEnum.blueGeister,
+              arrowType: ArrowTypeEnum.none,
+            );
+          } else {
+            return SquareState(
+              row: row,
+              column: column,
+              pieceType: PieceTypeEnum.empty,
+              arrowType: ArrowTypeEnum.none,
+            );
+          }
         },
       ),
     );
 
-    return GameBoard(gameBoard: gameBoard);
+    state = state.copyWith(
+      boardStateList: GameBoard(gameBoard: gameBoard),
+    );
   }
 
   void movePiece(int arrowRow, int arrowColumn) {
+    if (state.boardStateList?.gameBoard == null) return;
+
     final arrow =
-        state.boardStateList.gameBoard[arrowRow][arrowColumn].copyWith();
+        state.boardStateList!.gameBoard[arrowRow][arrowColumn].copyWith();
 
     state = state.copyWith(
       displayArrow: false,
@@ -69,28 +96,27 @@ class GameBoardPresenter extends StateNotifier<GameBoardState> {
 
     switch (arrow.arrowType) {
       case ArrowTypeEnum.topArrow:
-        target = state.boardStateList.gameBoard[arrowRow + 1][arrowColumn];
+        target = state.boardStateList!.gameBoard[arrowRow + 1][arrowColumn];
         break;
       case ArrowTypeEnum.bottomArrow:
-        target = state.boardStateList.gameBoard[arrowRow - 1][arrowColumn];
+        target = state.boardStateList!.gameBoard[arrowRow - 1][arrowColumn];
         break;
       case ArrowTypeEnum.leftArrow:
-        target = state.boardStateList.gameBoard[arrowRow][arrowColumn + 1];
+        target = state.boardStateList!.gameBoard[arrowRow][arrowColumn + 1];
         break;
       case ArrowTypeEnum.rightArrow:
-        target = state.boardStateList.gameBoard[arrowRow][arrowColumn - 1];
+        target = state.boardStateList!.gameBoard[arrowRow][arrowColumn - 1];
         break;
       default:
         break;
     }
 
     state = state.copyWith(
-      boardStateList: state.boardStateList.copyWith(
-        gameBoard: state.boardStateList.gameBoard.map((pieceStateList) {
+      boardStateList: state.boardStateList!.copyWith(
+        gameBoard: state.boardStateList!.gameBoard.map((pieceStateList) {
           return pieceStateList.map((piece) {
             if (piece.row == arrowRow && piece.column == arrowColumn) {
               return piece.copyWith(
-                pieceIcon: target.pieceIcon,
                 pieceType: target.pieceType,
                 arrowIcon: '',
                 arrowType: ArrowTypeEnum.none,
@@ -99,7 +125,6 @@ class GameBoardPresenter extends StateNotifier<GameBoardState> {
 
             if (piece.row == target.row && piece.column == target.column) {
               return piece.copyWith(
-                pieceIcon: '',
                 pieceType: PieceTypeEnum.empty,
                 arrowIcon: '',
                 arrowType: ArrowTypeEnum.none,
@@ -114,11 +139,13 @@ class GameBoardPresenter extends StateNotifier<GameBoardState> {
   }
 
   void showArrow(int row, int column) {
+    if (state.boardStateList?.gameBoard == null) return;
+
     int arrowCount = 0;
 
     state = state.copyWith(
-      boardStateList: state.boardStateList.copyWith(
-        gameBoard: state.boardStateList.gameBoard.map((pieceStateList) {
+      boardStateList: state.boardStateList!.copyWith(
+        gameBoard: state.boardStateList!.gameBoard.map((pieceStateList) {
           return pieceStateList.map((pieceState) {
             if (!pieceState.canShowArrow()) return pieceState;
 
@@ -176,11 +203,13 @@ class GameBoardPresenter extends StateNotifier<GameBoardState> {
   void hideArrow() => _hideArrow();
 
   void _hideArrow() {
+    if (state.boardStateList?.gameBoard == null) return;
+
     state = state.copyWith(
       displayArrow: false,
       arrowCount: 0,
       boardStateList: GameBoard(
-        gameBoard: state.boardStateList.gameBoard.map((pieceStateList) {
+        gameBoard: state.boardStateList!.gameBoard.map((pieceStateList) {
           return pieceStateList.map((pieceState) {
             return pieceState.copyWith(
               arrowIcon: '',

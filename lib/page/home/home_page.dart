@@ -46,11 +46,10 @@ class HomePage extends HookConsumerWidget {
             ),
             ElevatedButton(
               onPressed: () async {
-                final bool? result = await showDialog(
+                await showDialog(
                   context: context,
                   builder: (context) => _KeyWordDialog(),
                 );
-                print(result);
               },
               child: const Text('create key word'),
             ),

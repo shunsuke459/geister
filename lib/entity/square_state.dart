@@ -1,6 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:geister/entity/arrow_type_enum.dart';
 import 'package:geister/entity/piece_type_enum.dart';
+import 'package:geister/gen/assets.gen.dart';
 
 part 'square_state.freezed.dart';
 
@@ -9,7 +10,6 @@ class SquareState with _$SquareState {
   const factory SquareState({
     required int row,
     required int column,
-    required String pieceIcon,
     required PieceTypeEnum pieceType,
     @Default('') String arrowIcon,
     required ArrowTypeEnum arrowType,
@@ -36,4 +36,12 @@ extension SquareStateExtension on SquareState {
   bool canShowArrow() {
     return pieceType.isEmpty || pieceType.isEnemyPiece;
   }
+
+  String get pieceIcon => pieceType.isRedPiece
+      ? Assets.icons.allyRedIcon
+      : pieceType.isBluePiece
+          ? Assets.icons.allyBlueIcon
+          : pieceType.isEnemyPiece
+              ? Assets.icons.enemyIcon
+              : '';
 }

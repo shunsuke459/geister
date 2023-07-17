@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:geister/constants.dart';
 import 'package:geister/entity/arrow_type_enum.dart';
 import 'package:geister/entity/piece_type_enum.dart';
+import 'package:geister/entity/square_state.dart';
 import 'package:geister/gen/assets.gen.dart';
+import 'package:geister/page/game/initial_placement_dialog.dart';
 import 'package:geister/presenter/game/game_board_presenter.dart';
 import 'package:geister/presenter/game/my_side_presenter.dart';
 import 'package:geister/presenter/game/opponent_side_presenter.dart';
@@ -21,6 +24,17 @@ class GamePage extends HookConsumerWidget {
     final opponentSideState = ref.watch(opponentSidePresenterProvider);
     final opponentSidePresenter =
         ref.read(opponentSidePresenterProvider.notifier);
+
+    useEffect(() {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        showDialog(
+          barrierDismissible: false,
+          context: context,
+          builder: (context) => InitialPlacementDialog(),
+        );
+      });
+      return () {};
+    }, []);
 
     return Scaffold(
       body: Padding(
@@ -86,83 +100,84 @@ class GamePage extends HookConsumerWidget {
                 ],
               ),
             ),
-            GridView.builder(
-              shrinkWrap: true,
-              itemCount: 6 * 6,
-              physics: const NeverScrollableScrollPhysics(),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 6,
-              ),
-              itemBuilder: (context, index) {
-                final column = index % 6;
-                final row = index ~/ 6;
-                final boardState =
-                    gameBoardState.boardStateList.gameBoard[row][column];
-                final isTopCorner = index == 0 || index == 5;
-                final isBottomCorner = index == 30 || index == 35;
-                final piece = boardState.arrowIcon.isNotEmpty
-                    ? SvgPicture.asset(
-                        boardState.arrowIcon,
-                        width: 42,
-                      )
-                    : boardState.pieceIcon.isNotEmpty
-                        ? SvgPicture.asset(
-                            boardState.pieceIcon,
-                            width: 42,
-                          )
-                        : isTopCorner
-                            ? Constants.arrowTop
-                            : isBottomCorner
-                                ? Constants.arrowDown
-                                : Container();
+            if (gameBoardState.boardStateList?.gameBoard != null)
+              GridView.builder(
+                shrinkWrap: true,
+                itemCount: 6 * 6,
+                physics: const NeverScrollableScrollPhysics(),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 6,
+                ),
+                itemBuilder: (context, index) {
+                  final column = index % 6;
+                  final row = index ~/ 6;
+                  final boardState =
+                      gameBoardState.boardStateList!.gameBoard[row][column];
+                  final isTopCorner = index == 0 || index == 5;
+                  final isBottomCorner = index == 30 || index == 35;
+                  final piece = boardState.arrowIcon.isNotEmpty
+                      ? SvgPicture.asset(
+                          boardState.arrowIcon,
+                          width: 42,
+                        )
+                      : boardState.pieceIcon.isNotEmpty
+                          ? SvgPicture.asset(
+                              boardState.pieceIcon,
+                              width: 42,
+                            )
+                          : isTopCorner
+                              ? Constants.arrowTop
+                              : isBottomCorner
+                                  ? Constants.arrowDown
+                                  : Container();
 
-                return GestureDetector(
-                  onTap: () {
-                    if (!gameBoardState.displayArrow &&
-                        boardState.pieceType.isAllyPiece) {
-                      gameBoardPresenter.showArrow(row, column);
-                    } else if (boardState.arrowType.isArrow) {
-                      if (boardState.pieceType.isEnemyPiece)
-                        mySidePresenter.getOpponentSidePiece(
-                            true); // TODO: 敵のコマが赤であるかどうかの変数を渡す
+                  return GestureDetector(
+                    onTap: () {
+                      if (!gameBoardState.displayArrow &&
+                          boardState.pieceType.isAllyPiece) {
+                        gameBoardPresenter.showArrow(row, column);
+                      } else if (boardState.arrowType.isArrow) {
+                        if (boardState.pieceType.isEnemyPiece)
+                          mySidePresenter.getOpponentSidePiece(
+                              true); // TODO: 敵のコマが赤であるかどうかの変数を渡す
 
-                      gameBoardPresenter.movePiece(row, column);
-                    } else {
-                      gameBoardPresenter.hideArrow();
-                    }
-                  },
-                  child: Container(
-                    decoration: BoxDecoration(
-                      border: Border(
-                        right: const BorderSide(
-                          color: Colors.black,
-                          width: 1.0,
+                        gameBoardPresenter.movePiece(row, column);
+                      } else {
+                        gameBoardPresenter.hideArrow();
+                      }
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border(
+                          right: const BorderSide(
+                            color: Colors.black,
+                            width: 1.0,
+                          ),
+                          bottom: const BorderSide(
+                            color: Colors.black,
+                            width: 1.0,
+                          ),
+                          top: index >= 0 && index <= 5
+                              ? const BorderSide(
+                                  color: Colors.black,
+                                  width: 1.0,
+                                )
+                              : BorderSide.none,
+                          left: index % 6 == 0
+                              ? const BorderSide(
+                                  color: Colors.black,
+                                  width: 1.0,
+                                )
+                              : BorderSide.none,
                         ),
-                        bottom: const BorderSide(
-                          color: Colors.black,
-                          width: 1.0,
-                        ),
-                        top: index >= 0 && index <= 5
-                            ? const BorderSide(
-                                color: Colors.black,
-                                width: 1.0,
-                              )
-                            : BorderSide.none,
-                        left: index % 6 == 0
-                            ? const BorderSide(
-                                color: Colors.black,
-                                width: 1.0,
-                              )
-                            : BorderSide.none,
+                      ),
+                      child: Center(
+                        child: piece,
                       ),
                     ),
-                    child: Center(
-                      child: piece,
-                    ),
-                  ),
-                );
-              },
-            ),
+                  );
+                },
+              ),
             Padding(
               padding: const EdgeInsets.only(left: 16),
               child: Column(
