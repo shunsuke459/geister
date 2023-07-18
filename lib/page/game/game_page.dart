@@ -157,11 +157,6 @@ class GamePage extends HookConsumerWidget {
                               boardState.pieceType.isAllyPiece) {
                             gameBoardPresenter.showArrow(row, column);
                           } else if (boardState.arrowType.isArrow) {
-                            if (boardState.pieceType.isEnemyPiece) {
-                              // TODO: 敵のコマが赤であるかどうかの変数を渡す
-                              mySidePresenter.getOpponentSidePiece(true);
-                            }
-
                             final userId =
                                 ref.watch(userPresenterProvider).value?.id;
                             if (userId == null) return;
@@ -169,11 +164,18 @@ class GamePage extends HookConsumerWidget {
                                 ref.watch(gamePresenterProvider).value?.keyWord;
                             if (keyWord == null) return;
 
-                            await gameBoardPresenter.movePiece(
+                            final stealPiece =
+                                await gameBoardPresenter.movePiece(
                               row,
                               column,
                               userId,
                               keyWord,
+                            );
+
+                            if (stealPiece.isEmpty) return;
+
+                            mySidePresenter.getOpponentSidePiece(
+                              stealPiece == PieceTypeEnum.redGeister.name,
                             );
                           } else {
                             gameBoardPresenter.hideArrow();

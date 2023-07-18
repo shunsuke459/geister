@@ -97,13 +97,13 @@ class GameBoardPresenter extends StateNotifier<GameBoardState> {
     });
   }
 
-  Future<void> movePiece(
+  Future<String> movePiece(
     int arrowRow,
     int arrowColumn,
     String userId,
     String keyWord,
   ) async {
-    if (state.boardStateList?.gameBoard == null) return;
+    if (state.boardStateList?.gameBoard == null) return '';
 
     final arrow =
         state.boardStateList!.gameBoard[arrowRow][arrowColumn].copyWith();
@@ -114,10 +114,9 @@ class GameBoardPresenter extends StateNotifier<GameBoardState> {
     );
 
     _movePiece(arrow);
-
-    await _updateGameBoard(userId, keyWord);
-
     _hideArrow();
+
+    return await _updateGameBoard(userId, keyWord);
   }
 
   void _movePiece(SquareState arrow) {
@@ -169,8 +168,8 @@ class GameBoardPresenter extends StateNotifier<GameBoardState> {
     );
   }
 
-  Future<void> _updateGameBoard(String userId, String keyWord) async {
-    if (state.boardStateList?.gameBoard == null) return;
+  Future<String> _updateGameBoard(String userId, String keyWord) async {
+    if (state.boardStateList?.gameBoard == null) return '';
 
     final gameBoard =
         state.boardStateList!.gameBoard.map<List<String>>((value) {
@@ -178,7 +177,7 @@ class GameBoardPresenter extends StateNotifier<GameBoardState> {
         return e.pieceType.name;
       }).toList();
     }).toList();
-    await gameGateway.updateBoardState(userId, keyWord, gameBoard);
+    return await gameGateway.updateBoardState(userId, keyWord, gameBoard);
   }
 
   void showArrow(int row, int column) {

@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloud_functions/cloud_functions.dart';
-import 'package:geister/entity/square_state.dart';
 import 'package:geister/gateway/firebase/firebase_firestore.dart';
 import 'package:geister/gateway/firebase/firebase_functions.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -84,7 +83,7 @@ class GameGateway {
     });
   }
 
-  Future<bool> updateBoardState(
+  Future<String> updateBoardState(
     String userId,
     String keyWord,
     List<List<String>> gameBoard,
@@ -96,7 +95,7 @@ class GameGateway {
       'boardState': gameBoard,
     });
 
-    return result.data as bool;
+    return result.data as String;
   }
 }
 
