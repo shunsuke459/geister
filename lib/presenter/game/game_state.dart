@@ -7,9 +7,9 @@ class GameState with _$GameState {
   const factory GameState({
     required String keyWord,
     required bool isMatched,
+    required bool isSearching,
     @Default(0) int readyNum,
     required String myId,
-    required bool isSearching,
     String? opponentId,
   }) = _GameState;
 }

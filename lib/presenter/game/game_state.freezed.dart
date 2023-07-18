@@ -16,9 +16,11 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$GameState {
+  String get keyWord => throw _privateConstructorUsedError;
   bool get isMatched => throw _privateConstructorUsedError;
-  String get myId => throw _privateConstructorUsedError;
   bool get isSearching => throw _privateConstructorUsedError;
+  int get readyNum => throw _privateConstructorUsedError;
+  String get myId => throw _privateConstructorUsedError;
   String? get opponentId => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -32,7 +34,12 @@ abstract class $GameStateCopyWith<$Res> {
       _$GameStateCopyWithImpl<$Res, GameState>;
   @useResult
   $Res call(
-      {bool isMatched, String myId, bool isSearching, String? opponentId});
+      {String keyWord,
+      bool isMatched,
+      bool isSearching,
+      int readyNum,
+      String myId,
+      String? opponentId});
 }
 
 /// @nodoc
@@ -48,24 +55,34 @@ class _$GameStateCopyWithImpl<$Res, $Val extends GameState>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? keyWord = null,
     Object? isMatched = null,
-    Object? myId = null,
     Object? isSearching = null,
+    Object? readyNum = null,
+    Object? myId = null,
     Object? opponentId = freezed,
   }) {
     return _then(_value.copyWith(
+      keyWord: null == keyWord
+          ? _value.keyWord
+          : keyWord // ignore: cast_nullable_to_non_nullable
+              as String,
       isMatched: null == isMatched
           ? _value.isMatched
           : isMatched // ignore: cast_nullable_to_non_nullable
               as bool,
-      myId: null == myId
-          ? _value.myId
-          : myId // ignore: cast_nullable_to_non_nullable
-              as String,
       isSearching: null == isSearching
           ? _value.isSearching
           : isSearching // ignore: cast_nullable_to_non_nullable
               as bool,
+      readyNum: null == readyNum
+          ? _value.readyNum
+          : readyNum // ignore: cast_nullable_to_non_nullable
+              as int,
+      myId: null == myId
+          ? _value.myId
+          : myId // ignore: cast_nullable_to_non_nullable
+              as String,
       opponentId: freezed == opponentId
           ? _value.opponentId
           : opponentId // ignore: cast_nullable_to_non_nullable
@@ -82,7 +99,12 @@ abstract class _$$_GameStateCopyWith<$Res> implements $GameStateCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {bool isMatched, String myId, bool isSearching, String? opponentId});
+      {String keyWord,
+      bool isMatched,
+      bool isSearching,
+      int readyNum,
+      String myId,
+      String? opponentId});
 }
 
 /// @nodoc
@@ -96,24 +118,34 @@ class __$$_GameStateCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? keyWord = null,
     Object? isMatched = null,
-    Object? myId = null,
     Object? isSearching = null,
+    Object? readyNum = null,
+    Object? myId = null,
     Object? opponentId = freezed,
   }) {
     return _then(_$_GameState(
+      keyWord: null == keyWord
+          ? _value.keyWord
+          : keyWord // ignore: cast_nullable_to_non_nullable
+              as String,
       isMatched: null == isMatched
           ? _value.isMatched
           : isMatched // ignore: cast_nullable_to_non_nullable
               as bool,
-      myId: null == myId
-          ? _value.myId
-          : myId // ignore: cast_nullable_to_non_nullable
-              as String,
       isSearching: null == isSearching
           ? _value.isSearching
           : isSearching // ignore: cast_nullable_to_non_nullable
               as bool,
+      readyNum: null == readyNum
+          ? _value.readyNum
+          : readyNum // ignore: cast_nullable_to_non_nullable
+              as int,
+      myId: null == myId
+          ? _value.myId
+          : myId // ignore: cast_nullable_to_non_nullable
+              as String,
       opponentId: freezed == opponentId
           ? _value.opponentId
           : opponentId // ignore: cast_nullable_to_non_nullable
@@ -126,23 +158,30 @@ class __$$_GameStateCopyWithImpl<$Res>
 
 class _$_GameState implements _GameState {
   const _$_GameState(
-      {required this.isMatched,
-      required this.myId,
+      {required this.keyWord,
+      required this.isMatched,
       required this.isSearching,
+      this.readyNum = 0,
+      required this.myId,
       this.opponentId});
 
   @override
+  final String keyWord;
+  @override
   final bool isMatched;
   @override
-  final String myId;
-  @override
   final bool isSearching;
+  @override
+  @JsonKey()
+  final int readyNum;
+  @override
+  final String myId;
   @override
   final String? opponentId;
 
   @override
   String toString() {
-    return 'GameState(isMatched: $isMatched, myId: $myId, isSearching: $isSearching, opponentId: $opponentId)';
+    return 'GameState(keyWord: $keyWord, isMatched: $isMatched, isSearching: $isSearching, readyNum: $readyNum, myId: $myId, opponentId: $opponentId)';
   }
 
   @override
@@ -150,18 +189,21 @@ class _$_GameState implements _GameState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_GameState &&
+            (identical(other.keyWord, keyWord) || other.keyWord == keyWord) &&
             (identical(other.isMatched, isMatched) ||
                 other.isMatched == isMatched) &&
-            (identical(other.myId, myId) || other.myId == myId) &&
             (identical(other.isSearching, isSearching) ||
                 other.isSearching == isSearching) &&
+            (identical(other.readyNum, readyNum) ||
+                other.readyNum == readyNum) &&
+            (identical(other.myId, myId) || other.myId == myId) &&
             (identical(other.opponentId, opponentId) ||
                 other.opponentId == opponentId));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, isMatched, myId, isSearching, opponentId);
+  int get hashCode => Object.hash(
+      runtimeType, keyWord, isMatched, isSearching, readyNum, myId, opponentId);
 
   @JsonKey(ignore: true)
   @override
@@ -172,17 +214,23 @@ class _$_GameState implements _GameState {
 
 abstract class _GameState implements GameState {
   const factory _GameState(
-      {required final bool isMatched,
-      required final String myId,
+      {required final String keyWord,
+      required final bool isMatched,
       required final bool isSearching,
+      final int readyNum,
+      required final String myId,
       final String? opponentId}) = _$_GameState;
 
   @override
+  String get keyWord;
+  @override
   bool get isMatched;
   @override
-  String get myId;
-  @override
   bool get isSearching;
+  @override
+  int get readyNum;
+  @override
+  String get myId;
   @override
   String? get opponentId;
   @override

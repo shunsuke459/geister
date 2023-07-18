@@ -21,6 +21,7 @@ mixin _$GameBoardState {
   GameBoard? get boardStateList => throw _privateConstructorUsedError;
   bool get displayArrow => throw _privateConstructorUsedError;
   int get arrowCount => throw _privateConstructorUsedError;
+  bool get isMyTurn => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $GameBoardStateCopyWith<GameBoardState> get copyWith =>
@@ -37,7 +38,8 @@ abstract class $GameBoardStateCopyWith<$Res> {
       {List<List<PieceTypeEnum>> initialArrangement,
       GameBoard? boardStateList,
       bool displayArrow,
-      int arrowCount});
+      int arrowCount,
+      bool isMyTurn});
 
   $GameBoardCopyWith<$Res>? get boardStateList;
 }
@@ -59,6 +61,7 @@ class _$GameBoardStateCopyWithImpl<$Res, $Val extends GameBoardState>
     Object? boardStateList = freezed,
     Object? displayArrow = null,
     Object? arrowCount = null,
+    Object? isMyTurn = null,
   }) {
     return _then(_value.copyWith(
       initialArrangement: null == initialArrangement
@@ -77,6 +80,10 @@ class _$GameBoardStateCopyWithImpl<$Res, $Val extends GameBoardState>
           ? _value.arrowCount
           : arrowCount // ignore: cast_nullable_to_non_nullable
               as int,
+      isMyTurn: null == isMyTurn
+          ? _value.isMyTurn
+          : isMyTurn // ignore: cast_nullable_to_non_nullable
+              as bool,
     ) as $Val);
   }
 
@@ -105,7 +112,8 @@ abstract class _$$_GameBoardStateCopyWith<$Res>
       {List<List<PieceTypeEnum>> initialArrangement,
       GameBoard? boardStateList,
       bool displayArrow,
-      int arrowCount});
+      int arrowCount,
+      bool isMyTurn});
 
   @override
   $GameBoardCopyWith<$Res>? get boardStateList;
@@ -126,6 +134,7 @@ class __$$_GameBoardStateCopyWithImpl<$Res>
     Object? boardStateList = freezed,
     Object? displayArrow = null,
     Object? arrowCount = null,
+    Object? isMyTurn = null,
   }) {
     return _then(_$_GameBoardState(
       initialArrangement: null == initialArrangement
@@ -144,6 +153,10 @@ class __$$_GameBoardStateCopyWithImpl<$Res>
           ? _value.arrowCount
           : arrowCount // ignore: cast_nullable_to_non_nullable
               as int,
+      isMyTurn: null == isMyTurn
+          ? _value.isMyTurn
+          : isMyTurn // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -155,7 +168,8 @@ class _$_GameBoardState implements _GameBoardState {
       {required final List<List<PieceTypeEnum>> initialArrangement,
       this.boardStateList,
       this.displayArrow = false,
-      this.arrowCount = 0})
+      this.arrowCount = 0,
+      this.isMyTurn = false})
       : _initialArrangement = initialArrangement;
 
   final List<List<PieceTypeEnum>> _initialArrangement;
@@ -175,10 +189,13 @@ class _$_GameBoardState implements _GameBoardState {
   @override
   @JsonKey()
   final int arrowCount;
+  @override
+  @JsonKey()
+  final bool isMyTurn;
 
   @override
   String toString() {
-    return 'GameBoardState(initialArrangement: $initialArrangement, boardStateList: $boardStateList, displayArrow: $displayArrow, arrowCount: $arrowCount)';
+    return 'GameBoardState(initialArrangement: $initialArrangement, boardStateList: $boardStateList, displayArrow: $displayArrow, arrowCount: $arrowCount, isMyTurn: $isMyTurn)';
   }
 
   @override
@@ -193,7 +210,9 @@ class _$_GameBoardState implements _GameBoardState {
             (identical(other.displayArrow, displayArrow) ||
                 other.displayArrow == displayArrow) &&
             (identical(other.arrowCount, arrowCount) ||
-                other.arrowCount == arrowCount));
+                other.arrowCount == arrowCount) &&
+            (identical(other.isMyTurn, isMyTurn) ||
+                other.isMyTurn == isMyTurn));
   }
 
   @override
@@ -202,7 +221,8 @@ class _$_GameBoardState implements _GameBoardState {
       const DeepCollectionEquality().hash(_initialArrangement),
       boardStateList,
       displayArrow,
-      arrowCount);
+      arrowCount,
+      isMyTurn);
 
   @JsonKey(ignore: true)
   @override
@@ -216,7 +236,8 @@ abstract class _GameBoardState implements GameBoardState {
       {required final List<List<PieceTypeEnum>> initialArrangement,
       final GameBoard? boardStateList,
       final bool displayArrow,
-      final int arrowCount}) = _$_GameBoardState;
+      final int arrowCount,
+      final bool isMyTurn}) = _$_GameBoardState;
 
   @override
   List<List<PieceTypeEnum>> get initialArrangement;
@@ -226,6 +247,8 @@ abstract class _GameBoardState implements GameBoardState {
   bool get displayArrow;
   @override
   int get arrowCount;
+  @override
+  bool get isMyTurn;
   @override
   @JsonKey(ignore: true)
   _$$_GameBoardStateCopyWith<_$_GameBoardState> get copyWith =>

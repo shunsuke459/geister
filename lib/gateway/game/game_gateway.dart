@@ -32,22 +32,21 @@ class GameGateway {
   Future<bool> setInitialBoard(
     String userId,
     String keyWord,
-    List<List<SquareState>> gameBoard,
+    List<List<String>> gameBoard,
   ) async {
     final callable = firebaseFunctions.httpsCallable('setInitialBoard');
     final result = await callable.call(<String, dynamic>{
       'userId': userId,
       'keyWord': keyWord,
-      'boardState': gameBoard
-          .map((event) => event.map((e) => e.pieceType.name).toList())
-          .toList(),
+      'boardState': gameBoard,
     });
 
     return result.data as bool;
   }
 
-  Stream<(int readyNum, List<String> userIdList)> searchOpponent(
-      String keyWord) {
+  Stream<(int, List<String>)> searchOpponent(
+    String keyWord,
+  ) {
     return firebaseFirestore
         .collection('key_words')
         .doc(keyWord)
@@ -58,6 +57,46 @@ class GameGateway {
 
       return (readyNum, userIdList.map<String>((e) => e.toString()).toList());
     });
+  }
+
+  Stream<(bool, List<List<String>>)> getBoardState(
+    String userId,
+  ) {
+    return firebaseFirestore
+        .collection('boards')
+        .doc(userId)
+        .snapshots()
+        .map((event) {
+      final isMyTurn = event.data()?['is_my_turn'] as bool;
+      final boardState = event.data()?['board_state'] as List<dynamic>;
+      int index = -1;
+
+      return (
+        isMyTurn,
+        boardState.map<List<String>>((e) {
+          index++;
+
+          return e[index.toString()].map<String>((e) {
+            return e.toString();
+          }).toList();
+        }).toList()
+      );
+    });
+  }
+
+  Future<bool> updateBoardState(
+    String userId,
+    String keyWord,
+    List<List<String>> gameBoard,
+  ) async {
+    final callable = firebaseFunctions.httpsCallable('updateBoardState');
+    final result = await callable.call(<String, dynamic>{
+      'userId': userId,
+      'keyWord': keyWord,
+      'boardState': gameBoard,
+    });
+
+    return result.data as bool;
   }
 }
 

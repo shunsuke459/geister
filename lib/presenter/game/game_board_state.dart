@@ -11,5 +11,6 @@ class GameBoardState with _$GameBoardState {
     GameBoard? boardStateList,
     @Default(false) bool displayArrow,
     @Default(0) int arrowCount,
+    @Default(false) bool isMyTurn,
   }) = _GameBoardState;
 }

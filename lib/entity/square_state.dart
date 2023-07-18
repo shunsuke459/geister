@@ -33,9 +33,7 @@ extension SquareStateExtension on SquareState {
     return row == this.row - 1 && column == this.column;
   }
 
-  bool canShowArrow() {
-    return pieceType.isEmpty || pieceType.isEnemyPiece;
-  }
+  bool get canShowArrow => pieceType.isEmpty || pieceType.isEnemyPiece;
 
   String get pieceIcon => pieceType.isRedPiece
       ? Assets.icons.allyRedIcon

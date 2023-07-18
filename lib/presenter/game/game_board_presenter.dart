@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:geister/entity/arrow_type_enum.dart';
 import 'package:geister/entity/game_board.dart';
 import 'package:geister/entity/piece_type_enum.dart';
@@ -9,6 +11,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class GameBoardPresenter extends StateNotifier<GameBoardState> {
   final GameGateway gameGateway;
+  StreamSubscription? _subscription;
+
   GameBoardPresenter({required this.gameGateway})
       : super(
           GameBoardState(initialArrangement: _initialArrangement()),
@@ -33,52 +37,72 @@ class GameBoardPresenter extends StateNotifier<GameBoardState> {
   }
 
   Future<void> settleInitialBoard(String userId, String keyWord) async {
-    final gameBoard = List.generate(
+    final List<List<String>> gameBoard = List.generate(
       6,
       (row) => List.generate(
         6,
         (column) {
           if (row >= 0 && row <= 1 && column >= 1 && column <= 4) {
-            return SquareState(
-              row: row,
-              column: column,
-              pieceType: PieceTypeEnum.enemyGeister,
-              arrowType: ArrowTypeEnum.none,
-            );
+            return PieceTypeEnum.enemyGeister.name;
           } else if (row >= 4 && row <= 5 && column >= 1 && column <= 4) {
             final initialRow = row - 4;
             final initialColumn = column - 1;
 
-            return SquareState(
-              row: row,
-              column: column,
-              pieceType:
-                  state.initialArrangement[initialRow][initialColumn].isRedPiece
-                      ? PieceTypeEnum.redGeister
-                      : PieceTypeEnum.blueGeister,
-              arrowType: ArrowTypeEnum.none,
-            );
+            return state
+                    .initialArrangement[initialRow][initialColumn].isRedPiece
+                ? PieceTypeEnum.redGeister.name
+                : PieceTypeEnum.blueGeister.name;
           } else {
-            return SquareState(
-              row: row,
-              column: column,
-              pieceType: PieceTypeEnum.empty,
-              arrowType: ArrowTypeEnum.none,
-            );
+            return PieceTypeEnum.empty.name;
           }
         },
       ),
     );
 
-    state = state.copyWith(
-      boardStateList: GameBoard(gameBoard: gameBoard),
-    );
+    await gameGateway.setInitialBoard(userId, keyWord, gameBoard);
 
-    await gameGateway.setInitialBoard(
-        userId, keyWord, state.boardStateList!.gameBoard);
+    _getBoardState(userId);
   }
 
-  void movePiece(int arrowRow, int arrowColumn) {
+  void _getBoardState(String userId) {
+    _subscription = gameGateway.getBoardState(userId).listen((event) {
+      int row = -1;
+      int column = -1;
+
+      state = state.copyWith(
+        isMyTurn: event.$1,
+        boardStateList: GameBoard(
+          gameBoard: event.$2.map((e) {
+            row++;
+            column = -1;
+            return e.map((e) {
+              column++;
+
+              return SquareState(
+                row: row,
+                column: column,
+                pieceType: e == PieceTypeEnum.enemyGeister.name
+                    ? PieceTypeEnum.enemyGeister
+                    : e == PieceTypeEnum.redGeister.name
+                        ? PieceTypeEnum.redGeister
+                        : e == PieceTypeEnum.blueGeister.name
+                            ? PieceTypeEnum.blueGeister
+                            : PieceTypeEnum.empty,
+                arrowType: ArrowTypeEnum.none,
+              );
+            }).toList();
+          }).toList(),
+        ),
+      );
+    });
+  }
+
+  Future<void> movePiece(
+    int arrowRow,
+    int arrowColumn,
+    String userId,
+    String keyWord,
+  ) async {
     if (state.boardStateList?.gameBoard == null) return;
 
     final arrow =
@@ -90,6 +114,8 @@ class GameBoardPresenter extends StateNotifier<GameBoardState> {
     );
 
     _movePiece(arrow);
+
+    await _updateGameBoard(userId, keyWord);
 
     _hideArrow();
   }
@@ -143,6 +169,18 @@ class GameBoardPresenter extends StateNotifier<GameBoardState> {
     );
   }
 
+  Future<void> _updateGameBoard(String userId, String keyWord) async {
+    if (state.boardStateList?.gameBoard == null) return;
+
+    final gameBoard =
+        state.boardStateList!.gameBoard.map<List<String>>((value) {
+      return value.map<String>((e) {
+        return e.pieceType.name;
+      }).toList();
+    }).toList();
+    await gameGateway.updateBoardState(userId, keyWord, gameBoard);
+  }
+
   void showArrow(int row, int column) {
     if (state.boardStateList?.gameBoard == null) return;
 
@@ -152,7 +190,7 @@ class GameBoardPresenter extends StateNotifier<GameBoardState> {
       boardStateList: state.boardStateList!.copyWith(
         gameBoard: state.boardStateList!.gameBoard.map((pieceStateList) {
           return pieceStateList.map((pieceState) {
-            if (!pieceState.canShowArrow()) return pieceState;
+            if (!pieceState.canShowArrow) return pieceState;
 
             if (pieceState.isLeftPiece(row, column)) {
               arrowCount++;
@@ -224,6 +262,12 @@ class GameBoardPresenter extends StateNotifier<GameBoardState> {
         }).toList(),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _subscription?.cancel();
+    super.dispose();
   }
 }
 

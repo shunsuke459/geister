@@ -11,6 +11,7 @@ import 'package:geister/presenter/game/game_board_presenter.dart';
 import 'package:geister/presenter/game/game_presenter.dart';
 import 'package:geister/presenter/game/my_side_presenter.dart';
 import 'package:geister/presenter/game/opponent_side_presenter.dart';
+import 'package:geister/presenter/user/user_presenter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class GamePage extends HookConsumerWidget {
@@ -39,6 +40,7 @@ class GamePage extends HookConsumerWidget {
     }, []);
 
     final gameState = ref.watch(gamePresenterProvider);
+    final isMyTurn = gameBoardState.isMyTurn;
 
     return Scaffold(
       body: Stack(
@@ -48,65 +50,72 @@ class GamePage extends HookConsumerWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Padding(
-                  padding: const EdgeInsets.only(right: 16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      const Text(
-                        '獲られたガイスター',
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Color(0xFF333333),
-                        ),
-                      ),
-                      const SizedBox(height: 4),
-                      Padding(
-                        padding: const EdgeInsets.only(right: 16),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    if (gameState.value?.readyNum == 2)
+                      Text(isMyTurn ? 'あなたのターンです' : '相手のターンです'),
+                    Padding(
+                      padding: const EdgeInsets.only(right: 16),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          const Text(
+                            '獲られたガイスター',
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: Color(0xFF333333),
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          Padding(
+                            padding: const EdgeInsets.only(right: 16),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
-                                SvgPicture.asset(
-                                  Assets.icons.allyRedIcon,
-                                  width: 30,
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    SvgPicture.asset(
+                                      Assets.icons.allyRedIcon,
+                                      width: 30,
+                                    ),
+                                    const SizedBox(width: 16),
+                                    Text(
+                                      opponentSideState.enemyRedPieceCount
+                                          .toString(),
+                                      style: const TextStyle(
+                                        fontSize: 24,
+                                        color: Color(0xffdf5656),
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                                const SizedBox(width: 16),
-                                Text(
-                                  opponentSideState.enemyRedPieceCount
-                                      .toString(),
-                                  style: const TextStyle(
-                                    fontSize: 24,
-                                    color: Color(0xffdf5656),
-                                  ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    SvgPicture.asset(
+                                      Assets.icons.allyBlueIcon,
+                                      width: 30,
+                                    ),
+                                    const SizedBox(width: 16),
+                                    Text(
+                                      opponentSideState.enemyBluePieceCount
+                                          .toString(),
+                                      style: const TextStyle(
+                                        fontSize: 24,
+                                        color: Color(0xff3aabd2),
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ],
                             ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                SvgPicture.asset(
-                                  Assets.icons.allyBlueIcon,
-                                  width: 30,
-                                ),
-                                const SizedBox(width: 16),
-                                Text(
-                                  opponentSideState.enemyBluePieceCount
-                                      .toString(),
-                                  style: const TextStyle(
-                                    fontSize: 24,
-                                    color: Color(0xff3aabd2),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
                 if (gameBoardState.boardStateList?.gameBoard != null)
                   GridView.builder(
@@ -141,16 +150,31 @@ class GamePage extends HookConsumerWidget {
                                       : Container();
 
                       return GestureDetector(
-                        onTap: () {
+                        onTap: () async {
+                          if (!isMyTurn) return;
+
                           if (!gameBoardState.displayArrow &&
                               boardState.pieceType.isAllyPiece) {
                             gameBoardPresenter.showArrow(row, column);
                           } else if (boardState.arrowType.isArrow) {
-                            if (boardState.pieceType.isEnemyPiece)
-                              mySidePresenter.getOpponentSidePiece(
-                                  true); // TODO: 敵のコマが赤であるかどうかの変数を渡す
+                            if (boardState.pieceType.isEnemyPiece) {
+                              // TODO: 敵のコマが赤であるかどうかの変数を渡す
+                              mySidePresenter.getOpponentSidePiece(true);
+                            }
 
-                            gameBoardPresenter.movePiece(row, column);
+                            final userId =
+                                ref.watch(userPresenterProvider).value?.id;
+                            if (userId == null) return;
+                            final keyWord =
+                                ref.watch(gamePresenterProvider).value?.keyWord;
+                            if (keyWord == null) return;
+
+                            await gameBoardPresenter.movePiece(
+                              row,
+                              column,
+                              userId,
+                              keyWord,
+                            );
                           } else {
                             gameBoardPresenter.hideArrow();
                           }
