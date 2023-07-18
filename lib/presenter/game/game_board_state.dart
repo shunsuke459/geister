@@ -12,5 +12,7 @@ class GameBoardState with _$GameBoardState {
     @Default(false) bool displayArrow,
     @Default(0) int arrowCount,
     @Default(false) bool isMyTurn,
+    @Default(4) int redPieceCount,
+    @Default(4) int bluePieceCount,
   }) = _GameBoardState;
 }

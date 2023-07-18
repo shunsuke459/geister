@@ -68,6 +68,8 @@ class GameBoardPresenter extends StateNotifier<GameBoardState> {
     _subscription = gameGateway.getBoardState(userId).listen((event) {
       int row = -1;
       int column = -1;
+      int redCount = 0;
+      int blueCount = 0;
 
       state = state.copyWith(
         isMyTurn: event.$1,
@@ -77,6 +79,11 @@ class GameBoardPresenter extends StateNotifier<GameBoardState> {
             column = -1;
             return e.map((e) {
               column++;
+              if (e == PieceTypeEnum.redGeister.name) {
+                redCount++;
+              } else if (e == PieceTypeEnum.blueGeister.name) {
+                blueCount++;
+              }
 
               return SquareState(
                 row: row,
@@ -93,6 +100,11 @@ class GameBoardPresenter extends StateNotifier<GameBoardState> {
             }).toList();
           }).toList(),
         ),
+      );
+
+      state = state.copyWith(
+        redPieceCount: redCount,
+        bluePieceCount: blueCount,
       );
     });
   }

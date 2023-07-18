@@ -9,8 +9,6 @@ import 'package:geister/gen/assets.gen.dart';
 import 'package:geister/page/game/initial_arrangement_dialog.dart';
 import 'package:geister/presenter/game/game_board_presenter.dart';
 import 'package:geister/presenter/game/game_presenter.dart';
-import 'package:geister/presenter/game/my_side_presenter.dart';
-import 'package:geister/presenter/game/opponent_side_presenter.dart';
 import 'package:geister/presenter/user/user_presenter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -21,11 +19,10 @@ class GamePage extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final gameBoardState = ref.watch(gameBoardPresenterProvider);
     final gameBoardPresenter = ref.read(gameBoardPresenterProvider.notifier);
-    final mySideState = ref.watch(mySidePresenterProvider);
-    final mySidePresenter = ref.read(mySidePresenterProvider.notifier);
-    final opponentSideState = ref.watch(opponentSidePresenterProvider);
-    final opponentSidePresenter =
-        ref.read(opponentSidePresenterProvider.notifier);
+    final stoleRedPiece = useState<int>(0);
+    final stoleBluePiece = useState<int>(0);
+    final stolenRedPiece = useState<int>(0);
+    final stolenBluePiece = useState<int>(0);
 
     useEffect(() {
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -38,6 +35,15 @@ class GamePage extends HookConsumerWidget {
 
       return () {};
     }, []);
+
+    useEffect(() {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        stolenRedPiece.value = 4 - gameBoardState.redPieceCount;
+        stolenBluePiece.value = 4 - gameBoardState.bluePieceCount;
+      });
+
+      return () {};
+    }, [gameBoardState]);
 
     final gameState = ref.watch(gamePresenterProvider);
     final isMyTurn = gameBoardState.isMyTurn;
@@ -82,8 +88,7 @@ class GamePage extends HookConsumerWidget {
                                     ),
                                     const SizedBox(width: 16),
                                     Text(
-                                      opponentSideState.enemyRedPieceCount
-                                          .toString(),
+                                      stolenRedPiece.value.toString(),
                                       style: const TextStyle(
                                         fontSize: 24,
                                         color: Color(0xffdf5656),
@@ -100,8 +105,7 @@ class GamePage extends HookConsumerWidget {
                                     ),
                                     const SizedBox(width: 16),
                                     Text(
-                                      opponentSideState.enemyBluePieceCount
-                                          .toString(),
+                                      stolenBluePiece.value.toString(),
                                       style: const TextStyle(
                                         fontSize: 24,
                                         color: Color(0xff3aabd2),
@@ -164,7 +168,7 @@ class GamePage extends HookConsumerWidget {
                                 ref.watch(gamePresenterProvider).value?.keyWord;
                             if (keyWord == null) return;
 
-                            final stealPiece =
+                            final stolePiece =
                                 await gameBoardPresenter.movePiece(
                               row,
                               column,
@@ -172,11 +176,14 @@ class GamePage extends HookConsumerWidget {
                               keyWord,
                             );
 
-                            if (stealPiece.isEmpty) return;
+                            if (stolePiece.isEmpty) return;
 
-                            mySidePresenter.getOpponentSidePiece(
-                              stealPiece == PieceTypeEnum.redGeister.name,
-                            );
+                            if (stolePiece == PieceTypeEnum.redGeister.name) {
+                              stoleRedPiece.value++;
+                            } else if (stolePiece ==
+                                PieceTypeEnum.blueGeister.name) {
+                              stoleBluePiece.value++;
+                            }
                           } else {
                             gameBoardPresenter.hideArrow();
                           }
@@ -238,7 +245,7 @@ class GamePage extends HookConsumerWidget {
                                 ),
                                 const SizedBox(width: 16),
                                 Text(
-                                  mySideState.enemyRedPieceCount.toString(),
+                                  stoleRedPiece.value.toString(),
                                   style: const TextStyle(
                                     fontSize: 24,
                                     color: Color(0xffdf5656),
@@ -254,7 +261,7 @@ class GamePage extends HookConsumerWidget {
                                 ),
                                 const SizedBox(width: 16),
                                 Text(
-                                  mySideState.enemyBluePieceCount.toString(),
+                                  stoleBluePiece.value.toString(),
                                   style: const TextStyle(
                                     fontSize: 24,
                                     color: Color(0xff3aabd2),
