@@ -275,10 +275,9 @@ class GameBoardPresenter extends StateNotifier<GameBoardState> {
     );
   }
 
-  @override
-  void dispose() {
+  void gameFinished() {
     _subscription?.cancel();
-    super.dispose();
+    state = GameBoardState(initialArrangement: _initialArrangement());
   }
 }
 

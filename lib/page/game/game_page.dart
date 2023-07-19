@@ -7,6 +7,7 @@ import 'package:geister/entity/piece_type_enum.dart';
 import 'package:geister/entity/square_state.dart';
 import 'package:geister/gen/assets.gen.dart';
 import 'package:geister/page/game/initial_arrangement_dialog.dart';
+import 'package:geister/page/game/settled_game_dialog.dart';
 import 'package:geister/presenter/game/game_board_presenter.dart';
 import 'package:geister/presenter/game/game_presenter.dart';
 import 'package:geister/presenter/user/user_presenter.dart';
@@ -40,10 +41,44 @@ class GamePage extends HookConsumerWidget {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         stolenRedPiece.value = 4 - gameBoardState.redPieceCount;
         stolenBluePiece.value = 4 - gameBoardState.bluePieceCount;
+
+        if (stolenBluePiece.value == 4) {
+          showDialog(
+            barrierDismissible: false,
+            context: context,
+            builder: (context) => const SettledGameDialog(isWon: false),
+          );
+        } else if (stolenRedPiece.value == 4) {
+          showDialog(
+            barrierDismissible: false,
+            context: context,
+            builder: (context) => const SettledGameDialog(isWon: true),
+          );
+        }
       });
 
       return () {};
     }, [gameBoardState]);
+
+    useEffect(() {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (stoleBluePiece.value == 4) {
+          showDialog(
+            barrierDismissible: false,
+            context: context,
+            builder: (context) => const SettledGameDialog(isWon: true),
+          );
+        } else if (stoleRedPiece.value == 4) {
+          showDialog(
+            barrierDismissible: false,
+            context: context,
+            builder: (context) => const SettledGameDialog(isWon: false),
+          );
+        }
+      });
+
+      return () {};
+    }, [stoleRedPiece.value, stoleBluePiece.value]);
 
     final gameState = ref.watch(gamePresenterProvider);
     final isMyTurn = gameBoardState.isMyTurn;

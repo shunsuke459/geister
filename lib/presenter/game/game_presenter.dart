@@ -52,10 +52,9 @@ class GamePresenter extends StateNotifier<AsyncValue<GameState>> {
     });
   }
 
-  @override
-  void dispose() {
+  void gameFinished() {
     _subscription?.cancel();
-    super.dispose();
+    state = const AsyncValue.loading();
   }
 }
 
