@@ -24,6 +24,8 @@ class GamePage extends HookConsumerWidget {
     final stoleBluePiece = useState<int>(0);
     final stolenRedPiece = useState<int>(0);
     final stolenBluePiece = useState<int>(0);
+    final showLeftGoalArrow = useState<bool>(false);
+    final showRightGoalArrow = useState<bool>(false);
 
     useEffect(() {
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -42,7 +44,7 @@ class GamePage extends HookConsumerWidget {
         stolenRedPiece.value = 4 - gameBoardState.redPieceCount;
         stolenBluePiece.value = 4 - gameBoardState.bluePieceCount;
 
-        if (stolenBluePiece.value == 4) {
+        if (stolenBluePiece.value == 4 || gameBoardState.opponentGoaled) {
           showDialog(
             barrierDismissible: false,
             context: context,
@@ -156,7 +158,20 @@ class GamePage extends HookConsumerWidget {
                     ),
                   ],
                 ),
-                if (gameBoardState.boardStateList?.gameBoard != null)
+                if (gameBoardState.boardStateList?.gameBoard != null) ...[
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      _GoalArrow(
+                        isLeft: true,
+                        showGoalArrow: showLeftGoalArrow,
+                      ),
+                      _GoalArrow(
+                        isLeft: false,
+                        showGoalArrow: showRightGoalArrow,
+                      ),
+                    ],
+                  ),
                   GridView.builder(
                     shrinkWrap: true,
                     itemCount: 6 * 6,
@@ -165,6 +180,7 @@ class GamePage extends HookConsumerWidget {
                         const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 6,
                     ),
+                    padding: const EdgeInsets.all(0),
                     itemBuilder: (context, index) {
                       final column = index % 6;
                       final row = index ~/ 6;
@@ -195,7 +211,20 @@ class GamePage extends HookConsumerWidget {
                           if (!gameBoardState.displayArrow &&
                               boardState.pieceType.isAllyPiece) {
                             gameBoardPresenter.showArrow(row, column);
-                          } else if (boardState.arrowType.isArrow) {
+
+                            if (row == 0 &&
+                                column == 0 &&
+                                boardState.pieceType.isBluePiece) {
+                              showLeftGoalArrow.value = true;
+                            } else if (row == 0 &&
+                                column == 5 &&
+                                boardState.pieceType.isBluePiece) {
+                              showRightGoalArrow.value = true;
+                            }
+                          } else if (boardState.isArrow) {
+                            showLeftGoalArrow.value = false;
+                            showRightGoalArrow.value = false;
+
                             final userId =
                                 ref.watch(userPresenterProvider).value?.id;
                             if (userId == null) return;
@@ -221,6 +250,8 @@ class GamePage extends HookConsumerWidget {
                             }
                           } else {
                             gameBoardPresenter.hideArrow();
+                            showLeftGoalArrow.value = false;
+                            showRightGoalArrow.value = false;
                           }
                         },
                         child: Container(
@@ -255,6 +286,7 @@ class GamePage extends HookConsumerWidget {
                       );
                     },
                   ),
+                ],
                 Padding(
                   padding: const EdgeInsets.only(left: 16),
                   child: Column(
@@ -329,6 +361,52 @@ class GamePage extends HookConsumerWidget {
             ),
           ],
         ],
+      ),
+    );
+  }
+}
+
+class _GoalArrow extends ConsumerWidget {
+  final bool isLeft;
+  final ValueNotifier<bool> showGoalArrow;
+  const _GoalArrow({
+    Key? key,
+    required this.isLeft,
+    required this.showGoalArrow,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final size = (MediaQuery.of(context).size.width - 16) / 6;
+
+    return GestureDetector(
+      onTap: () async {
+        final userId = ref.watch(userPresenterProvider).value?.id;
+        if (userId == null) return;
+        final keyWord = ref.watch(gamePresenterProvider).value?.keyWord;
+        if (keyWord == null) return;
+
+        await ref
+            .read(gameBoardPresenterProvider.notifier)
+            .goaled(0, isLeft ? 0 : 5, userId, keyWord);
+
+        showDialog(
+          barrierDismissible: false,
+          context: context,
+          builder: (context) => const SettledGameDialog(isWon: true),
+        );
+      },
+      child: SizedBox(
+        width: size,
+        height: size,
+        child: Center(
+          child: showGoalArrow.value
+              ? SvgPicture.asset(
+                  Assets.icons.arrowTop,
+                  width: 42,
+                )
+              : Container(),
+        ),
       ),
     );
   }

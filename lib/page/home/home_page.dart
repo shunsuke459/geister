@@ -40,12 +40,6 @@ class HomePage extends HookConsumerWidget {
             ),
             ElevatedButton(
               onPressed: () async {
-                GamePageRoute().go(context);
-              },
-              child: const Text('move'),
-            ),
-            ElevatedButton(
-              onPressed: () async {
                 await showDialog(
                   context: context,
                   builder: (context) => _KeyWordDialog(),

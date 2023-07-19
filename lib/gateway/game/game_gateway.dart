@@ -58,7 +58,7 @@ class GameGateway {
     });
   }
 
-  Stream<(bool, List<List<String>>)> getBoardState(
+  Stream<(bool, List<List<String>>, bool)> getBoardState(
     String userId,
   ) {
     return firebaseFirestore
@@ -68,6 +68,7 @@ class GameGateway {
         .map((event) {
       final isMyTurn = event.data()?['is_my_turn'] as bool;
       final boardState = event.data()?['board_state'] as List<dynamic>;
+      final opponentGoaled = event.data()?['opponent_goaled'] as bool;
       int index = -1;
 
       return (
@@ -78,7 +79,8 @@ class GameGateway {
           return e[index.toString()].map<String>((e) {
             return e.toString();
           }).toList();
-        }).toList()
+        }).toList(),
+        opponentGoaled,
       );
     });
   }
@@ -86,12 +88,14 @@ class GameGateway {
   Future<String> updateBoardState(
     String userId,
     String keyWord,
+    bool goaled,
     List<List<String>> gameBoard,
   ) async {
     final callable = firebaseFunctions.httpsCallable('updateBoardState');
     final result = await callable.call(<String, dynamic>{
       'userId': userId,
       'keyWord': keyWord,
+      'goaled': goaled,
       'boardState': gameBoard,
     });
 
