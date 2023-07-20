@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:geister/theme/app_text_style.dart';
+import 'package:geister/theme/app_theme_color.dart';
 
 class CustomTextFormField extends TextFormField {
   final String hintText;
@@ -16,19 +18,23 @@ class CustomTextFormField extends TextFormField {
           initialValue: initialValue,
           decoration: InputDecoration(
             hintText: hintText,
+            hintStyle: textStyle(
+              AppTextStyle.bodyRegular,
+              AppThemeColor.graySub.color,
+            ),
             contentPadding: const EdgeInsets.symmetric(horizontal: 10),
             enabledBorder: OutlineInputBorder(
               borderSide: BorderSide(
                 color: inputValue.value == null || canSend
-                    ? Colors.blueAccent
-                    : Colors.red,
+                    ? AppThemeColor.grayBorder.color
+                    : AppThemeColor.red.color,
               ),
             ),
             focusedBorder: OutlineInputBorder(
               borderSide: BorderSide(
                 color: inputValue.value == null || canSend
-                    ? Colors.blueAccent
-                    : Colors.red,
+                    ? AppThemeColor.grayBorder.color
+                    : AppThemeColor.red.color,
               ),
             ),
           ),
