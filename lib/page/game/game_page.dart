@@ -48,13 +48,13 @@ class GamePage extends HookConsumerWidget {
           showDialog(
             barrierDismissible: false,
             context: context,
-            builder: (context) => const SettledGameDialog(isWon: false),
+            builder: (context) => const SettledGameDialog(isWin: false),
           );
         } else if (stolenRedPiece.value == 4) {
           showDialog(
             barrierDismissible: false,
             context: context,
-            builder: (context) => const SettledGameDialog(isWon: true),
+            builder: (context) => const SettledGameDialog(isWin: true),
           );
         }
       });
@@ -68,13 +68,13 @@ class GamePage extends HookConsumerWidget {
           showDialog(
             barrierDismissible: false,
             context: context,
-            builder: (context) => const SettledGameDialog(isWon: true),
+            builder: (context) => const SettledGameDialog(isWin: true),
           );
         } else if (stoleRedPiece.value == 4) {
           showDialog(
             barrierDismissible: false,
             context: context,
-            builder: (context) => const SettledGameDialog(isWon: false),
+            builder: (context) => const SettledGameDialog(isWin: false),
           );
         }
       });
@@ -393,7 +393,7 @@ class _GoalArrow extends ConsumerWidget {
         showDialog(
           barrierDismissible: false,
           context: context,
-          builder: (context) => const SettledGameDialog(isWon: true),
+          builder: (context) => const SettledGameDialog(isWin: true),
         );
       },
       child: SizedBox(

@@ -101,6 +101,21 @@ class GameGateway {
 
     return result.data as String;
   }
+
+  Future<bool> updateRecord(
+    String userId,
+    String keyWord,
+    bool isWin,
+  ) async {
+    final callable = firebaseFunctions.httpsCallable('updateRecords');
+    final result = await callable.call(<String, dynamic>{
+      'userId': userId,
+      'keyWord': keyWord,
+      'isWin': isWin,
+    });
+
+    return result.data as bool;
+  }
 }
 
 final gameGatewayProvider = Provider<GameGateway>(

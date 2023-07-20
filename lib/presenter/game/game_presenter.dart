@@ -56,6 +56,14 @@ class GamePresenter extends StateNotifier<AsyncValue<GameState>> {
     _subscription?.cancel();
     state = const AsyncValue.loading();
   }
+
+  Future<void> updateRecord(
+    String userId,
+    String keyWord,
+    bool isWin,
+  ) async {
+    await gameGateway.updateRecord(userId, keyWord, isWin);
+  }
 }
 
 final gamePresenterProvider =
