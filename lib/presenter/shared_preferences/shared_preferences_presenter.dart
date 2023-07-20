@@ -5,24 +5,24 @@ class SharedPreferencesPresenter {
   final SharedPreferencesGateway sharedPreferencesGateway;
   SharedPreferencesPresenter({required this.sharedPreferencesGateway});
 
-  Future<bool> setUserId(String userId) async {
-    return await sharedPreferencesGateway.setString('userId', userId);
+  Future<bool> setText(String key, String userId) async {
+    return await sharedPreferencesGateway.setString(key, userId);
   }
 
-  Future<String> getUserId() async {
-    return await _getUserId();
+  Future<String> getText(String key) async {
+    return await _getText(key);
   }
 
-  Future<String> _getUserId() async {
-    return await sharedPreferencesGateway.getString('userId') ?? '';
+  Future<String> _getText(String key) async {
+    return await sharedPreferencesGateway.getString(key) ?? '';
   }
 
-  Future<bool> deleteUserId() async {
-    return await sharedPreferencesGateway.setString('userId', '');
+  Future<bool> deleteText(String key) async {
+    return await sharedPreferencesGateway.setString(key, '');
   }
 
   Future<bool> needSignUp() async {
-    final userName = await _getUserId();
+    final userName = await _getText('userId');
 
     return userName.isEmpty;
   }

@@ -69,7 +69,7 @@ class SignUpPage extends HookConsumerWidget {
 
                     final isSuccess = await ref
                         .read(sharedPreferencesPresenterProvider)
-                        .setUserId(userId);
+                        .setText('userId', userId);
 
                     if (isSuccess) {
                       HomePageRoute().go(context);

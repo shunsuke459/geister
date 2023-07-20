@@ -33,6 +33,16 @@ class GamePresenter extends StateNotifier<AsyncValue<GameState>> {
     }
   }
 
+  Future<bool> deleteKeyWord(String keyWord) async {
+    try {
+      final isSuccess = await gameGateway.deleteKeyWord(keyWord);
+
+      return isSuccess;
+    } catch (_, __) {
+      return false;
+    }
+  }
+
   void searchOpponent(String keyWord) {
     if (state.value == null) return;
 

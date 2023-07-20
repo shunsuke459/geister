@@ -28,6 +28,15 @@ class GameGateway {
     return result.data as bool;
   }
 
+  Future<bool> deleteKeyWord(String keyWord) async {
+    final callable = firebaseFunctions.httpsCallable('deleteKeyWord');
+    final result = await callable.call(<String, dynamic>{
+      'keyWord': keyWord,
+    });
+
+    return result.data as bool;
+  }
+
   Future<bool> setInitialBoard(
     String userId,
     String keyWord,
@@ -38,6 +47,15 @@ class GameGateway {
       'userId': userId,
       'keyWord': keyWord,
       'boardState': gameBoard,
+    });
+
+    return result.data as bool;
+  }
+
+  Future<bool> deleteBoard(String userId) async {
+    final callable = firebaseFunctions.httpsCallable('deleteBoard');
+    final result = await callable.call(<String, dynamic>{
+      'userId': userId,
     });
 
     return result.data as bool;

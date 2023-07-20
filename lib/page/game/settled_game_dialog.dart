@@ -26,7 +26,7 @@ class SettledGameDialog extends HookConsumerWidget {
             .updateRecord(userId, keyWord, isWin);
 
         ref.read(gamePresenterProvider.notifier).gameFinished();
-        ref.read(gameBoardPresenterProvider.notifier).gameFinished();
+        ref.read(gameBoardPresenterProvider.notifier).gameFinished(userId);
       });
 
       return () {};

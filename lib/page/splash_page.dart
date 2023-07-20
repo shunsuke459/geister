@@ -21,7 +21,7 @@ class SplashPage extends ConsumerWidget {
         SignUpPageRoute().go(context);
       } else {
         final userId =
-            await ref.watch(sharedPreferencesPresenterProvider).getUserId();
+            await ref.watch(sharedPreferencesPresenterProvider).getText('userId');
         await ref.read(userPresenterProvider.notifier).getUser(userId);
 
         HomePageRoute().go(context);

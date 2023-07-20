@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:geister/presenter/game/game_board_presenter.dart';
 import 'package:geister/presenter/game/game_presenter.dart';
 import 'package:geister/presenter/shared_preferences/shared_preferences_presenter.dart';
 import 'package:geister/page/widget/custom_text_form_field.dart';
@@ -13,6 +14,24 @@ class HomePage extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final userNameState = useState('');
+
+    useEffect(() {
+      WidgetsBinding.instance.addPostFrameCallback((_) async {
+        final keyWord = await ref
+            .read(sharedPreferencesPresenterProvider)
+            .getText('keyWord');
+        if (keyWord.isEmpty) return;
+
+        ref.read(gamePresenterProvider.notifier).deleteKeyWord(keyWord);
+
+        final userId = ref.watch(userPresenterProvider).value?.id;
+        if (userId == null) return;
+
+        ref.read(gameBoardPresenterProvider.notifier).deleteBoard(userId);
+      });
+
+      return () {};
+    }, []);
 
     return Scaffold(
       body: Center(
@@ -32,7 +51,7 @@ class HomePage extends HookConsumerWidget {
               onPressed: () async {
                 final isSuccess = await ref
                     .read(sharedPreferencesPresenterProvider)
-                    .deleteUserId();
+                    .deleteText('userId');
 
                 if (isSuccess) SignUpPageRoute().go(context);
               },
@@ -40,9 +59,14 @@ class HomePage extends HookConsumerWidget {
             ),
             ElevatedButton(
               onPressed: () async {
+                final initialValue = await ref
+                    .read(sharedPreferencesPresenterProvider)
+                    .getText('keyWord');
+
                 await showDialog(
                   context: context,
-                  builder: (context) => _KeyWordDialog(),
+                  builder: (context) =>
+                      _KeyWordDialog(initialValue: initialValue),
                 );
               },
               child: const Text('create key word'),
@@ -55,10 +79,16 @@ class HomePage extends HookConsumerWidget {
 }
 
 class _KeyWordDialog extends HookConsumerWidget {
+  final String? initialValue;
+  const _KeyWordDialog({
+    Key? key,
+    this.initialValue,
+  }) : super(key: key);
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final focusNode = useFocusNode();
-    final inputValue = useState<String?>(null);
+    final inputValue = useState<String?>(initialValue);
     final isEmpty = inputValue.value != null && inputValue.value!.isEmpty;
     final isOverLength =
         inputValue.value != null && inputValue.value!.length > 10;
@@ -84,6 +114,7 @@ class _KeyWordDialog extends HookConsumerWidget {
               children: [
                 CustomTextFormField(
                   hintText: 'あいことば',
+                  initialValue: initialValue,
                   inputValue: inputValue,
                   canSend: canSend,
                 ),
@@ -104,6 +135,10 @@ class _KeyWordDialog extends HookConsumerWidget {
 
                     final userId = ref.read(userPresenterProvider).value?.id;
                     if (userId == null) return;
+
+                    ref
+                        .read(sharedPreferencesPresenterProvider)
+                        .setText('keyWord', keyWord);
 
                     final isSuccess = await ref
                         .read(gamePresenterProvider.notifier)

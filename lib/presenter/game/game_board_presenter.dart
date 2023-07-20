@@ -296,9 +296,19 @@ class GameBoardPresenter extends StateNotifier<GameBoardState> {
     await _updateGameBoard(userId, keyWord, true);
   }
 
-  void gameFinished() {
+  void gameFinished(String userId) {
     _subscription?.cancel();
     state = GameBoardState(initialArrangement: _initialArrangement());
+
+    _deleteBoard(userId);
+  }
+
+  Future<bool> deleteBoard(String userId) async {
+    return await _deleteBoard(userId);
+  }
+
+  Future<bool> _deleteBoard(String userId) async {
+    return await gameGateway.deleteBoard(userId);
   }
 }
 
