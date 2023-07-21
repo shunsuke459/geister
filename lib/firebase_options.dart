@@ -63,7 +63,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '1045208501347',
     projectId: 'geister-9129f',
     storageBucket: 'geister-9129f.appspot.com',
-    iosClientId: '1045208501347-ktsqn0a3paq4h77jbm6u5m05ivfgb2f2.apps.googleusercontent.com',
+    iosClientId:
+        '1045208501347-ktsqn0a3paq4h77jbm6u5m05ivfgb2f2.apps.googleusercontent.com',
     iosBundleId: 'com.example.geister',
   );
 }
