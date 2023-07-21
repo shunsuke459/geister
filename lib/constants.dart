@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:geister/theme/app_theme_color.dart';
 
 class Constants {
   Constants._();
 
-  static const arrowTop = Icon(
+  static final arrowTop = Icon(
     Icons.arrow_upward_rounded,
-    color: Colors.black,
+    color: AppThemeColor.black.color,
   );
-  static const arrowDown = Icon(
+  static final arrowDown = Icon(
     Icons.arrow_downward_rounded,
-    color: Colors.black,
+    color: AppThemeColor.black.color,
   );
 }

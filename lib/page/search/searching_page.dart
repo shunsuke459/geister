@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:geister/presenter/game/game_presenter.dart';
 import 'package:geister/router/route.dart';
+import 'package:geister/theme/app_text_style.dart';
+import 'package:geister/theme/app_theme_color.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class SearchingPage extends HookConsumerWidget {
@@ -30,12 +32,24 @@ class SearchingPage extends HookConsumerWidget {
           final isMatched = gameState.isMatched;
 
           if (isMatched) {
-            return const Center(
-              child: Text('対戦相手が見つかりました！'),
+            return Center(
+              child: Text(
+                '対戦相手が見つかりました！',
+                style: textStyle(
+                  AppTextStyle.headlineBold,
+                  AppThemeColor.black.color,
+                ),
+              ),
             );
           } else {
-            return const Center(
-              child: Text('対戦相手を探しています...'),
+            return Center(
+              child: Text(
+                '対戦相手を探しています...',
+                style: textStyle(
+                  AppTextStyle.headlineBold,
+                  AppThemeColor.black.color,
+                ),
+              ),
             );
           }
         },

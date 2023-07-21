@@ -35,6 +35,9 @@ class $AssetsIconsGen {
 
   /// File path: assets/icons/geister_icon.svg
   String get geisterIcon => 'assets/icons/geister_icon.svg';
+
+  /// File path: assets/icons/goal_icon.svg
+  String get goalIcon => 'assets/icons/goal_icon.svg';
 }
 
 class Assets {

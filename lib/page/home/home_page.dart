@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:geister/page/widget/app_icon.dart';
 import 'package:geister/presenter/game/game_board_presenter.dart';
 import 'package:geister/presenter/game/game_presenter.dart';
 import 'package:geister/presenter/shared_preferences/shared_preferences_presenter.dart';
 import 'package:geister/page/widget/custom_text_form_field.dart';
 import 'package:geister/presenter/user/user_presenter.dart';
 import 'package:geister/router/route.dart';
+import 'package:geister/theme/app_text_style.dart';
+import 'package:geister/theme/app_theme_color.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class HomePage extends HookConsumerWidget {
@@ -13,8 +16,6 @@ class HomePage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final userNameState = useState('');
-
     useEffect(() {
       WidgetsBinding.instance.addPostFrameCallback((_) async {
         final keyWord = await ref
@@ -38,27 +39,20 @@ class HomePage extends HookConsumerWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(userNameState.value),
-            ElevatedButton(
-              onPressed: () async {
-                final userName =
-                    ref.read(userPresenterProvider).value?.userName ?? '';
-                userNameState.value = userName;
-              },
-              child: const Text('get'),
-            ),
-            ElevatedButton(
-              onPressed: () async {
-                final isSuccess = await ref
-                    .read(sharedPreferencesPresenterProvider)
-                    .deleteText('userId');
+            const AppIcon(),
+            const SizedBox(height: 32),
+            // ElevatedButton(
+            //   onPressed: () async {
+            //     final isSuccess = await ref
+            //         .read(sharedPreferencesPresenterProvider)
+            //         .deleteText('userId');
 
-                if (isSuccess) SignUpPageRoute().go(context);
-              },
-              child: const Text('delete'),
-            ),
-            ElevatedButton(
-              onPressed: () async {
+            //     if (isSuccess) SignUpPageRoute().go(context);
+            //   },
+            //   child: const Text('delete'),
+            // ),
+            GestureDetector(
+              onTap: () async {
                 final initialValue = await ref
                     .read(sharedPreferencesPresenterProvider)
                     .getText('keyWord');
@@ -69,7 +63,24 @@ class HomePage extends HookConsumerWidget {
                       _KeyWordDialog(initialValue: initialValue),
                 );
               },
-              child: const Text('create key word'),
+              child: Text(
+                'ゲームをはじめる',
+                style: textStyle(
+                  AppTextStyle.bigBold,
+                  AppThemeColor.stop.color,
+                ),
+              ),
+            ),
+            const SizedBox(height: 16),
+            GestureDetector(
+              onTap: () async {},
+              child: Text(
+                '対戦成績',
+                style: textStyle(
+                  AppTextStyle.bigBold,
+                  AppThemeColor.accentBlue.color,
+                ),
+              ),
             ),
           ],
         ),
@@ -100,23 +111,34 @@ class _KeyWordDialog extends HookConsumerWidget {
       child: GestureDetector(
         onTap: () => focusNode.unfocus(),
         child: AlertDialog(
+          backgroundColor: AppThemeColor.white.color,
           shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(16)),
           ),
-          title: const Text(
-            'あいことばを入力してください',
-            textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 16),
+          title: Padding(
+            padding: const EdgeInsets.only(bottom: 32),
+            child: Text(
+              'あいことばを入力してください',
+              textAlign: TextAlign.center,
+              style: textStyle(
+                AppTextStyle.titleBold,
+                AppThemeColor.grayMain.color,
+              ),
+            ),
           ),
           content: SizedBox(
-            height: 150,
+            height: 200,
+            width: MediaQuery.of(context).size.width,
             child: Column(
               children: [
-                CustomTextFormField(
-                  hintText: 'あいことば',
-                  initialValue: initialValue,
-                  inputValue: inputValue,
-                  canSend: canSend,
+                SizedBox(
+                  width: 200,
+                  child: CustomTextFormField(
+                    hintText: 'あいことば',
+                    initialValue: initialValue,
+                    inputValue: inputValue,
+                    canSend: canSend,
+                  ),
                 ),
                 const SizedBox(height: 16),
                 Text(
@@ -125,29 +147,45 @@ class _KeyWordDialog extends HookConsumerWidget {
                       : isOverLength
                           ? '10文字以内で入力してください'
                           : '',
-                  style: const TextStyle(color: Colors.red),
+                  style: TextStyle(
+                    color: AppThemeColor.red.color,
+                  ),
                 ),
                 const SizedBox(height: 16),
-                TextButton(
-                  onPressed: () async {
-                    final keyWord = inputValue.value ?? '';
-                    if (!canSend) return;
+                SizedBox(
+                  width: 100,
+                  child: ElevatedButton(
+                    onPressed: () async {
+                      final keyWord = inputValue.value ?? '';
+                      if (!canSend) return;
 
-                    final userId = ref.read(userPresenterProvider).value?.id;
-                    if (userId == null) return;
+                      final userId = ref.read(userPresenterProvider).value?.id;
+                      if (userId == null) return;
 
-                    ref
-                        .read(sharedPreferencesPresenterProvider)
-                        .setText('keyWord', keyWord);
+                      ref
+                          .read(sharedPreferencesPresenterProvider)
+                          .setText('keyWord', keyWord);
 
-                    final isSuccess = await ref
-                        .read(gamePresenterProvider.notifier)
-                        .createKeyWord(userId, keyWord);
+                      final isSuccess = await ref
+                          .read(gamePresenterProvider.notifier)
+                          .createKeyWord(userId, keyWord);
 
-                    if (isSuccess) SearchingPageRoute(keyWord).go(context);
-                  },
-                  child: const Center(
-                    child: Text('作成'),
+                      if (isSuccess) SearchingPageRoute(keyWord).go(context);
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: canSend
+                          ? AppThemeColor.accentBlue.color
+                          : AppThemeColor.graySubtle.color,
+                    ),
+                    child: Center(
+                      child: Text(
+                        '作成',
+                        style: textStyle(
+                          AppTextStyle.bodyRegular,
+                          AppThemeColor.white.color,
+                        ),
+                      ),
+                    ),
                   ),
                 ),
               ],

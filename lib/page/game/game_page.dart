@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:geister/constants.dart';
-import 'package:geister/entity/arrow_type_enum.dart';
 import 'package:geister/entity/piece_type_enum.dart';
 import 'package:geister/entity/square_state.dart';
 import 'package:geister/gen/assets.gen.dart';
@@ -11,6 +10,8 @@ import 'package:geister/page/game/settled_game_dialog.dart';
 import 'package:geister/presenter/game/game_board_presenter.dart';
 import 'package:geister/presenter/game/game_presenter.dart';
 import 'package:geister/presenter/user/user_presenter.dart';
+import 'package:geister/theme/app_text_style.dart';
+import 'package:geister/theme/app_theme_color.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class GamePage extends HookConsumerWidget {
@@ -93,68 +94,73 @@ class GamePage extends HookConsumerWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                if (gameState.value?.readyNum == 2)
+                  Text(
+                    isMyTurn ? 'あなたのターンです' : '相手のターンです',
+                    style: textStyle(
+                      AppTextStyle.headlineBold,
+                      AppThemeColor.black.color,
+                    ),
+                  ),
+                const SizedBox(height: 16),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    if (gameState.value?.readyNum == 2)
-                      Text(isMyTurn ? 'あなたのターンです' : '相手のターンです'),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 16),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          const Text(
-                            '獲られたガイスター',
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: Color(0xFF333333),
-                            ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          '獲られたガイスター',
+                          style: textStyle(
+                            AppTextStyle.bodyRegular,
+                            AppThemeColor.black.color,
                           ),
-                          const SizedBox(height: 4),
-                          Padding(
-                            padding: const EdgeInsets.only(right: 16),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    SvgPicture.asset(
-                                      Assets.icons.allyRedIcon,
-                                      width: 30,
+                        ),
+                        const SizedBox(height: 8),
+                        Padding(
+                          padding: const EdgeInsets.only(right: 16),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  SvgPicture.asset(
+                                    Assets.icons.allyRedIcon,
+                                    width: 30,
+                                  ),
+                                  const SizedBox(width: 16),
+                                  Text(
+                                    stolenRedPiece.value.toString(),
+                                    style: textStyle(
+                                      AppTextStyle.headlineBold,
+                                      AppThemeColor.stop.color,
                                     ),
-                                    const SizedBox(width: 16),
-                                    Text(
-                                      stolenRedPiece.value.toString(),
-                                      style: const TextStyle(
-                                        fontSize: 24,
-                                        color: Color(0xffdf5656),
-                                      ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(width: 16),
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  SvgPicture.asset(
+                                    Assets.icons.allyBlueIcon,
+                                    width: 30,
+                                  ),
+                                  const SizedBox(width: 16),
+                                  Text(
+                                    stolenBluePiece.value.toString(),
+                                    style: textStyle(
+                                      AppTextStyle.headlineBold,
+                                      AppThemeColor.accentBlue.color,
                                     ),
-                                  ],
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    SvgPicture.asset(
-                                      Assets.icons.allyBlueIcon,
-                                      width: 30,
-                                    ),
-                                    const SizedBox(width: 16),
-                                    Text(
-                                      stolenBluePiece.value.toString(),
-                                      style: const TextStyle(
-                                        fontSize: 24,
-                                        color: Color(0xff3aabd2),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
+                                  ),
+                                ],
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
@@ -257,23 +263,23 @@ class GamePage extends HookConsumerWidget {
                         child: Container(
                           decoration: BoxDecoration(
                             border: Border(
-                              right: const BorderSide(
-                                color: Colors.black,
+                              right: BorderSide(
+                                color: AppThemeColor.black.color,
                                 width: 1.0,
                               ),
-                              bottom: const BorderSide(
-                                color: Colors.black,
+                              bottom: BorderSide(
+                                color: AppThemeColor.black.color,
                                 width: 1.0,
                               ),
                               top: index >= 0 && index <= 5
-                                  ? const BorderSide(
-                                      color: Colors.black,
+                                  ? BorderSide(
+                                      color: AppThemeColor.black.color,
                                       width: 1.0,
                                     )
                                   : BorderSide.none,
                               left: index % 6 == 0
-                                  ? const BorderSide(
-                                      color: Colors.black,
+                                  ? BorderSide(
+                                      color: AppThemeColor.black.color,
                                       width: 1.0,
                                     )
                                   : BorderSide.none,
@@ -287,60 +293,57 @@ class GamePage extends HookConsumerWidget {
                     },
                   ),
                 ],
-                Padding(
-                  padding: const EdgeInsets.only(left: 16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        '獲ったガイスター',
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Color(0xFF333333),
-                        ),
+                const SizedBox(height: 16),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      '獲ったガイスター',
+                      style: textStyle(
+                        AppTextStyle.bodyRegular,
+                        AppThemeColor.black.color,
                       ),
-                      const SizedBox(height: 4),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 16),
-                        child: Column(
+                    ),
+                    const SizedBox(height: 8),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Column(
                           children: [
-                            Row(
-                              children: [
-                                SvgPicture.asset(
-                                  Assets.icons.allyRedIcon,
-                                  width: 30,
-                                ),
-                                const SizedBox(width: 16),
-                                Text(
-                                  stoleRedPiece.value.toString(),
-                                  style: const TextStyle(
-                                    fontSize: 24,
-                                    color: Color(0xffdf5656),
-                                  ),
-                                ),
-                              ],
+                            SvgPicture.asset(
+                              Assets.icons.allyRedIcon,
+                              width: 30,
                             ),
-                            Row(
-                              children: [
-                                SvgPicture.asset(
-                                  Assets.icons.allyBlueIcon,
-                                  width: 30,
-                                ),
-                                const SizedBox(width: 16),
-                                Text(
-                                  stoleBluePiece.value.toString(),
-                                  style: const TextStyle(
-                                    fontSize: 24,
-                                    color: Color(0xff3aabd2),
-                                  ),
-                                ),
-                              ],
+                            const SizedBox(width: 16),
+                            Text(
+                              stoleRedPiece.value.toString(),
+                              style: textStyle(
+                                AppTextStyle.headlineBold,
+                                AppThemeColor.stop.color,
+                              ),
                             ),
                           ],
                         ),
-                      ),
-                    ],
-                  ),
+                        const SizedBox(width: 16),
+                        Column(
+                          children: [
+                            SvgPicture.asset(
+                              Assets.icons.allyBlueIcon,
+                              width: 30,
+                            ),
+                            const SizedBox(width: 16),
+                            Text(
+                              stoleBluePiece.value.toString(),
+                              style: textStyle(
+                                AppTextStyle.headlineBold,
+                                AppThemeColor.accentBlue.color,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
               ],
             ),
@@ -349,13 +352,14 @@ class GamePage extends HookConsumerWidget {
             Container(
               width: double.infinity,
               height: double.infinity,
-              color: Colors.black.withOpacity(0.5),
+              color: AppThemeColor.blackOpacity.color,
             ),
-            const Center(
+            Center(
               child: Text(
-                '対戦相手が初期配置を設定中です',
-                style: TextStyle(
-                  color: Colors.white,
+                '対戦相手が初期配置を設定中です...',
+                style: textStyle(
+                  AppTextStyle.bodyRegular,
+                  AppThemeColor.white.color,
                 ),
               ),
             ),
@@ -405,7 +409,14 @@ class _GoalArrow extends ConsumerWidget {
                   Assets.icons.arrowTop,
                   width: 42,
                 )
-              : Container(),
+              : SvgPicture.asset(
+                  Assets.icons.goalIcon,
+                  width: 42,
+                  colorFilter: ColorFilter.mode(
+                    AppThemeColor.accentYellow.color,
+                    BlendMode.srcATop,
+                  ),
+                ),
         ),
       ),
     );

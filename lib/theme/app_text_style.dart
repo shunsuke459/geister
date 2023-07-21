@@ -63,12 +63,12 @@ extension _AppTextStyleExtension on AppTextStyle {
         );
       case AppTextStyle.headlineBold:
         return const TextStyle(
-          fontSize: 21,
+          fontSize: 24,
           fontWeight: FontWeight.w700,
         );
       case AppTextStyle.bigBold:
         return const TextStyle(
-          fontSize: 24,
+          fontSize: 32,
           fontWeight: FontWeight.w700,
         );
     }

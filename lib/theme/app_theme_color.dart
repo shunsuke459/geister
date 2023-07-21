@@ -2,6 +2,7 @@ import 'dart:ui';
 
 enum AppThemeColor {
   black,
+  blackOpacity,
   white,
   stop,
   red,
@@ -11,6 +12,7 @@ enum AppThemeColor {
   graySub,
   graySubtle,
   grayBorder,
+  accentYellow,
 }
 
 extension AppThemeColorExtension on AppThemeColor {
@@ -18,6 +20,8 @@ extension AppThemeColorExtension on AppThemeColor {
     switch (this) {
       case AppThemeColor.black:
         return const Color(0xFF000000);
+      case AppThemeColor.blackOpacity:
+        return const Color(0xFF000000).withOpacity(0.5);
       case AppThemeColor.white:
         return const Color(0xFFFFFFFF);
       case AppThemeColor.stop:
@@ -36,6 +40,8 @@ extension AppThemeColorExtension on AppThemeColor {
         return const Color(0xFFCCCCCC);
       case AppThemeColor.grayBorder:
         return const Color(0xFFF0F0F0);
+      case AppThemeColor.accentYellow:
+        return const Color(0xFFFFD334);
     }
   }
 }

@@ -26,14 +26,14 @@ class CustomTextFormField extends TextFormField {
             enabledBorder: OutlineInputBorder(
               borderSide: BorderSide(
                 color: inputValue.value == null || canSend
-                    ? AppThemeColor.grayBorder.color
+                    ? AppThemeColor.graySub.color
                     : AppThemeColor.red.color,
               ),
             ),
             focusedBorder: OutlineInputBorder(
               borderSide: BorderSide(
                 color: inputValue.value == null || canSend
-                    ? AppThemeColor.grayBorder.color
+                    ? AppThemeColor.graySub.color
                     : AppThemeColor.red.color,
               ),
             ),

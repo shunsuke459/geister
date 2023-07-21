@@ -6,6 +6,8 @@ import 'package:geister/gen/assets.gen.dart';
 import 'package:geister/presenter/game/game_board_presenter.dart';
 import 'package:geister/presenter/game/game_presenter.dart';
 import 'package:geister/presenter/user/user_presenter.dart';
+import 'package:geister/theme/app_text_style.dart';
+import 'package:geister/theme/app_theme_color.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -26,55 +28,22 @@ class InitialArrangementDialog extends HookConsumerWidget {
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(16)),
       ),
-      title: const Text(
-        '初期配置を設定してください',
-        textAlign: TextAlign.center,
-        style: TextStyle(fontSize: 16),
+      title: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 24),
+        child: Text(
+          '初期配置を設定してください',
+          textAlign: TextAlign.center,
+          style: textStyle(
+            AppTextStyle.headlineBold,
+            AppThemeColor.black.color,
+          ),
+        ),
       ),
       content: SizedBox(
         width: width,
-        height: 600,
+        height: 550,
         child: Column(
           children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 16),
-              child: Column(
-                children: [
-                  Row(
-                    children: [
-                      SvgPicture.asset(
-                        Assets.icons.allyRedIcon,
-                        width: 30,
-                      ),
-                      const SizedBox(width: 16),
-                      Text(
-                        redPieceNum.value.toString(),
-                        style: const TextStyle(
-                          fontSize: 24,
-                          color: Color(0xffdf5656),
-                        ),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      SvgPicture.asset(
-                        Assets.icons.allyBlueIcon,
-                        width: 30,
-                      ),
-                      const SizedBox(width: 16),
-                      Text(
-                        bluePieceNum.value.toString(),
-                        style: const TextStyle(
-                          fontSize: 24,
-                          color: Color(0xff3aabd2),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
             GridView.builder(
               shrinkWrap: true,
               itemCount: 2 * 4,
@@ -125,23 +94,23 @@ class InitialArrangementDialog extends HookConsumerWidget {
                   child: Container(
                     decoration: BoxDecoration(
                       border: Border(
-                        right: const BorderSide(
-                          color: Colors.black,
+                        right: BorderSide(
+                          color: AppThemeColor.black.color,
                           width: 1.0,
                         ),
-                        bottom: const BorderSide(
-                          color: Colors.black,
+                        bottom: BorderSide(
+                          color: AppThemeColor.black.color,
                           width: 1.0,
                         ),
                         top: index >= 0 && index <= 3
-                            ? const BorderSide(
-                                color: Colors.black,
+                            ? BorderSide(
+                                color: AppThemeColor.black.color,
                                 width: 1.0,
                               )
                             : BorderSide.none,
                         left: index % 4 == 0
-                            ? const BorderSide(
-                                color: Colors.black,
+                            ? BorderSide(
+                                color: AppThemeColor.black.color,
                                 width: 1.0,
                               )
                             : BorderSide.none,
@@ -166,14 +135,43 @@ class InitialArrangementDialog extends HookConsumerWidget {
                 );
               },
             ),
-            const Column(
+            const SizedBox(height: 16),
+            Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('タップでガイスターを配置'),
-                Text('ダブルタップで配置したガイスターをキャンセル'),
+                Text(
+                  '操作方法',
+                  style: textStyle(
+                    AppTextStyle.titleBold,
+                    AppThemeColor.black.color,
+                  ),
+                ),
+                Text(
+                  '1. ガイスターをタップして色を選択',
+                  style: textStyle(
+                    AppTextStyle.bodyRegular,
+                    AppThemeColor.black.color,
+                  ),
+                ),
+                Text(
+                  '2. マス目をタップしてガイスターを配置',
+                  style: textStyle(
+                    AppTextStyle.bodyRegular,
+                    AppThemeColor.black.color,
+                  ),
+                ),
+                Text(
+                  '3. ダブルタップでガイスターをキャンセル',
+                  style: textStyle(
+                    AppTextStyle.bodyRegular,
+                    AppThemeColor.black.color,
+                  ),
+                ),
               ],
             ),
+            const SizedBox(height: 24),
             Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 GestureDetector(
                   onTap: () {
@@ -181,13 +179,28 @@ class InitialArrangementDialog extends HookConsumerWidget {
 
                     redSelected.value = true;
                   },
-                  child: SvgPicture.asset(
-                    Assets.icons.allyRedIcon,
-                    width: 80,
-                    colorFilter: ColorFilter.mode(
-                      redSelected.value ? Colors.red : Colors.grey,
-                      BlendMode.srcATop,
-                    ),
+                  child: Column(
+                    children: [
+                      SvgPicture.asset(
+                        Assets.icons.allyRedIcon,
+                        width: 80,
+                        colorFilter: ColorFilter.mode(
+                          redSelected.value
+                              ? AppThemeColor.stop.color
+                              : AppThemeColor.graySub.color,
+                          BlendMode.srcATop,
+                        ),
+                      ),
+                      Text(
+                        redPieceNum.value.toString(),
+                        style: textStyle(
+                          AppTextStyle.headlineBold,
+                          redSelected.value
+                              ? AppThemeColor.stop.color
+                              : AppThemeColor.graySub.color,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
                 const SizedBox(width: 16),
@@ -197,17 +210,33 @@ class InitialArrangementDialog extends HookConsumerWidget {
 
                     redSelected.value = false;
                   },
-                  child: SvgPicture.asset(
-                    Assets.icons.allyBlueIcon,
-                    width: 80,
-                    colorFilter: ColorFilter.mode(
-                      redSelected.value ? Colors.grey : Colors.blue,
-                      BlendMode.srcATop,
-                    ),
+                  child: Column(
+                    children: [
+                      SvgPicture.asset(
+                        Assets.icons.allyBlueIcon,
+                        width: 80,
+                        colorFilter: ColorFilter.mode(
+                          redSelected.value
+                              ? AppThemeColor.graySub.color
+                              : AppThemeColor.accentBlue.color,
+                          BlendMode.srcATop,
+                        ),
+                      ),
+                      Text(
+                        bluePieceNum.value.toString(),
+                        style: textStyle(
+                          AppTextStyle.headlineBold,
+                          redSelected.value
+                              ? AppThemeColor.graySub.color
+                              : AppThemeColor.accentBlue.color,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],
             ),
+            const SizedBox(height: 24),
             ElevatedButton(
               onPressed: () async {
                 if (redPieceNum.value > 0 || bluePieceNum.value > 0) return;
@@ -225,13 +254,14 @@ class InitialArrangementDialog extends HookConsumerWidget {
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: redPieceNum.value > 0 || bluePieceNum.value > 0
-                    ? Colors.grey
-                    : Colors.blue,
+                    ? AppThemeColor.graySubtle.color
+                    : AppThemeColor.accentBlue.color,
               ),
-              child: const Text(
+              child: Text(
                 '決定',
-                style: TextStyle(
-                  color: Colors.white,
+                style: textStyle(
+                  AppTextStyle.titleRegular,
+                  AppThemeColor.white.color,
                 ),
               ),
             ),
