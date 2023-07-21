@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:geister/page/game/game_page.dart';
 import 'package:geister/page/home/sign_up_page.dart';
+import 'package:geister/page/record/record_page.dart';
 import 'package:geister/page/search/searching_page.dart';
 import 'package:geister/page/splash_page.dart';
 import 'package:geister/page/home/home_page.dart';
@@ -50,4 +51,14 @@ class SearchingPageRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) =>
       SearchingPage(keyWord: keyWord);
+}
+
+@TypedGoRoute<RecordPageRoute>(
+  path: '/record',
+)
+class RecordPageRoute extends GoRouteData {
+  const RecordPageRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) => const RecordPage();
 }

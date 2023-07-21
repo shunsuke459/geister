@@ -12,6 +12,7 @@ List<RouteBase> get $appRoutes => [
       $signUpPageRoute,
       $gamePageRoute,
       $searchingPageRoute,
+      $recordPageRoute,
     ];
 
 RouteBase get $splashPageRoute => GoRouteData.$route(
@@ -115,6 +116,29 @@ extension $SearchingPageRouteExtension on SearchingPageRoute {
 
   String get location => GoRouteData.$location(
         '/searching/${Uri.encodeComponent(keyWord)}',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $recordPageRoute => GoRouteData.$route(
+      path: '/record',
+      factory: $RecordPageRouteExtension._fromState,
+    );
+
+extension $RecordPageRouteExtension on RecordPageRoute {
+  static RecordPageRoute _fromState(GoRouterState state) =>
+      const RecordPageRoute();
+
+  String get location => GoRouteData.$location(
+        '/record',
       );
 
   void go(BuildContext context) => context.go(location);

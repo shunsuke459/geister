@@ -73,7 +73,9 @@ class HomePage extends HookConsumerWidget {
             ),
             const SizedBox(height: 16),
             GestureDetector(
-              onTap: () async {},
+              onTap: () async {
+                const RecordPageRoute().push(context);
+              },
               child: Text(
                 '対戦成績',
                 style: textStyle(
