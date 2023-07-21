@@ -117,19 +117,35 @@ class _KeyWordDialog extends HookConsumerWidget {
           shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(16)),
           ),
-          title: Padding(
-            padding: const EdgeInsets.only(bottom: 32),
-            child: Text(
-              'あいことばを入力してください',
-              textAlign: TextAlign.center,
-              style: textStyle(
-                AppTextStyle.titleBold,
-                AppThemeColor.grayMain.color,
+          title: Stack(
+            alignment: Alignment.center,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(top: 40, bottom: 32),
+                child: Text(
+                  'あいことばを入力してください',
+                  textAlign: TextAlign.center,
+                  style: textStyle(
+                    AppTextStyle.titleBold,
+                    AppThemeColor.grayMain.color,
+                  ),
+                ),
               ),
-            ),
+              Positioned(
+                right: -20,
+                top: -15,
+                child: TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: Icon(
+                    Icons.close_rounded,
+                    color: AppThemeColor.accentBlue.color,
+                  ),
+                ),
+              ),
+            ],
           ),
           content: SizedBox(
-            height: 200,
+            height: 150,
             width: MediaQuery.of(context).size.width,
             child: Column(
               children: [
