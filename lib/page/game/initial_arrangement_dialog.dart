@@ -22,6 +22,7 @@ class InitialArrangementDialog extends HookConsumerWidget {
     final redSelected = useState<bool>(true);
     final initialArrangement =
         ref.watch(gameBoardPresenterProvider).initialArrangement;
+    final isLoading = useState(false);
 
     return AlertDialog(
       insetPadding: const EdgeInsets.symmetric(horizontal: 16),
@@ -237,34 +238,45 @@ class InitialArrangementDialog extends HookConsumerWidget {
               ],
             ),
             const SizedBox(height: 24),
-            ElevatedButton(
-              onPressed: () async {
-                if (redPieceNum.value > 0 || bluePieceNum.value > 0) return;
+            isLoading.value
+                ? CircularProgressIndicator(
+                    color: AppThemeColor.graySub.color,
+                  )
+                : ElevatedButton(
+                    onPressed: () async {
+                      if (redPieceNum.value > 0 || bluePieceNum.value > 0)
+                        return;
 
-                final userId = ref.watch(userPresenterProvider).value?.id;
-                if (userId == null) return;
-                final keyWord = ref.watch(gamePresenterProvider).value?.keyWord;
-                if (keyWord == null) return;
+                      final userId = ref.watch(userPresenterProvider).value?.id;
+                      if (userId == null) return;
+                      final keyWord =
+                          ref.watch(gamePresenterProvider).value?.keyWord;
+                      if (keyWord == null) return;
 
-                await ref
-                    .read(gameBoardPresenterProvider.notifier)
-                    .settleInitialBoard(userId, keyWord);
+                      isLoading.value = true;
 
-                context.pop();
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: redPieceNum.value > 0 || bluePieceNum.value > 0
-                    ? AppThemeColor.graySubtle.color
-                    : AppThemeColor.accentBlue.color,
-              ),
-              child: Text(
-                '決定',
-                style: textStyle(
-                  AppTextStyle.titleRegular,
-                  AppThemeColor.white.color,
-                ),
-              ),
-            ),
+                      await ref
+                          .read(gameBoardPresenterProvider.notifier)
+                          .settleInitialBoard(userId, keyWord);
+
+                      context.pop();
+
+                      isLoading.value = false;
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor:
+                          redPieceNum.value > 0 || bluePieceNum.value > 0
+                              ? AppThemeColor.graySubtle.color
+                              : AppThemeColor.accentBlue.color,
+                    ),
+                    child: Text(
+                      '決定',
+                      style: textStyle(
+                        AppTextStyle.titleRegular,
+                        AppThemeColor.white.color,
+                      ),
+                    ),
+                  ),
           ],
         ),
       ),

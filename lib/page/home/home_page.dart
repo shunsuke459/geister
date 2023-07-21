@@ -107,6 +107,7 @@ class _KeyWordDialog extends HookConsumerWidget {
         inputValue.value != null && inputValue.value!.length > 10;
     final hasText = RegExp(r'\S').hasMatch(inputValue.value ?? '');
     final canSend = !isEmpty && !isOverLength && hasText;
+    final isLoading = useState(false);
 
     return Focus(
       focusNode: focusNode,
@@ -170,42 +171,52 @@ class _KeyWordDialog extends HookConsumerWidget {
                   ),
                 ),
                 const SizedBox(height: 16),
-                SizedBox(
-                  width: 100,
-                  child: ElevatedButton(
-                    onPressed: () async {
-                      final keyWord = inputValue.value ?? '';
-                      if (!canSend) return;
+                isLoading.value
+                    ? CircularProgressIndicator(
+                        color: AppThemeColor.graySub.color,
+                      )
+                    : SizedBox(
+                        width: 100,
+                        child: ElevatedButton(
+                          onPressed: () async {
+                            final keyWord = inputValue.value ?? '';
+                            if (!canSend) return;
 
-                      final userId = ref.read(userPresenterProvider).value?.id;
-                      if (userId == null) return;
+                            final userId =
+                                ref.read(userPresenterProvider).value?.id;
+                            if (userId == null) return;
 
-                      ref
-                          .read(sharedPreferencesPresenterProvider)
-                          .setText('keyWord', keyWord);
+                            isLoading.value = true;
 
-                      final isSuccess = await ref
-                          .read(gamePresenterProvider.notifier)
-                          .createKeyWord(userId, keyWord);
+                            ref
+                                .read(sharedPreferencesPresenterProvider)
+                                .setText('keyWord', keyWord);
 
-                      if (isSuccess) SearchingPageRoute(keyWord).go(context);
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: canSend
-                          ? AppThemeColor.accentBlue.color
-                          : AppThemeColor.graySubtle.color,
-                    ),
-                    child: Center(
-                      child: Text(
-                        '作成',
-                        style: textStyle(
-                          AppTextStyle.bodyRegular,
-                          AppThemeColor.white.color,
+                            final isSuccess = await ref
+                                .read(gamePresenterProvider.notifier)
+                                .createKeyWord(userId, keyWord);
+
+                            if (isSuccess)
+                              SearchingPageRoute(keyWord).go(context);
+
+                            isLoading.value = false;
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: canSend
+                                ? AppThemeColor.accentBlue.color
+                                : AppThemeColor.graySubtle.color,
+                          ),
+                          child: Center(
+                            child: Text(
+                              '作成',
+                              style: textStyle(
+                                AppTextStyle.bodyRegular,
+                                AppThemeColor.white.color,
+                              ),
+                            ),
+                          ),
                         ),
                       ),
-                    ),
-                  ),
-                ),
               ],
             ),
           ),
