@@ -110,7 +110,7 @@ class GamePage extends HookConsumerWidget {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text(
-                          '獲られたガイスター',
+                          '獲られたコマ',
                           style: textStyle(
                             AppTextStyle.bodyRegular,
                             AppThemeColor.black.color,
@@ -298,7 +298,7 @@ class GamePage extends HookConsumerWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Text(
-                      '獲ったガイスター',
+                      '獲ったコマ',
                       style: textStyle(
                         AppTextStyle.bodyRegular,
                         AppThemeColor.black.color,

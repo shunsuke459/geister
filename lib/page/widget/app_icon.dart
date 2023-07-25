@@ -34,7 +34,7 @@ class AppIcon extends StatelessWidget {
                   top: 2,
                   left: 2,
                   child: Text(
-                    'Geister',
+                    'Fantasmi',
                     style: TextStyle(
                       fontSize: textSize,
                       fontFamily: 'Cherry_Bomb_One',
@@ -44,7 +44,7 @@ class AppIcon extends StatelessWidget {
                 ),
                 Positioned(
                   child: Text(
-                    'Geister',
+                    'Fantasmi',
                     style: TextStyle(
                       fontSize: textSize,
                       fontFamily: 'Cherry_Bomb_One',

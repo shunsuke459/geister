@@ -148,21 +148,21 @@ class InitialArrangementDialog extends HookConsumerWidget {
                   ),
                 ),
                 Text(
-                  '1. ガイスターをタップして色を選択',
+                  '1. コマをタップして色を選択',
                   style: textStyle(
                     AppTextStyle.bodyRegular,
                     AppThemeColor.black.color,
                   ),
                 ),
                 Text(
-                  '2. マス目をタップしてガイスターを配置',
+                  '2. マス目をタップしてコマを配置',
                   style: textStyle(
                     AppTextStyle.bodyRegular,
                     AppThemeColor.black.color,
                   ),
                 ),
                 Text(
-                  '3. ダブルタップでガイスターをキャンセル',
+                  '3. ダブルタップでコマをキャンセル',
                   style: textStyle(
                     AppTextStyle.bodyRegular,
                     AppThemeColor.black.color,
