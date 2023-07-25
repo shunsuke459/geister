@@ -13,6 +13,7 @@ List<RouteBase> get $appRoutes => [
       $gamePageRoute,
       $searchingPageRoute,
       $recordPageRoute,
+      $rulePageRoute,
     ];
 
 RouteBase get $splashPageRoute => GoRouteData.$route(
@@ -139,6 +140,28 @@ extension $RecordPageRouteExtension on RecordPageRoute {
 
   String get location => GoRouteData.$location(
         '/record',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $rulePageRoute => GoRouteData.$route(
+      path: '/rule',
+      factory: $RulePageRouteExtension._fromState,
+    );
+
+extension $RulePageRouteExtension on RulePageRoute {
+  static RulePageRoute _fromState(GoRouterState state) => const RulePageRoute();
+
+  String get location => GoRouteData.$location(
+        '/rule',
       );
 
   void go(BuildContext context) => context.go(location);

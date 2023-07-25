@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:geister/page/game/game_page.dart';
 import 'package:geister/page/home/sign_up_page.dart';
 import 'package:geister/page/record/record_page.dart';
+import 'package:geister/page/rule/rule_page.dart';
 import 'package:geister/page/search/searching_page.dart';
 import 'package:geister/page/splash_page.dart';
 import 'package:geister/page/home/home_page.dart';
@@ -61,4 +62,14 @@ class RecordPageRoute extends GoRouteData {
 
   @override
   Widget build(BuildContext context, GoRouterState state) => const RecordPage();
+}
+
+@TypedGoRoute<RulePageRoute>(
+  path: '/rule',
+)
+class RulePageRoute extends GoRouteData {
+  const RulePageRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) => const RulePage();
 }

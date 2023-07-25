@@ -37,16 +37,40 @@ class GameBoardPresenter extends StateNotifier<GameBoardState> {
   }
 
   Future<void> settleInitialBoard(String userId, String keyWord) async {
-    final List<List<String>> gameBoard = List.generate(
+    final List<List<SquareState>> gameBoard = List.generate(
+      6,
+      (row) => List.generate(
+        6,
+        (column) => SquareState(
+          row: row,
+          column: column,
+          pieceType: PieceTypeEnum.empty,
+          arrowType: ArrowTypeEnum.none,
+        ),
+      ),
+    );
+
+    final List<List<String>> gameBoardStr = List.generate(
       6,
       (row) => List.generate(
         6,
         (column) {
           if (row >= 0 && row <= 1 && column >= 1 && column <= 4) {
+            gameBoard[row][column] = gameBoard[row][column].copyWith(
+              pieceType: PieceTypeEnum.enemyGeister,
+            );
+
             return PieceTypeEnum.enemyGeister.name;
           } else if (row >= 4 && row <= 5 && column >= 1 && column <= 4) {
             final initialRow = row - 4;
             final initialColumn = column - 1;
+
+            gameBoard[row][column] = gameBoard[row][column].copyWith(
+              pieceType:
+                  state.initialArrangement[initialRow][initialColumn].isRedPiece
+                      ? PieceTypeEnum.redGeister
+                      : PieceTypeEnum.blueGeister,
+            );
 
             return state
                     .initialArrangement[initialRow][initialColumn].isRedPiece
@@ -59,7 +83,12 @@ class GameBoardPresenter extends StateNotifier<GameBoardState> {
       ),
     );
 
-    await gameGateway.setInitialBoard(userId, keyWord, gameBoard);
+    state = state.copyWith(
+      boardStateList: GameBoard(gameBoard: gameBoard),
+      
+    );
+
+    await gameGateway.setInitialBoard(userId, keyWord, gameBoardStr);
 
     _getBoardState(userId);
   }

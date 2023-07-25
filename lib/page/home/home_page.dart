@@ -51,8 +51,8 @@ class HomePage extends HookConsumerWidget {
             //   },
             //   child: const Text('delete'),
             // ),
-            GestureDetector(
-              onTap: () async {
+            ElevatedButton(
+              onPressed: () async {
                 final initialValue = await ref
                     .read(sharedPreferencesPresenterProvider)
                     .getText('keyWord');
@@ -63,24 +63,46 @@ class HomePage extends HookConsumerWidget {
                       _KeyWordDialog(initialValue: initialValue),
                 );
               },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppThemeColor.stop.color,
+              ),
               child: Text(
                 'ゲームをはじめる',
                 style: textStyle(
-                  AppTextStyle.bigBold,
-                  AppThemeColor.stop.color,
+                  AppTextStyle.titleBold,
+                  AppThemeColor.white.color,
                 ),
               ),
             ),
             const SizedBox(height: 16),
-            GestureDetector(
-              onTap: () async {
+            ElevatedButton(
+              onPressed: () async {
+                const RulePageRoute().push(context);
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppThemeColor.accentBlue.color,
+              ),
+              child: Text(
+                '遊び方',
+                style: textStyle(
+                  AppTextStyle.titleBold,
+                  AppThemeColor.white.color,
+                ),
+              ),
+            ),
+            const SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: () async {
                 const RecordPageRoute().push(context);
               },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppThemeColor.accentYellow.color,
+              ),
               child: Text(
                 '対戦成績',
                 style: textStyle(
-                  AppTextStyle.bigBold,
-                  AppThemeColor.accentBlue.color,
+                  AppTextStyle.titleBold,
+                  AppThemeColor.white.color,
                 ),
               ),
             ),
