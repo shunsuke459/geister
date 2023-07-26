@@ -87,43 +87,54 @@ class GamePage extends HookConsumerWidget {
     final isMyTurn = gameBoardState.isMyTurn;
 
     return Scaffold(
-      body: Stack(
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                if (gameState.value?.readyNum == 2)
-                  Text(
-                    isMyTurn ? 'あなたのターンです' : '相手のターンです',
-                    style: textStyle(
-                      AppTextStyle.headlineBold,
-                      AppThemeColor.black.color,
+      body: SafeArea(
+        child: Stack(
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  if (gameState.value?.readyNum == 2)
+                    Text(
+                      isMyTurn ? 'あなたのターンです' : '相手のターンです',
+                      style: textStyle(
+                        AppTextStyle.headlineBold,
+                        AppThemeColor.black.color,
+                      ),
                     ),
-                  ),
-                const SizedBox(height: 16),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text(
-                          '獲られたコマ',
-                          style: textStyle(
-                            AppTextStyle.bodyRegular,
-                            AppThemeColor.black.color,
+                  const SizedBox(height: 32),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          RichText(
+                            text: TextSpan(
+                              children: [
+                                TextSpan(
+                                  text: '獲った',
+                                  style: textStyle(
+                                    AppTextStyle.bodyBold,
+                                    AppThemeColor.black.color,
+                                  ),
+                                ),
+                                TextSpan(
+                                  text: 'コマ',
+                                  style: textStyle(
+                                    AppTextStyle.bodyRegular,
+                                    AppThemeColor.black.color,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                        const SizedBox(height: 8),
-                        Padding(
-                          padding: const EdgeInsets.only(right: 16),
-                          child: Row(
+                          const SizedBox(height: 8),
+                          Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Column(
-                                mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
                                   SvgPicture.asset(
                                     Assets.icons.allyRedIcon,
@@ -131,7 +142,7 @@ class GamePage extends HookConsumerWidget {
                                   ),
                                   const SizedBox(width: 16),
                                   Text(
-                                    stolenRedPiece.value.toString(),
+                                    stoleRedPiece.value.toString(),
                                     style: textStyle(
                                       AppTextStyle.headlineBold,
                                       AppThemeColor.stop.color,
@@ -141,7 +152,6 @@ class GamePage extends HookConsumerWidget {
                               ),
                               const SizedBox(width: 16),
                               Column(
-                                mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
                                   SvgPicture.asset(
                                     Assets.icons.allyBlueIcon,
@@ -149,7 +159,7 @@ class GamePage extends HookConsumerWidget {
                                   ),
                                   const SizedBox(width: 16),
                                   Text(
-                                    stolenBluePiece.value.toString(),
+                                    stoleBluePiece.value.toString(),
                                     style: textStyle(
                                       AppTextStyle.headlineBold,
                                       AppThemeColor.accentBlue.color,
@@ -159,212 +169,231 @@ class GamePage extends HookConsumerWidget {
                               ),
                             ],
                           ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-                if (gameBoardState.boardStateList?.gameBoard != null) ...[
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      _GoalArrow(
-                        isLeft: true,
-                        showGoalArrow: showLeftGoalArrow,
+                        ],
                       ),
-                      _GoalArrow(
-                        isLeft: false,
-                        showGoalArrow: showRightGoalArrow,
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          RichText(
+                            text: TextSpan(
+                              children: [
+                                TextSpan(
+                                  text: '獲られた',
+                                  style: textStyle(
+                                    AppTextStyle.bodyBold,
+                                    AppThemeColor.black.color,
+                                  ),
+                                ),
+                                TextSpan(
+                                  text: 'コマ',
+                                  style: textStyle(
+                                    AppTextStyle.bodyRegular,
+                                    AppThemeColor.black.color,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          Padding(
+                            padding: const EdgeInsets.only(right: 16),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    SvgPicture.asset(
+                                      Assets.icons.allyRedIcon,
+                                      width: 30,
+                                    ),
+                                    const SizedBox(width: 16),
+                                    Text(
+                                      stolenRedPiece.value.toString(),
+                                      style: textStyle(
+                                        AppTextStyle.headlineBold,
+                                        AppThemeColor.stop.color,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(width: 16),
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    SvgPicture.asset(
+                                      Assets.icons.allyBlueIcon,
+                                      width: 30,
+                                    ),
+                                    const SizedBox(width: 16),
+                                    Text(
+                                      stolenBluePiece.value.toString(),
+                                      style: textStyle(
+                                        AppTextStyle.headlineBold,
+                                        AppThemeColor.accentBlue.color,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
-                  GridView.builder(
-                    shrinkWrap: true,
-                    itemCount: 6 * 6,
-                    physics: const NeverScrollableScrollPhysics(),
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 6,
-                    ),
-                    padding: const EdgeInsets.all(0),
-                    itemBuilder: (context, index) {
-                      final column = index % 6;
-                      final row = index ~/ 6;
-                      final boardState =
-                          gameBoardState.boardStateList!.gameBoard[row][column];
-                      final isTopCorner = index == 0 || index == 5;
-                      final isBottomCorner = index == 30 || index == 35;
-                      final piece = boardState.arrowIcon.isNotEmpty
-                          ? SvgPicture.asset(
-                              boardState.arrowIcon,
-                              width: 42,
-                            )
-                          : boardState.pieceIcon.isNotEmpty
-                              ? SvgPicture.asset(
-                                  boardState.pieceIcon,
-                                  width: 42,
-                                )
-                              : isTopCorner
-                                  ? Constants.arrowTop
-                                  : isBottomCorner
-                                      ? Constants.arrowDown
-                                      : Container();
-
-                      return GestureDetector(
-                        onTap: () async {
-                          if (!isMyTurn) return;
-
-                          if (!gameBoardState.displayArrow &&
-                              boardState.pieceType.isAllyPiece) {
-                            gameBoardPresenter.showArrow(row, column);
-
-                            if (row == 0 &&
-                                column == 0 &&
-                                boardState.pieceType.isBluePiece) {
-                              showLeftGoalArrow.value = true;
-                            } else if (row == 0 &&
-                                column == 5 &&
-                                boardState.pieceType.isBluePiece) {
-                              showRightGoalArrow.value = true;
-                            }
-                          } else if (boardState.isArrow) {
-                            showLeftGoalArrow.value = false;
-                            showRightGoalArrow.value = false;
-
-                            final userId =
-                                ref.watch(userPresenterProvider).value?.id;
-                            if (userId == null) return;
-                            final keyWord =
-                                ref.watch(gamePresenterProvider).value?.keyWord;
-                            if (keyWord == null) return;
-
-                            final stolePiece =
-                                await gameBoardPresenter.movePiece(
-                              row,
-                              column,
-                              userId,
-                              keyWord,
-                            );
-
-                            if (stolePiece.isEmpty) return;
-
-                            if (stolePiece == PieceTypeEnum.redGeister.name) {
-                              stoleRedPiece.value++;
-                            } else if (stolePiece ==
-                                PieceTypeEnum.blueGeister.name) {
-                              stoleBluePiece.value++;
-                            }
-                          } else {
-                            gameBoardPresenter.hideArrow();
-                            showLeftGoalArrow.value = false;
-                            showRightGoalArrow.value = false;
-                          }
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                            border: Border(
-                              right: BorderSide(
-                                color: AppThemeColor.black.color,
-                                width: 1.0,
-                              ),
-                              bottom: BorderSide(
-                                color: AppThemeColor.black.color,
-                                width: 1.0,
-                              ),
-                              top: index >= 0 && index <= 5
-                                  ? BorderSide(
-                                      color: AppThemeColor.black.color,
-                                      width: 1.0,
-                                    )
-                                  : BorderSide.none,
-                              left: index % 6 == 0
-                                  ? BorderSide(
-                                      color: AppThemeColor.black.color,
-                                      width: 1.0,
-                                    )
-                                  : BorderSide.none,
-                            ),
-                          ),
-                          child: Center(
-                            child: piece,
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                ],
-                const SizedBox(height: 16),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(
-                      '獲ったコマ',
-                      style: textStyle(
-                        AppTextStyle.bodyRegular,
-                        AppThemeColor.black.color,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
+                  if (gameBoardState.boardStateList?.gameBoard != null) ...[
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Column(
-                          children: [
-                            SvgPicture.asset(
-                              Assets.icons.allyRedIcon,
-                              width: 30,
-                            ),
-                            const SizedBox(width: 16),
-                            Text(
-                              stoleRedPiece.value.toString(),
-                              style: textStyle(
-                                AppTextStyle.headlineBold,
-                                AppThemeColor.stop.color,
-                              ),
-                            ),
-                          ],
+                        _GoalArrow(
+                          isLeft: true,
+                          showGoalArrow: showLeftGoalArrow,
                         ),
-                        const SizedBox(width: 16),
-                        Column(
-                          children: [
-                            SvgPicture.asset(
-                              Assets.icons.allyBlueIcon,
-                              width: 30,
-                            ),
-                            const SizedBox(width: 16),
-                            Text(
-                              stoleBluePiece.value.toString(),
-                              style: textStyle(
-                                AppTextStyle.headlineBold,
-                                AppThemeColor.accentBlue.color,
-                              ),
-                            ),
-                          ],
+                        _GoalArrow(
+                          isLeft: false,
+                          showGoalArrow: showRightGoalArrow,
                         ),
                       ],
                     ),
+                    GridView.builder(
+                      shrinkWrap: true,
+                      itemCount: 6 * 6,
+                      physics: const NeverScrollableScrollPhysics(),
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 6,
+                      ),
+                      padding: const EdgeInsets.all(0),
+                      itemBuilder: (context, index) {
+                        final column = index % 6;
+                        final row = index ~/ 6;
+                        final boardState = gameBoardState
+                            .boardStateList!.gameBoard[row][column];
+                        final isTopCorner = index == 0 || index == 5;
+                        final isBottomCorner = index == 30 || index == 35;
+                        final piece = boardState.arrowIcon.isNotEmpty
+                            ? SvgPicture.asset(
+                                boardState.arrowIcon,
+                                width: 42,
+                              )
+                            : boardState.pieceIcon.isNotEmpty
+                                ? SvgPicture.asset(
+                                    boardState.pieceIcon,
+                                    width: 42,
+                                  )
+                                : isTopCorner
+                                    ? Constants.arrowTop
+                                    : isBottomCorner
+                                        ? Constants.arrowDown
+                                        : Container();
+
+                        return GestureDetector(
+                          onTap: () async {
+                            if (!isMyTurn) return;
+
+                            if (!gameBoardState.displayArrow &&
+                                boardState.pieceType.isAllyPiece) {
+                              gameBoardPresenter.showArrow(row, column);
+
+                              if (row == 0 &&
+                                  column == 0 &&
+                                  boardState.pieceType.isBluePiece) {
+                                showLeftGoalArrow.value = true;
+                              } else if (row == 0 &&
+                                  column == 5 &&
+                                  boardState.pieceType.isBluePiece) {
+                                showRightGoalArrow.value = true;
+                              }
+                            } else if (boardState.isArrow) {
+                              showLeftGoalArrow.value = false;
+                              showRightGoalArrow.value = false;
+
+                              final userId =
+                                  ref.watch(userPresenterProvider).value?.id;
+                              if (userId == null) return;
+                              final keyWord = ref
+                                  .watch(gamePresenterProvider)
+                                  .value
+                                  ?.keyWord;
+                              if (keyWord == null) return;
+
+                              final stolePiece =
+                                  await gameBoardPresenter.movePiece(
+                                row,
+                                column,
+                                userId,
+                                keyWord,
+                              );
+
+                              if (stolePiece.isEmpty) return;
+
+                              if (stolePiece == PieceTypeEnum.redGeister.name) {
+                                stoleRedPiece.value++;
+                              } else if (stolePiece ==
+                                  PieceTypeEnum.blueGeister.name) {
+                                stoleBluePiece.value++;
+                              }
+                            } else {
+                              gameBoardPresenter.hideArrow();
+                              showLeftGoalArrow.value = false;
+                              showRightGoalArrow.value = false;
+                            }
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              border: Border(
+                                right: BorderSide(
+                                  color: AppThemeColor.black.color,
+                                  width: 1.0,
+                                ),
+                                bottom: BorderSide(
+                                  color: AppThemeColor.black.color,
+                                  width: 1.0,
+                                ),
+                                top: index >= 0 && index <= 5
+                                    ? BorderSide(
+                                        color: AppThemeColor.black.color,
+                                        width: 1.0,
+                                      )
+                                    : BorderSide.none,
+                                left: index % 6 == 0
+                                    ? BorderSide(
+                                        color: AppThemeColor.black.color,
+                                        width: 1.0,
+                                      )
+                                    : BorderSide.none,
+                              ),
+                            ),
+                            child: Center(
+                              child: piece,
+                            ),
+                          ),
+                        );
+                      },
+                    ),
                   ],
-                ),
-              ],
-            ),
-          ),
-          if ((gameState.value?.readyNum ?? 0) < 2) ...[
-            Container(
-              width: double.infinity,
-              height: double.infinity,
-              color: AppThemeColor.blackOpacity.color,
-            ),
-            Center(
-              child: Text(
-                '対戦相手が初期配置を設定中です...',
-                style: textStyle(
-                  AppTextStyle.bodyRegular,
-                  AppThemeColor.white.color,
-                ),
+                ],
               ),
             ),
+            if ((gameState.value?.readyNum ?? 0) < 2) ...[
+              Container(
+                width: double.infinity,
+                height: double.infinity,
+                color: AppThemeColor.blackOpacity.color,
+              ),
+              Center(
+                child: Text(
+                  '対戦相手が初期配置を設定中です...',
+                  style: textStyle(
+                    AppTextStyle.bodyRegular,
+                    AppThemeColor.white.color,
+                  ),
+                ),
+              ),
+            ],
           ],
-        ],
+        ),
       ),
     );
   }

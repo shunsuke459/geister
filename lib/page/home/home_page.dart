@@ -59,8 +59,8 @@ class HomePage extends HookConsumerWidget {
 
                 await showDialog(
                   context: context,
-                  builder: (context) =>
-                      _KeyWordDialog(initialValue: initialValue),
+                  builder: (context) => _KeyWordDialog(
+                      initialValue: initialValue.isEmpty ? null : initialValue),
                 );
               },
               style: ElevatedButton.styleFrom(
@@ -124,6 +124,8 @@ class _KeyWordDialog extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final focusNode = useFocusNode();
     final inputValue = useState<String?>(initialValue);
+    print('---');
+    print(inputValue.value);
     final isEmpty = inputValue.value != null && inputValue.value!.isEmpty;
     final isOverLength =
         inputValue.value != null && inputValue.value!.length > 10;
