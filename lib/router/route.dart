@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:geister/page/game/game_page.dart';
 import 'package:geister/page/home/sign_up_page.dart';
+import 'package:geister/page/privacy_policy/privacy_policy_page.dart';
 import 'package:geister/page/record/record_page.dart';
 import 'package:geister/page/rule/rule_page.dart';
 import 'package:geister/page/search/searching_page.dart';
@@ -72,4 +73,15 @@ class RulePageRoute extends GoRouteData {
 
   @override
   Widget build(BuildContext context, GoRouterState state) => const RulePage();
+}
+
+@TypedGoRoute<PrivacyPolicyPageRoute>(
+  path: '/privacy_policy',
+)
+class PrivacyPolicyPageRoute extends GoRouteData {
+  const PrivacyPolicyPageRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) =>
+      const PrivacyPolicyPage();
 }

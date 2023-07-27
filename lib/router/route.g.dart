@@ -14,6 +14,7 @@ List<RouteBase> get $appRoutes => [
       $searchingPageRoute,
       $recordPageRoute,
       $rulePageRoute,
+      $privacyPolicyPageRoute,
     ];
 
 RouteBase get $splashPageRoute => GoRouteData.$route(
@@ -162,6 +163,29 @@ extension $RulePageRouteExtension on RulePageRoute {
 
   String get location => GoRouteData.$location(
         '/rule',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $privacyPolicyPageRoute => GoRouteData.$route(
+      path: '/privacy_policy',
+      factory: $PrivacyPolicyPageRouteExtension._fromState,
+    );
+
+extension $PrivacyPolicyPageRouteExtension on PrivacyPolicyPageRoute {
+  static PrivacyPolicyPageRoute _fromState(GoRouterState state) =>
+      const PrivacyPolicyPageRoute();
+
+  String get location => GoRouteData.$location(
+        '/privacy_policy',
       );
 
   void go(BuildContext context) => context.go(location);

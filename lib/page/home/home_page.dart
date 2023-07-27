@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:geister/gen/assets.gen.dart';
 import 'package:geister/page/widget/app_icon.dart';
 import 'package:geister/presenter/game/game_board_presenter.dart';
 import 'package:geister/presenter/game/game_presenter.dart';
@@ -35,76 +37,92 @@ class HomePage extends HookConsumerWidget {
     }, []);
 
     return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+      body: SafeArea(
+        child: Stack(
           children: [
-            const AppIcon(),
-            const SizedBox(height: 32),
-            // ElevatedButton(
-            //   onPressed: () async {
-            //     final isSuccess = await ref
-            //         .read(sharedPreferencesPresenterProvider)
-            //         .deleteText('userId');
-
-            //     if (isSuccess) SignUpPageRoute().go(context);
-            //   },
-            //   child: const Text('delete'),
-            // ),
-            ElevatedButton(
-              onPressed: () async {
-                final initialValue = await ref
-                    .read(sharedPreferencesPresenterProvider)
-                    .getText('keyWord');
-
-                await showDialog(
-                  context: context,
-                  builder: (context) => _KeyWordDialog(
-                      initialValue: initialValue.isEmpty ? null : initialValue),
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppThemeColor.stop.color,
-              ),
-              child: Text(
-                'ゲームをはじめる',
-                style: textStyle(
-                  AppTextStyle.titleBold,
-                  AppThemeColor.white.color,
+            Positioned(
+              top: 10,
+              left: 30,
+              child: GestureDetector(
+                onTap: () => const PrivacyPolicyPageRoute().push(context),
+                child: SvgPicture.asset(
+                  Assets.icons.padlock,
+                  width: 30,
                 ),
               ),
             ),
-            const SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: () async {
-                const RulePageRoute().push(context);
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppThemeColor.accentBlue.color,
-              ),
-              child: Text(
-                '遊び方',
-                style: textStyle(
-                  AppTextStyle.titleBold,
-                  AppThemeColor.white.color,
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const AppIcon(),
+                const SizedBox(height: 32),
+                // ElevatedButton(
+                //   onPressed: () async {
+                //     final isSuccess = await ref
+                //         .read(sharedPreferencesPresenterProvider)
+                //         .deleteText('userId');
+
+                //     if (isSuccess) SignUpPageRoute().go(context);
+                //   },
+                //   child: const Text('delete'),
+                // ),
+                ElevatedButton(
+                  onPressed: () async {
+                    final initialValue = await ref
+                        .read(sharedPreferencesPresenterProvider)
+                        .getText('keyWord');
+
+                    await showDialog(
+                      context: context,
+                      builder: (context) => _KeyWordDialog(
+                          initialValue:
+                              initialValue.isEmpty ? null : initialValue),
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppThemeColor.stop.color,
+                  ),
+                  child: Text(
+                    'ゲームをはじめる',
+                    style: textStyle(
+                      AppTextStyle.titleBold,
+                      AppThemeColor.white.color,
+                    ),
+                  ),
                 ),
-              ),
-            ),
-            const SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: () async {
-                const RecordPageRoute().push(context);
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppThemeColor.accentYellow.color,
-              ),
-              child: Text(
-                '対戦成績',
-                style: textStyle(
-                  AppTextStyle.titleBold,
-                  AppThemeColor.white.color,
+                const SizedBox(height: 16),
+                ElevatedButton(
+                  onPressed: () async {
+                    const RulePageRoute().push(context);
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppThemeColor.accentBlue.color,
+                  ),
+                  child: Text(
+                    '遊び方',
+                    style: textStyle(
+                      AppTextStyle.titleBold,
+                      AppThemeColor.white.color,
+                    ),
+                  ),
                 ),
-              ),
+                const SizedBox(height: 16),
+                ElevatedButton(
+                  onPressed: () async {
+                    const RecordPageRoute().push(context);
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppThemeColor.accentYellow.color,
+                  ),
+                  child: Text(
+                    '対戦成績',
+                    style: textStyle(
+                      AppTextStyle.titleBold,
+                      AppThemeColor.white.color,
+                    ),
+                  ),
+                ),
+              ],
             ),
           ],
         ),
