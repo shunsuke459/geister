@@ -48,6 +48,14 @@ dev_dependencies:
   # 自動生成
   build_runner: ^2.4.6
 
+  # スプラッシュの簡易設定
+  # fvm flutter pub run flutter_native_splash:create
+  flutter_native_splash: ^2.3.1
+  
+  # アプリアイコン
+  # fvm flutter pub run flutter_launcher_icons:main
+  flutter_launcher_icons: ^0.13.1
+
 
 flutter:
   uses-material-design: true
@@ -70,3 +78,12 @@ flutter:
       fonts: 
          - asset: assets/fonts/CherryBombOne/static/CherryBombOne-Regular.ttf
            weight: 400
+
+flutter_native_splash:
+  image: "assets/images/app_icon.png"
+  color: "#FFFFFF"
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: 'assets/images/app_icon.png'

@@ -11,7 +11,7 @@ class App extends ConsumerWidget {
     final router = ref.watch(routerProvider);
 
     return MaterialApp.router(
-      title: 'Geister',
+      title: 'Fantasmi',
       theme: ThemeData(
         scaffoldBackgroundColor: AppThemeColor.white.color,
         colorScheme: ColorScheme.fromSeed(
