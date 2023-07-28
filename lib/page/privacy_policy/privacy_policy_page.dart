@@ -63,7 +63,7 @@ class PrivacyPolicyPage extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             Text(
-              '本アプリで利用者が任意に設定したユーザー名、ゲームの勝敗などの結果などのデータは同アプリ内で対戦成績として第三者へ提供されます。その他の目的には一切使用されることはありません。',
+              '本アプリで利用者が任意に設定したユーザー名、ゲームの勝敗などのデータは同アプリ内で対戦成績として第三者へ提供されます。その他の目的には一切使用されることはありません。',
               style: textStyle(
                 AppTextStyle.captionRegular,
                 AppThemeColor.black.color,

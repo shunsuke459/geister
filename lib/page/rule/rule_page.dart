@@ -228,6 +228,7 @@ class RulePage extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(left: 32),
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Row(
                       children: [
@@ -261,6 +262,13 @@ class RulePage extends StatelessWidget {
                           ),
                         ),
                       ],
+                    ),
+                    Text(
+                      '　(コマの配置は相手にはわかりません)',
+                      style: textStyle(
+                        AppTextStyle.bodyRegular,
+                        AppThemeColor.black.color,
+                      ),
                     ),
                     const SizedBox(height: 8),
                     Column(
