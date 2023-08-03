@@ -69,55 +69,6 @@ class PrivacyPolicyPage extends StatelessWidget {
                 AppThemeColor.black.color,
               ),
             ),
-            Text(
-              '',
-              style: textStyle(
-                AppTextStyle.captionRegular,
-                AppThemeColor.black.color,
-              ),
-            ),
-            Text(
-              '',
-              style: textStyle(
-                AppTextStyle.captionRegular,
-                AppThemeColor.black.color,
-              ),
-            ),
-            Text(
-              '',
-              style: textStyle(
-                AppTextStyle.bodyRegular,
-                AppThemeColor.black.color,
-              ),
-            ),
-            Text(
-              '',
-              style: textStyle(
-                AppTextStyle.bodyRegular,
-                AppThemeColor.black.color,
-              ),
-            ),
-            Text(
-              '',
-              style: textStyle(
-                AppTextStyle.bodyRegular,
-                AppThemeColor.black.color,
-              ),
-            ),
-            Text(
-              '',
-              style: textStyle(
-                AppTextStyle.bodyRegular,
-                AppThemeColor.black.color,
-              ),
-            ),
-            Text(
-              '',
-              style: textStyle(
-                AppTextStyle.bodyRegular,
-                AppThemeColor.black.color,
-              ),
-            ),
           ],
         ),
       ),

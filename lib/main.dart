@@ -2,12 +2,18 @@
 // import 'package:cloud_functions/cloud_functions.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:geister/firebase_options.dart';
 import 'package:geister/app.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 void main() async {
   await _initialize();
+
+  await SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
 
   runApp(
     const ProviderScope(

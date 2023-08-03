@@ -17,6 +17,7 @@ class InitialArrangementDialog extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final width = MediaQuery.of(context).size.width;
+    final height = MediaQuery.of(context).size.height;
     final redPieceNum = useState<int>(4);
     final bluePieceNum = useState<int>(4);
     final redSelected = useState<bool>(true);
@@ -42,7 +43,7 @@ class InitialArrangementDialog extends HookConsumerWidget {
       ),
       content: SizedBox(
         width: width,
-        height: 550,
+        height: height * 0.6,
         child: Column(
           children: [
             GridView.builder(
@@ -122,13 +123,13 @@ class InitialArrangementDialog extends HookConsumerWidget {
                               PieceTypeEnum.redGeister
                           ? SvgPicture.asset(
                               Assets.icons.allyRedIcon,
-                              width: 30,
+                              width: (width / 4) * 0.5,
                             )
                           : initialArrangement[row][column] ==
                                   PieceTypeEnum.blueGeister
                               ? SvgPicture.asset(
                                   Assets.icons.allyBlueIcon,
-                                  width: 30,
+                                  width: (width / 4) * 0.5,
                                 )
                               : Container(),
                     ),

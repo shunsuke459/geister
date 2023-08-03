@@ -85,7 +85,6 @@ class GameBoardPresenter extends StateNotifier<GameBoardState> {
 
     state = state.copyWith(
       boardStateList: GameBoard(gameBoard: gameBoard),
-      
     );
 
     await gameGateway.setInitialBoard(userId, keyWord, gameBoardStr);
@@ -342,7 +341,8 @@ class GameBoardPresenter extends StateNotifier<GameBoardState> {
 }
 
 final gameBoardPresenterProvider =
-    StateNotifierProvider<GameBoardPresenter, GameBoardState>((ref) {
+    StateNotifierProvider.autoDispose<GameBoardPresenter, GameBoardState>(
+        (ref) {
   return GameBoardPresenter(
     gameGateway: ref.watch(gameGatewayProvider),
   );

@@ -27,6 +27,7 @@ class GamePage extends HookConsumerWidget {
     final stolenBluePiece = useState<int>(0);
     final showLeftGoalArrow = useState<bool>(false);
     final showRightGoalArrow = useState<bool>(false);
+    final width = MediaQuery.of(context).size.width;
 
     useEffect(() {
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -138,7 +139,7 @@ class GamePage extends HookConsumerWidget {
                                 children: [
                                   SvgPicture.asset(
                                     Assets.icons.allyRedIcon,
-                                    width: 30,
+                                    width: (width / 4) * 0.3,
                                   ),
                                   const SizedBox(width: 16),
                                   Text(
@@ -155,7 +156,7 @@ class GamePage extends HookConsumerWidget {
                                 children: [
                                   SvgPicture.asset(
                                     Assets.icons.allyBlueIcon,
-                                    width: 30,
+                                    width: (width / 4) * 0.3,
                                   ),
                                   const SizedBox(width: 16),
                                   Text(
@@ -205,7 +206,7 @@ class GamePage extends HookConsumerWidget {
                                   children: [
                                     SvgPicture.asset(
                                       Assets.icons.allyRedIcon,
-                                      width: 30,
+                                      width: (width / 4) * 0.3,
                                     ),
                                     const SizedBox(width: 16),
                                     Text(
@@ -223,7 +224,7 @@ class GamePage extends HookConsumerWidget {
                                   children: [
                                     SvgPicture.asset(
                                       Assets.icons.allyBlueIcon,
-                                      width: 30,
+                                      width: (width / 4) * 0.3,
                                     ),
                                     const SizedBox(width: 16),
                                     Text(
@@ -275,12 +276,12 @@ class GamePage extends HookConsumerWidget {
                         final piece = boardState.arrowIcon.isNotEmpty
                             ? SvgPicture.asset(
                                 boardState.arrowIcon,
-                                width: 42,
+                                width: (width / 4) * 0.4,
                               )
                             : boardState.pieceIcon.isNotEmpty
                                 ? SvgPicture.asset(
                                     boardState.pieceIcon,
-                                    width: 42,
+                                    width: (width / 4) * 0.4,
                                   )
                                 : isTopCorner
                                     ? Constants.arrowTop
@@ -411,6 +412,7 @@ class _GoalArrow extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final size = (MediaQuery.of(context).size.width - 16) / 6;
+    final width = MediaQuery.of(context).size.width;
 
     return GestureDetector(
       onTap: () async {
@@ -423,6 +425,7 @@ class _GoalArrow extends ConsumerWidget {
             .read(gameBoardPresenterProvider.notifier)
             .goaled(0, isLeft ? 0 : 5, userId, keyWord);
 
+        print('4');
         showDialog(
           barrierDismissible: false,
           context: context,
@@ -436,11 +439,11 @@ class _GoalArrow extends ConsumerWidget {
           child: showGoalArrow.value
               ? SvgPicture.asset(
                   Assets.icons.arrowTop,
-                  width: 42,
+                  width: (width / 4) * 0.4,
                 )
               : SvgPicture.asset(
                   Assets.icons.goalIcon,
-                  width: 42,
+                  width: (width / 4) * 0.4,
                   colorFilter: ColorFilter.mode(
                     AppThemeColor.accentYellow.color,
                     BlendMode.srcATop,
