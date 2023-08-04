@@ -28,8 +28,8 @@ class GamePresenter extends StateNotifier<AsyncValue<GameState>> {
       );
 
       return isSuccess;
-    } catch (_, __) {
-      return false;
+    } catch (e, __) {
+      rethrow;
     }
   }
 

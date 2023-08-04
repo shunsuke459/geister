@@ -144,8 +144,10 @@ class _KeyWordDialog extends HookConsumerWidget {
     final isOverLength =
         inputValue.value != null && inputValue.value!.length > 10;
     final hasText = RegExp(r'\S').hasMatch(inputValue.value ?? '');
-    final canSend = !isEmpty && !isOverLength && hasText;
     final isLoading = useState(false);
+    final isError = useState(false);
+    final errorMessage = useState('');
+    final canSend = !isEmpty && !isOverLength && hasText && !isError.value;
 
     return Focus(
       focusNode: focusNode,
@@ -184,7 +186,7 @@ class _KeyWordDialog extends HookConsumerWidget {
             ],
           ),
           content: SizedBox(
-            height: 150,
+            height: 180,
             width: MediaQuery.of(context).size.width,
             child: Column(
               children: [
@@ -195,15 +197,21 @@ class _KeyWordDialog extends HookConsumerWidget {
                     initialValue: initialValue,
                     inputValue: inputValue,
                     canSend: canSend,
+                    onChanged: () {
+                      errorMessage.value = '';
+                      isError.value = false;
+                    },
                   ),
                 ),
                 const SizedBox(height: 16),
                 Text(
                   inputValue.value != null && (isEmpty || !hasText)
-                      ? 'あいことばを入力してください'
+                      ? 'あいことばを入力してください\n'
                       : isOverLength
-                          ? '10文字以内で入力してください'
-                          : '',
+                          ? '10文字以内で入力してください\n'
+                          : isError.value
+                              ? errorMessage.value
+                              : '\n',
                   style: TextStyle(
                     color: AppThemeColor.red.color,
                   ),
@@ -230,14 +238,25 @@ class _KeyWordDialog extends HookConsumerWidget {
                                 .read(sharedPreferencesPresenterProvider)
                                 .setText('keyWord', keyWord);
 
-                            final isSuccess = await ref
-                                .read(gamePresenterProvider.notifier)
-                                .createKeyWord(userId, keyWord);
+                            try {
+                              final isSuccess = await ref
+                                  .read(gamePresenterProvider.notifier)
+                                  .createKeyWord(userId, keyWord);
 
-                            if (isSuccess)
-                              SearchingPageRoute(keyWord).go(context);
-
-                            isLoading.value = false;
+                              if (isSuccess) {
+                                SearchingPageRoute(keyWord).go(context);
+                              } else {
+                                isError.value = true;
+                                errorMessage.value =
+                                    'すでに作成済みのあいことばです。\n別のあいことばをお試しください。';
+                              }
+                            } catch (_) {
+                              isError.value = true;
+                              errorMessage.value =
+                                  'あいことばの作成に失敗しました\n時間をおいて再度お試しください';
+                            } finally {
+                              isLoading.value = false;
+                            }
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: canSend

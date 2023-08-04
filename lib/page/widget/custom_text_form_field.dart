@@ -7,6 +7,7 @@ class CustomTextFormField extends TextFormField {
   final String? initialValue;
   final ValueNotifier<String?> inputValue;
   final bool canSend;
+  final void Function()? onChanged;
 
   CustomTextFormField({
     super.key,
@@ -14,6 +15,7 @@ class CustomTextFormField extends TextFormField {
     this.initialValue,
     required this.inputValue,
     required this.canSend,
+    this.onChanged,
   }) : super(
           initialValue: initialValue,
           decoration: InputDecoration(
@@ -40,6 +42,7 @@ class CustomTextFormField extends TextFormField {
           ),
           onChanged: (value) {
             inputValue.value = value;
+            if (onChanged != null) onChanged!();
           },
         );
 }

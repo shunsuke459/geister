@@ -19,13 +19,17 @@ class GameGateway {
     if (userId.isEmpty) throw Exception('userId is empty');
     if (keyWord.isEmpty) throw Exception('keyWord is empty');
 
-    final callable = firebaseFunctions.httpsCallable('createKeyWord');
-    final result = await callable.call(<String, dynamic>{
-      'userId': userId,
-      'keyWord': keyWord,
-    });
+    try {
+      final callable = firebaseFunctions.httpsCallable('createKeyWord');
+      final result = await callable.call(<String, dynamic>{
+        'userId': userId,
+        'keyWord': keyWord,
+      });
 
-    return result.data as bool;
+      return result.data as bool;
+    } catch (e) {
+      throw Exception(e);
+    }
   }
 
   Future<bool> deleteKeyWord(String userId, String keyWord) async {
