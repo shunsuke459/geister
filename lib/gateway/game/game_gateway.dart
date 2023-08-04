@@ -76,7 +76,7 @@ class GameGateway {
     });
   }
 
-  Stream<(bool, List<List<String>>, bool)> getBoardState(
+  Stream<(bool, List<List<String>>, bool, bool)> getBoardState(
     String userId,
   ) {
     return firebaseFirestore
@@ -99,6 +99,7 @@ class GameGateway {
           }).toList();
         }).toList(),
         opponentGoaled,
+        event.metadata.isFromCache,
       );
     });
   }

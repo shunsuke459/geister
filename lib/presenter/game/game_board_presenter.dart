@@ -94,6 +94,9 @@ class GameBoardPresenter extends StateNotifier<GameBoardState> {
 
   void _getBoardState(String userId) {
     _subscription = gameGateway.getBoardState(userId).listen((event) {
+      final isFromCache = event.$4;
+      if (isFromCache) return;
+
       int row = -1;
       int column = -1;
       int redCount = 0;
