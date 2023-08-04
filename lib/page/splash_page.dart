@@ -25,7 +25,7 @@ class SplashPage extends ConsumerWidget {
               .getText('userId');
 
           final result =
-              await ref.read(userPresenterProvider.notifier).getUser(userId);
+              await ref.read(userPresenterProvider.notifier).fetchUser(userId);
           if (!result) throw Exception('user not found');
         } catch (_) {
           await ref

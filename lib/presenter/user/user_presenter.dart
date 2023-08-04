@@ -27,10 +27,10 @@ class UserPresenter extends StateNotifier<AsyncValue<User>> {
     }
   }
 
-  Future<bool> getUser(String userId) async {
+  Future<bool> fetchUser(String userId) async {
     state = const AsyncValue.loading();
     try {
-      final result = await userGateway.getUser(userId);
+      final result = await userGateway.fetchUser(userId);
 
       state = AsyncValue.data(result);
 

@@ -81,7 +81,7 @@ class GameGateway {
     });
   }
 
-  Stream<(bool, List<List<String>>, bool, bool)> getBoardState(
+  Stream<(bool, List<List<String>>, bool, bool)> subscribeBoardState(
     String userId,
   ) {
     return firebaseFirestore
