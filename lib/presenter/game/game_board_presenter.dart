@@ -322,6 +322,7 @@ class GameBoardPresenter extends StateNotifier<GameBoardState> {
             arrowType: ArrowTypeEnum.none,
           ),
       ),
+      allyGoaled: true,
     );
 
     await _updateGameBoard(userId, keyWord, true);

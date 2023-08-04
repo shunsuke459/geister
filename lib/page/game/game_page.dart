@@ -45,8 +45,10 @@ class GamePage extends HookConsumerWidget {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         stolenRedPiece.value = 4 - gameBoardState.redPieceCount;
         stolenBluePiece.value = 4 - gameBoardState.bluePieceCount;
+        final isGoaled = gameBoardState.allyGoaled;
 
-        if (stolenBluePiece.value == 4 || gameBoardState.opponentGoaled) {
+        if (!isGoaled &&
+            (stolenBluePiece.value == 4 || gameBoardState.opponentGoaled)) {
           showDialog(
             barrierDismissible: false,
             context: context,
@@ -425,7 +427,6 @@ class _GoalArrow extends ConsumerWidget {
             .read(gameBoardPresenterProvider.notifier)
             .goaled(0, isLeft ? 0 : 5, userId, keyWord);
 
-        print('4');
         showDialog(
           barrierDismissible: false,
           context: context,

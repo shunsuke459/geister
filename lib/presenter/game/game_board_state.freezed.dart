@@ -23,6 +23,7 @@ mixin _$GameBoardState {
   bool get isMyTurn => throw _privateConstructorUsedError;
   int get redPieceCount => throw _privateConstructorUsedError;
   int get bluePieceCount => throw _privateConstructorUsedError;
+  bool get allyGoaled => throw _privateConstructorUsedError;
   bool get opponentGoaled => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -43,6 +44,7 @@ abstract class $GameBoardStateCopyWith<$Res> {
       bool isMyTurn,
       int redPieceCount,
       int bluePieceCount,
+      bool allyGoaled,
       bool opponentGoaled});
 
   $GameBoardCopyWith<$Res>? get boardStateList;
@@ -67,6 +69,7 @@ class _$GameBoardStateCopyWithImpl<$Res, $Val extends GameBoardState>
     Object? isMyTurn = null,
     Object? redPieceCount = null,
     Object? bluePieceCount = null,
+    Object? allyGoaled = null,
     Object? opponentGoaled = null,
   }) {
     return _then(_value.copyWith(
@@ -94,6 +97,10 @@ class _$GameBoardStateCopyWithImpl<$Res, $Val extends GameBoardState>
           ? _value.bluePieceCount
           : bluePieceCount // ignore: cast_nullable_to_non_nullable
               as int,
+      allyGoaled: null == allyGoaled
+          ? _value.allyGoaled
+          : allyGoaled // ignore: cast_nullable_to_non_nullable
+              as bool,
       opponentGoaled: null == opponentGoaled
           ? _value.opponentGoaled
           : opponentGoaled // ignore: cast_nullable_to_non_nullable
@@ -129,6 +136,7 @@ abstract class _$$_GameBoardStateCopyWith<$Res>
       bool isMyTurn,
       int redPieceCount,
       int bluePieceCount,
+      bool allyGoaled,
       bool opponentGoaled});
 
   @override
@@ -152,6 +160,7 @@ class __$$_GameBoardStateCopyWithImpl<$Res>
     Object? isMyTurn = null,
     Object? redPieceCount = null,
     Object? bluePieceCount = null,
+    Object? allyGoaled = null,
     Object? opponentGoaled = null,
   }) {
     return _then(_$_GameBoardState(
@@ -179,6 +188,10 @@ class __$$_GameBoardStateCopyWithImpl<$Res>
           ? _value.bluePieceCount
           : bluePieceCount // ignore: cast_nullable_to_non_nullable
               as int,
+      allyGoaled: null == allyGoaled
+          ? _value.allyGoaled
+          : allyGoaled // ignore: cast_nullable_to_non_nullable
+              as bool,
       opponentGoaled: null == opponentGoaled
           ? _value.opponentGoaled
           : opponentGoaled // ignore: cast_nullable_to_non_nullable
@@ -197,6 +210,7 @@ class _$_GameBoardState implements _GameBoardState {
       this.isMyTurn = false,
       this.redPieceCount = 4,
       this.bluePieceCount = 4,
+      this.allyGoaled = false,
       this.opponentGoaled = false})
       : _initialArrangement = initialArrangement;
 
@@ -225,11 +239,14 @@ class _$_GameBoardState implements _GameBoardState {
   final int bluePieceCount;
   @override
   @JsonKey()
+  final bool allyGoaled;
+  @override
+  @JsonKey()
   final bool opponentGoaled;
 
   @override
   String toString() {
-    return 'GameBoardState(initialArrangement: $initialArrangement, boardStateList: $boardStateList, displayArrow: $displayArrow, isMyTurn: $isMyTurn, redPieceCount: $redPieceCount, bluePieceCount: $bluePieceCount, opponentGoaled: $opponentGoaled)';
+    return 'GameBoardState(initialArrangement: $initialArrangement, boardStateList: $boardStateList, displayArrow: $displayArrow, isMyTurn: $isMyTurn, redPieceCount: $redPieceCount, bluePieceCount: $bluePieceCount, allyGoaled: $allyGoaled, opponentGoaled: $opponentGoaled)';
   }
 
   @override
@@ -249,6 +266,8 @@ class _$_GameBoardState implements _GameBoardState {
                 other.redPieceCount == redPieceCount) &&
             (identical(other.bluePieceCount, bluePieceCount) ||
                 other.bluePieceCount == bluePieceCount) &&
+            (identical(other.allyGoaled, allyGoaled) ||
+                other.allyGoaled == allyGoaled) &&
             (identical(other.opponentGoaled, opponentGoaled) ||
                 other.opponentGoaled == opponentGoaled));
   }
@@ -262,6 +281,7 @@ class _$_GameBoardState implements _GameBoardState {
       isMyTurn,
       redPieceCount,
       bluePieceCount,
+      allyGoaled,
       opponentGoaled);
 
   @JsonKey(ignore: true)
@@ -279,6 +299,7 @@ abstract class _GameBoardState implements GameBoardState {
       final bool isMyTurn,
       final int redPieceCount,
       final int bluePieceCount,
+      final bool allyGoaled,
       final bool opponentGoaled}) = _$_GameBoardState;
 
   @override
@@ -293,6 +314,8 @@ abstract class _GameBoardState implements GameBoardState {
   int get redPieceCount;
   @override
   int get bluePieceCount;
+  @override
+  bool get allyGoaled;
   @override
   bool get opponentGoaled;
   @override

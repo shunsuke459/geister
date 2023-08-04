@@ -13,6 +13,7 @@ class GameBoardState with _$GameBoardState {
     @Default(false) bool isMyTurn,
     @Default(4) int redPieceCount,
     @Default(4) int bluePieceCount,
+    @Default(false) bool allyGoaled,
     @Default(false) bool opponentGoaled,
   }) = _GameBoardState;
 }
