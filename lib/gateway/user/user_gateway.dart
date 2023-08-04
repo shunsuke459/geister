@@ -30,6 +30,8 @@ class UserGateway {
   Future<User> getUser(String userId) async {
     final result =
         await firebaseFirestore.collection('users').doc(userId).get();
+    if (!result.exists) throw Exception('user not found');
+
     return User.fromJson({
       'id': userId,
       'user_name': result.data()!['user_name'],

@@ -27,14 +27,16 @@ class UserPresenter extends StateNotifier<AsyncValue<User>> {
     }
   }
 
-  Future<void> getUser(String userId) async {
+  Future<bool> getUser(String userId) async {
     state = const AsyncValue.loading();
     try {
       final result = await userGateway.getUser(userId);
 
       state = AsyncValue.data(result);
-    } catch (error, stackTrace) {
-      state = AsyncValue.error(error, stackTrace);
+
+      return true;
+    } catch (_, __) {
+      rethrow;
     }
   }
 }

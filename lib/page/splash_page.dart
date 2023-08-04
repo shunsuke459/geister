@@ -19,10 +19,23 @@ class SplashPage extends ConsumerWidget {
       if (needSignUp) {
         SignUpPageRoute().go(context);
       } else {
-        final userId = await ref
-            .watch(sharedPreferencesPresenterProvider)
-            .getText('userId');
-        await ref.read(userPresenterProvider.notifier).getUser(userId);
+        try {
+          final userId = await ref
+              .watch(sharedPreferencesPresenterProvider)
+              .getText('userId');
+
+          final result =
+              await ref.read(userPresenterProvider.notifier).getUser(userId);
+          if (!result) throw Exception('user not found');
+        } catch (_) {
+          await ref
+              .read(sharedPreferencesPresenterProvider)
+              .deleteText('userId');
+
+          SignUpPageRoute().go(context);
+
+          return;
+        }
 
         HomePageRoute().go(context);
       }

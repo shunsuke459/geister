@@ -56,16 +56,6 @@ class HomePage extends HookConsumerWidget {
               children: [
                 const AppIcon(),
                 const SizedBox(height: 32),
-                // ElevatedButton(
-                //   onPressed: () async {
-                //     final isSuccess = await ref
-                //         .read(sharedPreferencesPresenterProvider)
-                //         .deleteText('userId');
-
-                //     if (isSuccess) SignUpPageRoute().go(context);
-                //   },
-                //   child: const Text('delete'),
-                // ),
                 ElevatedButton(
                   onPressed: () async {
                     final initialValue = await ref
