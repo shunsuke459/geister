@@ -28,9 +28,10 @@ class GameGateway {
     return result.data as bool;
   }
 
-  Future<bool> deleteKeyWord(String keyWord) async {
+  Future<bool> deleteKeyWord(String userId, String keyWord) async {
     final callable = firebaseFunctions.httpsCallable('deleteKeyWord');
     final result = await callable.call(<String, dynamic>{
+      'userId': userId,
       'keyWord': keyWord,
     });
 

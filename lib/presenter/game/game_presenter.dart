@@ -33,9 +33,9 @@ class GamePresenter extends StateNotifier<AsyncValue<GameState>> {
     }
   }
 
-  Future<bool> deleteKeyWord(String keyWord) async {
+  Future<bool> deleteKeyWord(String userId, String keyWord) async {
     try {
-      final isSuccess = await gameGateway.deleteKeyWord(keyWord);
+      final isSuccess = await gameGateway.deleteKeyWord(userId, keyWord);
 
       return isSuccess;
     } catch (_, __) {

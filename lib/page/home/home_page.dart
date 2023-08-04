@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:geister/gen/assets.gen.dart';
+import 'package:geister/page/loading_page.dart';
 import 'package:geister/page/widget/app_icon.dart';
 import 'package:geister/presenter/game/game_board_presenter.dart';
 import 'package:geister/presenter/game/game_presenter.dart';
@@ -18,6 +19,8 @@ class HomePage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final keyWordDeleted = useState(false);
+
     useEffect(() {
       WidgetsBinding.instance.addPostFrameCallback((_) async {
         final keyWord = await ref
@@ -25,16 +28,21 @@ class HomePage extends HookConsumerWidget {
             .getText('keyWord');
         if (keyWord.isEmpty) return;
 
-        ref.read(gamePresenterProvider.notifier).deleteKeyWord(keyWord);
-
         final userId = ref.watch(userPresenterProvider).value?.id;
         if (userId == null) return;
+
+        await ref
+            .read(gamePresenterProvider.notifier)
+            .deleteKeyWord(userId, keyWord);
+        keyWordDeleted.value = true;
 
         ref.read(gameBoardPresenterProvider.notifier).deleteBoard(userId);
       });
 
       return () {};
     }, []);
+
+    if (!keyWordDeleted.value) return const LoadingPage();
 
     return Scaffold(
       body: SafeArea(
