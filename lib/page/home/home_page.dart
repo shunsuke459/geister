@@ -247,16 +247,16 @@ class _KeyWordDialog extends HookConsumerWidget {
                                   .createKeyWord(userId, keyWord);
 
                               if (isSuccess) {
-                                SearchingPageRoute(keyWord).go(context);
+                                SearchingPageRoute(keyWord).push(context);
                               } else {
                                 isError.value = true;
                                 errorMessage.value =
-                                    'すでに作成済みのあいことばです。\n別のあいことばをお試しください。';
+                                    'すでに作成済みのあいことばです\n別のあいことばをお試しください';
                               }
                             } catch (_) {
                               isError.value = true;
                               errorMessage.value =
-                                  'あいことばの作成に失敗しました\n時間をおいて再度お試しください';
+                                  'あいことばの作成に失敗しました\n別のあいことばをお試しください';
                             } finally {
                               isLoading.value = false;
                             }
