@@ -40,6 +40,8 @@ class GameRecordPage extends HookConsumerWidget {
       body: asyncGameRecordState.when(
         data: (gameRecordState) {
           final gameRecordList = gameRecordState.gameRecordList;
+          int _winCount = 0;
+          int _loseCount = 0;
 
           return Padding(
             padding: const EdgeInsets.only(top: 32),
@@ -56,6 +58,9 @@ class GameRecordPage extends HookConsumerWidget {
                     ],
                   ),
                   ...gameRecordList.map((gameRecord) {
+                    _winCount += gameRecord.winCount;
+                    _loseCount += gameRecord.loseCount;
+
                     return TableRow(
                       children: [
                         _cell(gameRecord.opponentUserName),
@@ -64,6 +69,13 @@ class GameRecordPage extends HookConsumerWidget {
                       ],
                     );
                   }).toList(),
+                  TableRow(
+                    children: [
+                      _cell('合計', isTotal: true),
+                      _cell(_winCount.toString(), isTotal: true),
+                      _cell(_loseCount.toString(), isTotal: true),
+                    ],
+                  ),
                 ],
               ),
             ),
@@ -82,6 +94,14 @@ class GameRecordPage extends HookConsumerWidget {
   Widget _header(String text) {
     return Container(
       padding: const EdgeInsets.all(8.0),
+      decoration: BoxDecoration(
+        border: Border(
+          bottom: BorderSide(
+            color: AppThemeColor.black.color,
+            width: 1,
+          ),
+        ),
+      ),
       child: Text(
         text,
         style: textStyle(
@@ -93,13 +113,23 @@ class GameRecordPage extends HookConsumerWidget {
     );
   }
 
-  Widget _cell(String text) {
+  Widget _cell(String text, {bool isTotal = false}) {
     return Container(
       padding: const EdgeInsets.all(8.0),
+      decoration: isTotal
+          ? BoxDecoration(
+              border: Border(
+                top: BorderSide(
+                  color: AppThemeColor.black.color,
+                  width: 1,
+                ),
+              ),
+            )
+          : null,
       child: Text(
         text,
         style: textStyle(
-          AppTextStyle.bodyRegular,
+          isTotal ? AppTextStyle.bodyBold : AppTextStyle.bodyRegular,
           AppThemeColor.black.color,
         ),
         textAlign: TextAlign.center,
