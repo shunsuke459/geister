@@ -25,11 +25,12 @@ class GameRecordPage extends HookConsumerWidget {
     }, []);
 
     final asyncGameRecordState = ref.watch(gameRecordPresenterProvider);
+    final userName = ref.watch(userPresenterProvider).value?.userName ?? '';
 
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          '対戦成績',
+          '$userNameさんの対戦成績',
           style: textStyle(
             AppTextStyle.titleRegular,
             AppThemeColor.black.color,
