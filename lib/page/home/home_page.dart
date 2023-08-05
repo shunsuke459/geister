@@ -26,7 +26,10 @@ class HomePage extends HookConsumerWidget {
         final keyWord = await ref
             .read(sharedPreferencesPresenterProvider)
             .getText('keyWord');
-        if (keyWord.isEmpty) return;
+        if (keyWord.isEmpty) {
+          keyWordDeleted.value = true;
+          return;
+        }
 
         final userId = ref.watch(userPresenterProvider).value?.id;
         if (userId == null) return;

@@ -42,7 +42,7 @@ class CustomTextFormField extends TextFormField {
           ),
           onChanged: (value) {
             inputValue.value = value;
-            if (onChanged != null) onChanged!();
+            if (onChanged != null) onChanged();
           },
         );
 }
