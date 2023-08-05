@@ -40,46 +40,56 @@ class GameRecordPage extends HookConsumerWidget {
       body: asyncGameRecordState.when(
         data: (gameRecordState) {
           final gameRecordList = gameRecordState.gameRecordList;
-          int _winCount = 0;
-          int _loseCount = 0;
+          int winCount = 0;
+          int loseCount = 0;
 
-          return Padding(
-            padding: const EdgeInsets.only(top: 32),
-            child: Align(
-              alignment: Alignment.topCenter,
-              child: Table(
-                defaultColumnWidth: const FractionColumnWidth(0.3),
-                children: [
-                  TableRow(
-                    children: [
-                      _header('対戦相手'),
-                      _header('勝ち数'),
-                      _header('負け数'),
-                    ],
-                  ),
-                  ...gameRecordList.map((gameRecord) {
-                    _winCount += gameRecord.winCount;
-                    _loseCount += gameRecord.loseCount;
-
-                    return TableRow(
+          return gameRecordList.isNotEmpty
+              ? Padding(
+                  padding: const EdgeInsets.only(top: 32),
+                  child: Align(
+                    alignment: Alignment.topCenter,
+                    child: Table(
+                      defaultColumnWidth: const FractionColumnWidth(0.3),
                       children: [
-                        _cell(gameRecord.opponentUserName),
-                        _cell(gameRecord.winCount.toString()),
-                        _cell(gameRecord.loseCount.toString()),
+                        TableRow(
+                          children: [
+                            _header('対戦相手'),
+                            _header('勝ち数'),
+                            _header('負け数'),
+                          ],
+                        ),
+                        ...gameRecordList.map((gameRecord) {
+                          winCount += gameRecord.winCount;
+                          loseCount += gameRecord.loseCount;
+
+                          return TableRow(
+                            children: [
+                              _cell(gameRecord.opponentUserName),
+                              _cell(gameRecord.winCount.toString()),
+                              _cell(gameRecord.loseCount.toString()),
+                            ],
+                          );
+                        }).toList(),
+                        TableRow(
+                          children: [
+                            _cell('合計', isTotal: true),
+                            _cell(winCount.toString(), isTotal: true),
+                            _cell(loseCount.toString(), isTotal: true),
+                          ],
+                        ),
                       ],
-                    );
-                  }).toList(),
-                  TableRow(
-                    children: [
-                      _cell('合計', isTotal: true),
-                      _cell(_winCount.toString(), isTotal: true),
-                      _cell(_loseCount.toString(), isTotal: true),
-                    ],
+                    ),
                   ),
-                ],
-              ),
-            ),
-          );
+                )
+              : Center(
+                  child: Text(
+                    '対戦成績がありません',
+                    style: textStyle(
+                      AppTextStyle.headlineBold,
+                      AppThemeColor.black.color,
+                    ),
+                  ),
+                );
         },
         error: (_, __) => const Center(
           child: Text('エラーが発生しました'),
