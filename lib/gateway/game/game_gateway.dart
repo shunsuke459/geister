@@ -66,7 +66,7 @@ class GameGateway {
     return result.data as bool;
   }
 
-  Stream<(int, List<String>)> searchOpponent(
+  Stream<(int, List<String>, bool)> searchOpponent(
     String keyWord,
   ) {
     return firebaseFirestore
@@ -76,8 +76,13 @@ class GameGateway {
         .map((event) {
       final readyNum = event.data()?['ready_num'] as int;
       final userIdList = event.data()?['users'] as List<dynamic>;
+      final isFromCache = event.metadata.isFromCache;
 
-      return (readyNum, userIdList.map<String>((e) => e.toString()).toList());
+      return (
+        readyNum,
+        userIdList.map<String>((e) => e.toString()).toList(),
+        isFromCache,
+      );
     });
   }
 

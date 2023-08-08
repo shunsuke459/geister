@@ -49,6 +49,9 @@ class GamePresenter extends StateNotifier<AsyncValue<GameState>> {
     state = AsyncValue.data(state.value!.copyWith(isSearching: true));
 
     _subscription = gameGateway.searchOpponent(keyWord).listen((event) {
+      final isFromCache = event.$3;
+      if (isFromCache) return;
+
       state = AsyncValue.data(state.value!.copyWith(readyNum: event.$1));
 
       if (!state.value!.isMatched && event.$2.length == 2) {
