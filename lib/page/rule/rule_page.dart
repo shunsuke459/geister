@@ -44,7 +44,7 @@ class RulePage extends StatelessWidget {
               ),
               const SizedBox(height: 12),
               Text(
-                '以下の3つのうちいずれか一つを満たしたら勝利です',
+                '以下の3つのうちいずれか1つを満たしたら勝利です',
                 style: textStyle(
                   AppTextStyle.bodyRegular,
                   AppThemeColor.black.color,
