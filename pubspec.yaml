@@ -26,9 +26,10 @@ dependencies:
   json_serializable: ^6.7.1
 
   # firebase
-  firebase_core: ^2.14.0
+  firebase_core: ^2.15.0
   cloud_firestore: ^4.8.2
   cloud_functions: ^4.3.3
+  firebase_messaging: ^14.6.5
 
   # SharedPreferences
   shared_preferences: ^2.2.0
