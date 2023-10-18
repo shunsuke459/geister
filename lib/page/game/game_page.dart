@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -43,8 +45,31 @@ class GamePage extends HookConsumerWidget {
 
     useEffect(() {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        stolenRedPiece.value = 4 - gameBoardState.redPieceCount;
-        stolenBluePiece.value = 4 - gameBoardState.bluePieceCount;
+        if (stolenRedPiece.value < 4 - gameBoardState.redPieceCount) {
+          stolenRedPiece.value = 4 - gameBoardState.redPieceCount;
+
+          if (stolenRedPiece.value > 0)
+            _autoDeleteDialog(
+              context,
+              () => _showStatusDialog(
+                context,
+                '赤のコマが獲られました',
+                Assets.icons.allyRedIcon,
+              ),
+            );
+        } else if (stolenBluePiece.value < 4 - gameBoardState.bluePieceCount) {
+          stolenBluePiece.value = 4 - gameBoardState.bluePieceCount;
+
+          if (stolenBluePiece.value > 0)
+            _autoDeleteDialog(
+              context,
+              () => _showStatusDialog(
+                context,
+                '青のコマが獲られました',
+                Assets.icons.allyBlueIcon,
+              ),
+            );
+        }
         final isGoaled = gameBoardState.allyGoaled;
 
         if (!isGoaled &&
@@ -348,9 +373,29 @@ class GamePage extends HookConsumerWidget {
 
                               if (stolePiece == PieceTypeEnum.redGeister.name) {
                                 stoleRedPiece.value++;
+
+                                if (stoleRedPiece.value < 4)
+                                  await _autoDeleteDialog(
+                                    context,
+                                    () => _showStatusDialog(
+                                      context,
+                                      '赤のコマを獲りました',
+                                      Assets.icons.allyRedIcon,
+                                    ),
+                                  );
                               } else if (stolePiece ==
                                   PieceTypeEnum.blueGeister.name) {
                                 stoleBluePiece.value++;
+
+                                if (stoleBluePiece.value < 4)
+                                  await _autoDeleteDialog(
+                                    context,
+                                    () => _showStatusDialog(
+                                      context,
+                                      '青のコマを獲りました',
+                                      Assets.icons.allyBlueIcon,
+                                    ),
+                                  );
                               }
                             } else {
                               gameBoardPresenter.hideArrow();
@@ -414,6 +459,46 @@ class GamePage extends HookConsumerWidget {
         ),
       ),
     );
+  }
+
+  Future<void> _showStatusDialog(
+    BuildContext context,
+    String text,
+    String iconPath,
+  ) =>
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Center(
+            child: Text(
+              text,
+              style: textStyle(
+                AppTextStyle.bodyRegular,
+                AppThemeColor.grayMain.color,
+              ),
+            ),
+          ),
+          content: SvgPicture.asset(
+            iconPath,
+            width: 42,
+          ),
+        ),
+      );
+
+  Future<void> _autoDeleteDialog(
+    BuildContext context,
+    Future<void> Function() callback,
+  ) async {
+    final timer = Timer(
+      const Duration(milliseconds: 1500),
+      () {
+        Navigator.pop(context);
+      },
+    );
+
+    await callback();
+
+    if (timer.isActive) timer.cancel();
   }
 }
 

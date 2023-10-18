@@ -219,8 +219,13 @@ class GameBoardPresenter extends StateNotifier<GameBoardState> {
         return e.pieceType.name;
       }).toList();
     }).toList();
+
     return await gameGateway.updateBoardState(
-        userId, keyWord, goaled, gameBoard);
+      userId,
+      keyWord,
+      goaled,
+      gameBoard,
+    );
   }
 
   void showArrow(int row, int column) {

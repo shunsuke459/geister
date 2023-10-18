@@ -29,6 +29,7 @@ class GameRecordPage extends HookConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: AppThemeColor.white.color,
         title: Text(
           '$userNameさんの対戦成績',
           style: textStyle(
