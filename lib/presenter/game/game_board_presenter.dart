@@ -96,6 +96,7 @@ class GameBoardPresenter extends StateNotifier<GameBoardState> {
     _subscription = gameGateway.subscribeBoardState(userId).listen((event) {
       final isFromCache = event.$4;
       if (isFromCache) return;
+      if (event.$2.length < 6) return;
 
       int row = -1;
       int column = -1;
