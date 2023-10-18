@@ -99,12 +99,27 @@ class GamePage extends HookConsumerWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   if (gameState.value?.readyNum == 2)
-                    Text(
-                      isMyTurn ? 'あなたのターンです' : '相手のターンです',
-                      style: textStyle(
-                        AppTextStyle.headlineBold,
-                        AppThemeColor.black.color,
-                      ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Text(
+                          isMyTurn ? 'あなた' : '相手',
+                          style: textStyle(
+                            AppTextStyle.bigBold,
+                            isMyTurn
+                                ? AppThemeColor.accentBlue.color
+                                : AppThemeColor.stop.color,
+                          ),
+                        ),
+                        Text(
+                          'のターンです',
+                          style: textStyle(
+                            AppTextStyle.headlineBold,
+                            AppThemeColor.black.color,
+                          ),
+                        ),
+                      ],
                     ),
                   const SizedBox(height: 32),
                   Row(
