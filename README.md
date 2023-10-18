@@ -8,5 +8,5 @@ fvm flutter pub run build_runner build --delete-conflicting-outputs
 - Firestoreの接続先がローカルになっていないか確認（main.dart）
 - ビルドコマンド
 ```shell
-fvm flutter build ipa --build-name={適切なバージョン} --release
+fvm flutter build ipa --build-name={適切なバージョン} --build-number={適切な番号} --release
 ```
