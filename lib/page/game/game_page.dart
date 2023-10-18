@@ -48,7 +48,7 @@ class GamePage extends HookConsumerWidget {
         if (stolenRedPiece.value < 4 - gameBoardState.redPieceCount) {
           stolenRedPiece.value = 4 - gameBoardState.redPieceCount;
 
-          if (stolenRedPiece.value > 0)
+          if (stolenRedPiece.value < 4)
             _autoDeleteDialog(
               context,
               () => _showStatusDialog(
@@ -60,7 +60,7 @@ class GamePage extends HookConsumerWidget {
         } else if (stolenBluePiece.value < 4 - gameBoardState.bluePieceCount) {
           stolenBluePiece.value = 4 - gameBoardState.bluePieceCount;
 
-          if (stolenBluePiece.value > 0)
+          if (stolenBluePiece.value < 4)
             _autoDeleteDialog(
               context,
               () => _showStatusDialog(
